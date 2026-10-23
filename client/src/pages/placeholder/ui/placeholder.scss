@@ -1,0 +1,7 @@
+@use '@/shared/styles/tokens';
+
+.placeholder-page h1 { margin: 0; font-size: 32px; line-height: 1.2; letter-spacing: -.7px; font-weight: 600; }
+.placeholder-page > p:not(.page-eyebrow) { color: #818891; font-size: 14px; margin: 20px 0; }
+@media (max-width: tokens.$mobile) {
+  .placeholder-page h1 { font-size: 28px; }
+}

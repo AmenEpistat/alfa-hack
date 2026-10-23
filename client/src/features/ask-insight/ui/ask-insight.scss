@@ -1,0 +1,20 @@
+.ask-insight { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.insight-conversation { flex: 1; min-height: 0; overflow-y: auto; padding: 25px 23px 18px; overscroll-behavior: contain; scrollbar-width: thin; }
+.chat-intro h2 { margin: 0 0 9px; font-size: 17px; font-weight: 400; line-height: 26px; }
+.chat-intro p { margin: 0; color: #8b9096; font-size: 13px; line-height: 21px; }
+.chat-intro > span { display: block; margin-top: 19px; color: #a0a4a9; font-size: 10px; line-height: 17px; }
+.insight-exchange + .insight-exchange { margin-top: 28px; }
+.insight-question { width: fit-content; max-width: 92%; margin-left: auto; padding: 10px 14px; border-radius: 14px 14px 3px 14px; background: #f0f2f3; }
+.insight-question p { margin: 0; font-size: 13px; line-height: 21px; overflow-wrap: anywhere; white-space: pre-wrap; }
+.insight-answer { margin-top: 18px; font-size: 13px; line-height: 22px; overflow-wrap: anywhere; }
+.insight-answer > p { margin: 0 0 12px; }
+.insight-answer-context { margin-top: 13px; color: #90969d; font-size: 11px; line-height: 18px; }
+.insight-answer-context summary { cursor: pointer; }
+.insight-answer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 8px; }
+.insight-answer-links a { display: inline-flex; align-items: center; gap: 4px; color: #636e78; font-size: 11px; }
+.insight-answer-links .ant-btn { font-size: 11px; padding-inline: 0; }
+.chat-composer { position: relative; flex-shrink: 0; padding: 15px 18px 20px; background: #fff; }
+.chat-input-row { display: flex; align-items: flex-end; gap: 8px; }
+.chat-input-row .ant-input { font-size: 13px; line-height: 22px; padding: 9px 11px; resize: none; }
+.chat-input-row > .ant-btn { flex-shrink: 0; width: 40px; height: 40px; border-radius: 9px; box-shadow: none; }
+.chat-clear.ant-btn { display: block; margin: -10px 0 9px auto; color: #9da2a8; }

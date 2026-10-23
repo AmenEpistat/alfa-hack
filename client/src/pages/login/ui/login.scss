@@ -1,0 +1,6 @@
+@use '@/shared/styles/tokens';
+
+.login-page { min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 27px; padding: 36px 20px; color: #24272b; }
+.login-brand { color: #202c35; font-weight: 700; font-size: 28px; letter-spacing: -1px; text-decoration: none; }
+.login-page :focus-visible { outline: 2px solid #d9291e; outline-offset: 3px; }
+.login-brand { display: flex; align-items: center; gap: 10px; font-size: 18px; letter-spacing: -.3px; }

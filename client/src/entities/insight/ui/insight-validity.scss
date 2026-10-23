@@ -1,0 +1,8 @@
+.insight-validity { margin-top: 20px; padding: 14px 16px; border-radius: 10px; background: #eaf3ee; color: #456858; }
+.insight-validity-title { display: flex; align-items: center; gap: 8px; }
+.insight-validity-title strong { font-size: 13px; line-height: 21px; font-weight: 600; }
+.insight-validity-title .ant-btn { margin-left: auto; color: inherit; }
+.insight-validity p { margin: 5px 0 0; font-size: 12px; line-height: 20px; }
+.insight-validity.is-expired { background: #fff3dd; color: #8b662e; }
+.insight-validity-compact { display: flex; align-items: center; gap: 7px; margin: 16px 0 0; color: #5c7a67; font-size: 12px; line-height: 19px; }
+.insight-validity-compact.is-expired { color: #a3742e; }

@@ -1,0 +1,6 @@
+@use './tokens';
+
+@mixin focus-ring($color: tokens.$accent, $offset: 3px) {
+  outline: 2px solid $color;
+  outline-offset: $offset;
+}

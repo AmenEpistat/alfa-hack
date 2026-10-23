@@ -1,0 +1,14 @@
+@use '@/shared/styles/tokens';
+
+.feedback-panel h2 { font-size: 18px; line-height: 26px; font-weight: 600; letter-spacing: -.2px; margin: 0 0 12px; }
+.feedback-panel { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 17px; padding: 24px; border: 1px solid #e8eaec; border-radius: 14px; background: #fff; }
+.feedback-panel h2 { font-size: 15px; line-height: 22px; margin-bottom: 4px; }
+.feedback-panel p { margin: 0; font-size: 12px; line-height: 20px; color: #90969e; }
+.feedback-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+.feedback-reasons { flex-basis: 100%; }
+.feedback-reasons > div { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.feedback-status { flex-basis: 100%; }
+@media (max-width: tokens.$mobile) {
+  .feedback-panel { padding: 21px; }
+}
+.feedback-panel { border-color: #e9eaed; box-shadow: none; }

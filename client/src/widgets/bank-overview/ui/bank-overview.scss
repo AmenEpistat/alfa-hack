@@ -1,0 +1,94 @@
+@use '@/shared/styles/tokens';
+
+.bank-actions { display: flex; gap: 9px; margin-bottom: 26px; }
+.bank-actions button { display: flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 9px; min-height: 40px; padding: 10px 17px; background: #fff; color: #24262a; font-size: 12px; white-space: nowrap; }
+.bank-actions button:hover { background: #e8e9ec; }
+.bank-actions .more-actions { background: #e7e8ec; padding-left: 23px; padding-right: 23px; }
+.bank-overview { border-radius: 20px; padding: 13px 13px 0; background: radial-gradient(ellipse at 83% 0%, #4b120e 0%, transparent 58%), linear-gradient(105deg, #060606 38%, #120707 72%, #310b06); color: #f9f9fa; }
+.bank-overview-grid { display: grid; grid-template-columns: minmax(0, 2.05fr) minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.balance-panel, .work-panel { border-radius: 16px; background: #ffffff0c; min-height: 293px; }
+.balance-panel { padding: 19px 20px 16px; display: flex; flex-direction: column; }
+.balance-caption { color: #9a9a9e; font-size: 12px; margin: 0 0 9px; line-height: 18px; }
+.balance-amount { display: block; font-size: clamp(23px, 2.5vw, 36px); line-height: 1.15; font-weight: 600; letter-spacing: -.7px; white-space: nowrap; }
+.balance-amount span { font-size: .84em; letter-spacing: -.4px; }
+.balance-hint { margin: 11px 0 16px; color: #929296; font-size: 12px; line-height: 18px; }
+.currency-balances { display: flex; align-items: center; gap: 18px; font-size: 12px; line-height: 20px; }
+.currency-more { padding: 0 5px; border-radius: 9px; background: #ffffff12; color: #d6d5d9; font-size: 10px; }
+.balance-context { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: auto; padding: 34px 0 16px; color: #9d9da3; font-size: 10px; line-height: 17px; }
+.green-plus { display: grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; background: #04c35c; color: #082f16; }
+.balance-context small { border-radius: 7px; padding: 1px 5px; font-size: 7px; line-height: 11px; font-weight: 700; background: #02b954; color: #073414; }
+.balance-shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-top: 15px; border-top: 1px solid #ffffff14; }
+.balance-shortcuts button { display: flex; align-items: center; gap: 11px; text-align: left; padding: 0; border: 0; color: #e9e8eb; background: transparent; font-size: 12px; line-height: 18px; }
+.balance-shortcuts button > span:first-child { display: grid; place-items: center; width: 37px; height: 37px; border-radius: 11px; flex-shrink: 0; background: #ffffff09; }
+.balance-shortcuts small { display: block; font-size: 10px; line-height: 17px; color: #8d8d93; }
+.balance-shortcuts button:hover { color: #fff; }
+.work-panel { padding: 20px 17px 14px; }
+.work-panel h2 { margin: 0 0 13px; font-size: 12px; font-weight: 600; line-height: 18px; }
+.work-panel button { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; padding: 8px 0; border: 0; background: transparent; color: #d4cdd0; font-size: 11px; text-align: left; line-height: 18px; }
+.work-panel button:hover { color: #fff; }
+.work-panel button.is-empty { color: #6f696d; }
+.work-count { display: grid; place-items: center; min-width: 15px; height: 15px; border-radius: 50%; background: #ffffff10; font-size: 9px; line-height: 15px; }
+.work-count.needs-attention { background: #ef403e; color: #fff; }
+.card-promo { position: relative; display: flex; flex-direction: column; align-items: flex-start; min-height: 293px; overflow: hidden; padding: 20px 18px; border: 0; border-radius: 16px; background: linear-gradient(135deg, #ffffff0a, #9c93966b); color: #fff; text-align: left; }
+.card-promo > strong { position: relative; z-index: 1; font-size: 12px; line-height: 18px; font-weight: 600; }
+.card-promo > span:not(.card-illustration) { position: relative; z-index: 1; font-size: 10px; line-height: 17px; color: #e5dfe2; margin-top: 7px; }
+.card-illustration { position: absolute; width: 194px; height: 123px; bottom: 44px; left: 34px; transform: perspective(550px) rotateY(-16deg) rotateZ(-13deg); background: linear-gradient(120deg, #e5e4eb 0%, #9d9cab 34%, #d9d8e0 68%, #828591 100%); border: 1px solid #eeeef2; border-radius: 11px; box-shadow: -6px 7px 0 #72717b, -10px 11px 0 #9a9e88, -16px 23px 22px #0006, 4px 25px 0 #d7130b; color: #353743; transition: transform 180ms ease; }
+.card-promo:hover .card-illustration { transform: perspective(550px) rotateY(-9deg) rotateZ(-9deg) translateY(-4px); }
+.card-letter { position: absolute; left: 17px; top: 9px; font-size: 28px; line-height: 36px; font-weight: 700; border-bottom: 2px solid currentColor; }
+.card-chip { position: absolute; right: 17px; top: 17px; width: 25px; height: 19px; border: 1px solid #aeb1ba; border-radius: 5px; background: repeating-linear-gradient(0deg, #d5d6de 0px 5px, #9299aa 6px, #f5f5f7 7px); }
+.card-number { position: absolute; left: 17px; bottom: 29px; color: #d9efd0; font-size: 12px; font-style: italic; text-shadow: 0 1px #6e796a; letter-spacing: 1px; }
+.card-type { position: absolute; left: 17px; bottom: 13px; font-size: 7px; letter-spacing: 2px; }
+.card-promo > span.card-promo-caption { margin-top: auto; display: inline-flex; align-items: center; gap: 6px; background: #acadb566; border-radius: 5px; padding: 5px 7px; font-size: 8px; }
+.bank-overview-footer { display: flex; align-items: center; gap: 26px; min-height: 42px; padding: 0 20px; }
+.bank-overview-footer button { border: 0; padding: 7px 0; background: transparent; color: #dedcdf; font-size: 11px; }
+.bank-overview-footer button:hover { color: #fff; }
+.bank-overview-footer > span { margin-left: auto; color: #8c7a7b; font-size: 9px; }
+.bank-overview :focus-visible { outline-color: #fff; }
+.summary-navigation { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin: 29px 0 23px; }
+.summary-navigation nav { display: flex; align-items: center; gap: 24px; min-width: 0; overflow: auto; scrollbar-width: thin; }
+.summary-navigation nav button { border: 0; background: transparent; padding: 5px 0; font-size: 16px; font-weight: 600; color: #a0a1a8; white-space: nowrap; }
+.summary-navigation nav button.is-current { color: #242529; }
+.summary-navigation nav button:hover { color: #4b4d54; }
+.summary-controls { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.summary-controls .ant-btn:first-child { background: #fff; box-shadow: 0 1px 4px #151b2010; }
+.balance-shortcuts .ant-btn { justify-content: flex-start; height: auto; }
+.work-panel .ant-btn { height: 34px; }
+.summary-navigation nav .ant-btn { height: auto; }
+@media (max-width: 1180px) and (min-width: (tokens.$mobile + 1px)) {
+  .bank-overview-grid { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); }
+  .card-promo { display: none; }
+  .summary-navigation nav { gap: 18px; }
+  .summary-navigation nav button { font-size: 14px; }
+}
+@media (max-width: 900px) and (min-width: (tokens.$mobile + 1px)) {
+  .bank-actions { flex-wrap: wrap; gap: 7px; }
+  .bank-actions button { font-size: 11px; padding-left: 12px; padding-right: 12px; }
+  .bank-overview-grid { grid-template-columns: minmax(0, 1fr); }
+  .work-panel { min-height: 0; }
+  .work-panel > div { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+  .balance-amount { font-size: 32px; }
+}
+@media (max-width: tokens.$mobile) {
+  .bank-actions { gap: 7px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 4px; }
+  .bank-actions button { flex-shrink: 0; min-height: 37px; padding: 9px 12px; font-size: 11px; gap: 7px; }
+  .bank-overview { padding: 10px 10px 0; border-radius: 17px; }
+  .bank-overview-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .balance-panel { min-height: 265px; padding: 18px 17px; border-radius: 12px; }
+  .balance-amount { font-size: clamp(24px, 6vw, 32px); }
+  .balance-hint, .currency-balances { font-size: 11px; }
+  .balance-context { padding-top: 29px; font-size: 9px; }
+  .balance-shortcuts { gap: 10px; }
+  .balance-shortcuts button { gap: 8px; font-size: 11px; }
+  .balance-shortcuts small { font-size: 9px; }
+  .balance-shortcuts button > span:first-child { width: 32px; height: 32px; }
+  .work-panel { min-height: 0; padding: 17px; border-radius: 12px; }
+  .work-panel > div { display: grid; grid-template-columns: 1fr 1fr; gap: 0 17px; }
+  .work-panel button { font-size: 10px; }
+  .card-promo { display: none; }
+  .bank-overview-footer { padding: 0 9px; min-height: 39px; gap: 20px; }
+  .bank-overview-footer > span { font-size: 7px; }
+  .summary-navigation { margin: 23px 0; gap: 14px; }
+  .summary-navigation nav { gap: 18px; }
+  .summary-navigation nav button { font-size: 14px; }
+  .summary-controls { gap: 5px; }
+}

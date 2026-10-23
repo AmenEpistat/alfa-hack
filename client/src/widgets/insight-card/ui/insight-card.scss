@@ -1,0 +1,29 @@
+@use '@/shared/styles/tokens';
+
+.insight-card { padding: 22px 28px 25px; border: 1px solid #e4e7e9; border-radius: 16px; background: #fff; }
+.insight-card--featured { border-color: #e3e0dc; box-shadow: 0 4px 18px #202c3503; }
+.insight-card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.insight-card-layout { display: flex; align-items: center; gap: 30px; margin-top: 14px; }
+.insight-card-layout > div:first-child { flex: 1; }
+.insight-eyebrow { margin: 0 0 8px; color: #8b9097; font-size: 12px; }
+.insight-card h2, .insight-card h3 { margin: 0; max-width: 620px; font-size: 25px; line-height: 1.28; font-weight: 600; letter-spacing: -.5px; }
+.insight-description { max-width: 680px; font-size: 14px; line-height: 23px; color: #69717a; margin: 12px 0 0; }
+.insight-symbol { display: grid; place-items: center; width: 90px; height: 90px; border-radius: 24px; color: #ad7861; background: #f6f0e9; flex-shrink: 0; }
+.relevance-note { display: flex; align-items: baseline; gap: 8px; margin-top: 22px; padding-top: 17px; border-top: 1px solid #f0f1f2; color: #7b8189; font-size: 12px; line-height: 20px; }
+.relevance-note strong { font-weight: 500; color: #505860; }
+.insight-card-bottom { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 17px; margin-top: 21px; }
+.insight-card-bottom .sample-label { margin-left: auto; }
+@media (max-width: 1150px) {
+  .insight-symbol { width: 72px; height: 72px; border-radius: 20px; }
+}
+@media (max-width: tokens.$mobile) {
+  .insight-card { padding: 18px 20px 21px; }
+  .insight-card h2, .insight-card h3 { font-size: 23px; }
+  .insight-card-layout { gap: 16px; }
+  .insight-symbol { display: none; }
+  .insight-card-bottom { gap: 8px 12px; }
+  .insight-card-bottom .sample-label { margin-left: 0; }
+  .insight-description { font-size: 13px; line-height: 22px; }
+}
+.insight-card { border: 0; border-radius: 16px; box-shadow: none; }
+.insight-symbol { background: #faf0ef; color: #c15d57; }

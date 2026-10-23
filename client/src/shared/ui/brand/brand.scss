@@ -1,0 +1,4 @@
+@use '@/shared/styles/tokens';
+
+.brand-mark { position: relative; display: inline-grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border-radius: 11px; background: tokens.$accent; color: #fff; font-size: 21px; line-height: 30px; font-weight: 700; padding-bottom: 4px; }
+.brand-mark::after { content: ''; position: absolute; width: 12px; height: 2px; background: #fff; bottom: 7px; left: 10px; }

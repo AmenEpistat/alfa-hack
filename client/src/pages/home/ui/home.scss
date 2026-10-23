@@ -1,0 +1,11 @@
+@use '@/shared/styles/tokens';
+
+.important-section { margin-top: 35px; }
+.home-footnote { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 24px; color: #969ca3; }
+.home-footnote svg { flex-shrink: 0; }
+.home-footnote p { margin: 0; font-size: 11px; line-height: 18px; }
+@media (max-width: tokens.$mobile) {
+  .important-section { margin-top: 27px; }
+  .home-footnote { align-items: flex-start; }
+}
+.important-section { margin-top: 0; }

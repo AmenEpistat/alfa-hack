@@ -1,0 +1,8 @@
+.share-content > p { color: #8b9197; font-size: 13px; line-height: 21px; }
+.share-link-label { display: block; margin: 20px 0 8px; font-size: 12px; color: #767f87; }
+.share-link-row { display: flex; gap: 8px; }
+.share-link-row .ant-input { flex: 1; min-width: 0; }
+.share-link-row .ant-btn { flex-shrink: 0; }
+.share-local-note { margin-top: 20px; font-size: 12px; }
+.share-content p.share-success { color: #5e866e; }
+@media (max-width: 500px) { .share-link-row { flex-direction: column; } }

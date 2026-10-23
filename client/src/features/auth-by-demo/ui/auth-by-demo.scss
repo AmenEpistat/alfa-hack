@@ -1,0 +1,31 @@
+@use '@/shared/styles/tokens';
+
+.login-section { width: 100%; max-width: 450px; }
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+
+  .login-card-body { padding: 32px; }
+  h1 { font-size: 26px; line-height: 1.25; font-weight: 600; letter-spacing: -.5px; margin: 15px 0 12px; }
+}
+.login-description { font-size: 14px; line-height: 23px; color: #79818b; margin: 0; }
+.shared-login-note { margin-top: 20px; }
+.demo-user-field { margin-top: 25px; }
+.demo-users.ant-radio-group { display: grid; gap: 10px; width: 100%; }
+.demo-user.ant-radio-wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 14px 12px;
+  border: 1px solid #e3e7eb;
+  border-radius: 10px;
+
+  &.ant-radio-wrapper-checked { border-color: tokens.$accent; background: #fffaf8; }
+}
+.demo-user-content { display: flex; align-items: center; gap: 10px; }
+.demo-user strong { display: block; font-size: 13px; line-height: 20px; font-weight: 500; }
+.demo-user small { display: block; font-size: 10px; line-height: 18px; color: #8b929b; }
+.login-footnote { margin: 20px 0 0; font-size: 11px; line-height: 19px; color: #9198a0; }
+@media (max-width: tokens.$mobile) {
+  .login-card .login-card-body { padding: 25px 22px; }
+}
