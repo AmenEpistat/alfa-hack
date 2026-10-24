@@ -41,7 +41,7 @@
           text = ''
             cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
-            export PYTHONPATH="$PWD/backend''${PYTHONPATH:+:$PYTHONPATH}"
+            export PYTHONPATH="$PWD/server''${PYTHONPATH:+:$PYTHONPATH}"
 
             exec uvicorn app.main:app \
               --app-dir server \
