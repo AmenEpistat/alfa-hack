@@ -1,8 +1,23 @@
 .DS_Store
-node_modules/
-dist/
-build/
 .env
 .env.*
 !.env.example
 *.log
+
+# Backend artifacts
+backend.db
+
+# Node artifacts
+build/
+prebuilds/
+node_modules/
+
+# Python artifacts
+.venv/
+dist/
+*.egg-info
+*.whl
+
+# NixOS devenv artifacts
+.direnv/
+result/
