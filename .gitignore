@@ -17,6 +17,8 @@ node_modules/
 dist/
 *.egg-info
 *.whl
+__pycache__/
+*.pyc
 
 # NixOS devenv artifacts
 .direnv/
