@@ -21,6 +21,8 @@
 
         pythonPkg = pkgs.python3;
 
+        pythonPath = "${python}/${python.sitePackages}:$PWD/server:$PWD/insides:$PWD/parser:$PWD/preprocessing:$PWD/ranking_module/src";
+
         python = pythonPkg.withPackages (
           ps: with ps; [
             # Backend
@@ -38,6 +40,13 @@
             scikit-learn
             sentence-transformers
             faiss
+
+            # parser
+            pymupdf
+            trafilatura
+            feedparser
+            httpx
+            pydantic-settings
           ]
         );
 
@@ -54,7 +63,7 @@
 
             cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
-            export PYTHONPATH="${python}/${python.sitePackages}:$PWD/server:$PWD/ranking_module/src''${PYTHONPATH:+:$PYTHONPATH}"
+            export PYTHONPATH="${pythonPath}"
 
             export HF_HOME="''${HF_HOME:-$PWD/.cache/huggingface}"
             export HF_HUB_CACHE="''${HF_HUB_CACHE:-$HF_HOME/hub}"
@@ -127,7 +136,7 @@
           ];
 
           shellHook = ''
-            export PYTHONPATH="${python}/${python.sitePackages}:$PWD/server:$PWD/ranking_module/src''${PYTHONPATH:+:$PYTHONPATH}"
+            export PYTHONPATH="${pythonPath}"
 
             export HF_HOME="''${HF_HOME:-$PWD/.cache/huggingface}"
             export HF_HUB_CACHE="''${HF_HUB_CACHE:-$HF_HOME/hub}"

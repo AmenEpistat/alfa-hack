@@ -7,7 +7,14 @@ name = "alpha-parser"
 version = "0.1.0"
 description = "Provenance-first research ingestion module"
 requires-python = ">=3.11"
-dependencies = ["pymupdf>=1.26,<2", "trafilatura>=2,<3", "feedparser>=6,<7", "httpx>=0.28,<1", "pydantic>=2.11,<3", "pydantic-settings>=2,<3"]
+dependencies = [
+"pymupdf>=1.26,<2",
+"trafilatura>=2,<3",
+"feedparser>=6,<7",
+"httpx>=0.28,<1",
+"pydantic>=2.11,<3",
+"pydantic-settings>=2,<3"
+]
 
 [project.optional-dependencies]
 browser = ["playwright>=1.50,<2"]
