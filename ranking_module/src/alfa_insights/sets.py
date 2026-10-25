@@ -39,13 +39,23 @@ def _company_dict(
         "score": float(score),
     }
 
+def _item_type(item: Any) -> str:
+    topic = getattr(item, "topic", None)
+    if topic == "pdf":
+        return "pdf"
+    return "news"
+
 
 def _news_dict(c: NewsCandidate, item: Any) -> dict[str, Any]:
     return {
         "item_id": c.item_id,
         "document_id": getattr(item, "document_id", None),
+        "type": _item_type(item),
         "title": getattr(item, "title", None),
+        "text": getattr(item, "text", None),
         "url": getattr(item, "url", None),
+        "published_at": getattr(item, "published_at", None),
+        "date_in_range": getattr(item, "date_in_range", None),
         "score": float(c.score_total),
         "provenance": list(c.provenance),
     }
@@ -55,7 +65,12 @@ def _analytics_dict(c, item: Any) -> dict[str, Any]:
     return {
         "item_id": c.item_id,
         "document_id": getattr(item, "document_id", None),
+        "type": _item_type(item),
         "title": getattr(item, "title", None),
+        "text": getattr(item, "text", None),
+        "url": getattr(item, "url", None),
+        "published_at": getattr(item, "published_at", None),
+        "date_in_range": getattr(item, "date_in_range", None),
         "page_start": getattr(item, "page_start", None),
         "page_end": getattr(item, "page_end", None),
         "score": float(c.score_total),

@@ -15,6 +15,20 @@ from .config import EmbeddingsConfig, TextTemplatesConfig
 
 log = logging.getLogger(__name__)
 
+from functools import lru_cache
+
+
+@lru_cache(maxsize=4)
+def _load_bi(model_name: str, device: str):
+    from sentence_transformers import SentenceTransformer
+    return SentenceTransformer(model_name, device=device)
+
+
+@lru_cache(maxsize=4)
+def _load_cross(model_name: str, device: str):
+    from sentence_transformers import CrossEncoder
+    return CrossEncoder(model_name, device=device)
+
 
 def _hash_texts(texts: Iterable[str]) -> str:
     h = hashlib.sha256()
@@ -52,7 +66,8 @@ def company_text(profile: Any, tpl: TextTemplatesConfig) -> str:
 
 class BiEncoder:
     def __init__(self, cfg: EmbeddingsConfig, device: str = "cpu") -> None:
-        from sentence_transformers import SentenceTransformer  # lazy import
+        self.cfg = cfg.bi_encoder
+        self.model = _load_bi(self.cfg.model_name, device) 
 
         self.cfg = cfg.bi_encoder
         self.model = SentenceTransformer(self.cfg.model_name, device=device)
@@ -90,7 +105,8 @@ class BiEncoder:
 
 class CrossEncoder:
     def __init__(self, cfg: EmbeddingsConfig, device: str = "cpu") -> None:
-        from sentence_transformers import CrossEncoder as _CE
+        self.cfg = cfg.cross_encoder
+        self.model = _load_cross(self.cfg.model_name, device)
 
         self.cfg = cfg.cross_encoder
         self.model = _CE(self.cfg.model_name, device=device)
