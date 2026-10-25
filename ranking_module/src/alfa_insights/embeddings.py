@@ -161,18 +161,7 @@ class EmbeddingStore:
                     return self._emb, ids  # type: ignore[return-value]
         log.info("Building embeddings for %s (%d items)", self.kind, len(items))
         emb = encoder.encode_docs(texts)
-        ids = [
-            _item_key(it)
-            and {
-                "key": _item_key(it),
-                "item_id": getattr(it, "item_id", None),
-                "document_id": getattr(it, "document_id", None),
-                "chunk_id": getattr(it, "chunk_id", None),
-            }
-            for it in items
-        ]
-        # fix key (list comp guard)
-        ids = [
+        ids: list[dict[str, Any]] = [
             {
                 "key": _item_key(it),
                 "item_id": getattr(it, "item_id", None),

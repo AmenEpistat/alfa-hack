@@ -1,3 +1,5 @@
+schema_version: "1.0"
+
 paths:
   root: "."
   data_dir: "data"
@@ -8,13 +10,54 @@ paths:
   news_cache: "cache/news"
   analytics_cache: "cache/analytics"
 
+runtime:
+  device: "cpu" # cpu | cuda | cuda:0
+  seed: 42
+  deterministic: true
+  log_level: "INFO"
+  log_json: true
+
+embeddings:
+  bi_encoder:
+    model_name: "intfloat/multilingual-e5-small"
+    normalize: true
+    batch_size: 64
+    max_length: 512
+    query_prefix: "query: "
+    doc_prefix: "passage: "
+  cross_encoder:
+    model_name: "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
+    batch_size: 32
+    max_length: 512
+  text_templates:
+    news: "{title}\n{text}"
+    analytics: "{title}\n{text}"
+    company: "{name} | {okved_name} | {region} | {city} | {specialization}"
+    news_set_concat_sep: "\n\n---\n\n"
+
+faiss:
+  index_type: "flat"
+  metric: "ip"
+  ivf:
+    nlist: 256
+    nprobe: 16
+  hnsw:
+    M: 32
+    efConstruction: 200
+    efSearch: 64
+
+recall:
+  top_k_dense: 100
+  top_k_cross: 20
+  min_cross_score: 0.0
+
 hard_recall:
   enabled: true
   primary:
     score_boost: 1.0
     match_types: ["name_mention", "alias_mention", "domain_mention"]
-    use_watchlist: true          # watchlist берётся из payload.watchlist
-    filter_enabled: true         # учитывать только enabled=true
+    use_watchlist: true
+    filter_enabled: true
     use_company_profile: true
   fallback:
     enabled: true
@@ -28,3 +71,49 @@ hard_recall:
       industry_freq: 0.10
       revenue_rank_industry: 0.15
     require_any_of: ["okved_sector", "region"]
+
+ranking:
+  weights:
+    dense: 0.4
+    cross: 0.4
+    hard: 0.2
+  guarantee_hard_primary_in_top: true
+
+analytics:
+  top_k: 3
+  min_count: 1
+  max_count: 3
+  aggregation: "concat"
+  profile_boost:
+    enabled: true
+    weights:
+      okved_sector: 0.5
+      region: 0.3
+      products: 0.2
+
+sets:
+  min_news: 2
+  max_news: 5
+  min_analytics: 1
+  max_analytics: 3
+  max_sets: 10
+  min_set_score: 0.0
+  strategy: "per_company_topk"
+  dedup_by: ["company_id", "news_ids"]
+  roles_allowed: ["primary", "competitor"]
+
+io:
+  strict_validation: true
+  drop_competitors_duplicates: true
+  result_schema_version: "1.0"
+  persist_artifacts: true
+
+features:
+  force_recompute: false
+  okved_sector_map:
+    trade: [45, 46, 47]
+    manufacturing: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]
+    construction: [41, 42, 43]
+    finance: [64, 65, 66]
+    real_estate: [68]
+  age_ord_thresholds: [3, 5, 10, 20]
