@@ -21,13 +21,16 @@
 
         pythonPkg = pkgs.python3;
 
-        pythonPath = "${python}/${python.sitePackages}:$PWD/server:$PWD/insides:$PWD/parser:$PWD/preprocessing:$PWD/ranking_module/src";
+        tesseract = pkgs.tesseract;
+
+        pythonPath = "${python}/${python.sitePackages}:$PWD/server:$PWD:$PWD/parser/src:$PWD/preprocessing:$PWD/ranking_module/src";
 
         python = pythonPkg.withPackages (
           ps: with ps; [
             # Backend
             fastapi
             pydantic
+            pydantic-settings
             sqlalchemy
             uvicorn
 
@@ -46,7 +49,6 @@
             trafilatura
             feedparser
             httpx
-            pydantic-settings
           ]
         );
 
@@ -56,6 +58,7 @@
           runtimeInputs = [
             pkgs.git
             python
+            tesseract
           ];
 
           text = ''
@@ -69,7 +72,31 @@
             export HF_HUB_CACHE="''${HF_HUB_CACHE:-$HF_HOME/hub}"
             export TRANSFORMERS_CACHE="''${TRANSFORMERS_CACHE:-$HF_HOME/transformers}"
 
+            export TESSDATA_PREFIX="${tesseract}/share/tessdata"
+            export ALPHA_TESSDATA="${tesseract}/share/tessdata"
+            export ALPHA_OCR_ENABLED="''${ALPHA_OCR_ENABLED:-true}"
+            export ALPHA_OCR_LANGUAGE="''${ALPHA_OCR_LANGUAGE:-rus+eng}"
+
             mkdir -p "$HF_HOME"
+
+            # LLM configuration.
+            export ALPHA_LLM_BASE_URL="''${ALPHA_LLM_BASE_URL:-https://api.alfahack-gateway26.ru/v1}"
+            export ALPHA_LLM_FALLBACK_BASE_URL="''${ALPHA_LLM_FALLBACK_BASE_URL:-}"
+            # Вручную, пожалуйста
+            export ALPHA_LLM_API_KEY="''${ALPHA_LLM_API_KEY:-}"
+            export ALPHA_LLM_MODEL="''${ALPHA_LLM_MODEL:z-ai/glm-5.3-flash}"
+
+            export ALPHA_LLM_FAMILY="''${ALPHA_LLM_FAMILY:-GLM-5.3-Flash}"
+            export ALPHA_LLM_TIMEOUT="''${ALPHA_LLM_TIMEOUT:-45}"
+            export ALPHA_LLM_CONNECT_TIMEOUT="''${ALPHA_LLM_CONNECT_TIMEOUT:-5}"
+            export ALPHA_LLM_MAX_OUTPUT_TOKENS="''${ALPHA_LLM_MAX_OUTPUT_TOKENS:-4096}"
+            export ALPHA_LLM_REASONING_EFFORT="''${ALPHA_LLM_REASONING_EFFORT:-low}"
+            export ALPHA_LLM_THINKING_PROTOCOL="''${ALPHA_LLM_THINKING_PROTOCOL:-legacy}"
+            export ALPHA_LLM_THINKING_MODE="''${ALPHA_LLM_THINKING_MODE:-default}"
+            export ALPHA_LLM_LENGTH_RETRIES="''${ALPHA_LLM_LENGTH_RETRIES:-1}"
+
+            export ALPHA_ALLOW_UNKNOWN_COST="''${ALPHA_ALLOW_UNKNOWN_COST:-true}"
+            export ALPHA_DAILY_BUDGET_RUB="''${ALPHA_DAILY_BUDGET_RUB:-500}"
 
             exec uvicorn app.main:app \
               --app-dir server \

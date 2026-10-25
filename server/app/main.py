@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .database import Base, SessionLocal, engine
-from .routers import auth, insights, preferences, ranking
+from .routers import auth, insights, preferences, ranking, parser, agent
 from .seed import seed_database
 
 
@@ -44,8 +44,10 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(insights.router)
-app.include_router(ranking.router)
+# app.include_router(ranking.router)
 app.include_router(preferences.router)
+app.include_router(parser.router)
+app.include_router(agent.router)
 
 
 @app.get("/")
