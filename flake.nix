@@ -105,6 +105,7 @@
           ];
 
           shellHook = ''
+            export PYTHONPATH="${python}/${python.sitePackages}"
             export PYTHONPATH="$PWD/backend''${PYTHONPATH:+:$PYTHONPATH}"
             export VITE_API_URL="''${VITE_API_URL:-http://localhost:8000}"
 
