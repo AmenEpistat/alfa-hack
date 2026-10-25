@@ -67,10 +67,7 @@ def company_text(profile: Any, tpl: TextTemplatesConfig) -> str:
 class BiEncoder:
     def __init__(self, cfg: EmbeddingsConfig, device: str = "cpu") -> None:
         self.cfg = cfg.bi_encoder
-        self.model = _load_bi(self.cfg.model_name, device) 
-
-        self.cfg = cfg.bi_encoder
-        self.model = SentenceTransformer(self.cfg.model_name, device=device)
+        self.model = _load_bi(self.cfg.model_name, device)
 
     def encode_docs(self, texts: list[str]) -> np.ndarray:
         if not texts:
@@ -107,9 +104,6 @@ class CrossEncoder:
     def __init__(self, cfg: EmbeddingsConfig, device: str = "cpu") -> None:
         self.cfg = cfg.cross_encoder
         self.model = _load_cross(self.cfg.model_name, device)
-
-        self.cfg = cfg.cross_encoder
-        self.model = _CE(self.cfg.model_name, device=device)
 
     def score_pairs(self, pairs: list[tuple[str, str]]) -> np.ndarray:
         if not pairs:

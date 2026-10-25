@@ -3,12 +3,12 @@ import copy
 import json
 import re
 from pathlib import Path
-import pymupdf
+from importlib.metadata import version
 from .cache import code_fingerprint, file_sha256
 from .schemas import Chunk
 from .storage import digest
 
-EXTRACTOR = f"pymupdf-{pymupdf.VersionBind}/alpha-3"
+EXTRACTOR = f"pdfplumber-{version('pdfplumber')}/pdfminer-{version('pdfminer.six')}/pdfium-{version('pypdfium2')}/alpha-4"
 CACHE_SCHEMA = "pdf-extraction-1"
 
 
@@ -28,11 +28,16 @@ def pdf_signature(settings):
             models.append({"language": language,
                            "sha256": file_sha256(path) if path.is_file() else None})
     here = Path(__file__).resolve().parent
+    executable = None
+    if settings.ocr_enabled:
+        from .pdf_ocr import tesseract_executable
+        executable = tesseract_executable(settings)
     return {"schema": CACHE_SCHEMA, "extractor": EXTRACTOR,
-            "code": code_fingerprint([here / "pdf.py", here / "pdf_cache.py", here / "schemas.py"]),
+            "code": code_fingerprint([here / "pdf.py", here / "pdf_ocr.py", here / "pdf_cache.py", here / "schemas.py"]),
             "chunk_size": 1600, "ocr_enabled": settings.ocr_enabled,
             "ocr_dpi": settings.ocr_dpi, "ocr_language": settings.ocr_language,
-            "ocr_models": models}
+            "ocr_models": models, "ocr_timeout": settings.ocr_timeout,
+            "tesseract_sha256": file_sha256(executable) if executable else None}
 
 
 def signature_hash(signature):

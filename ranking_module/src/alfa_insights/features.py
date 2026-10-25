@@ -252,6 +252,12 @@ def build_features(df: pd.DataFrame, cfg: FeaturesConfig, force: bool = False) -
 
 def company_profile(row: pd.Series, watch: Any | None = None) -> CompanyProfile:
     """Build CompanyProfile from a dataframe row and optional WatchItem."""
+    def row_or_watch(column: str, watch_field: str):
+        value = row.get(column) if hasattr(row, "get") else None
+        if value is not None and pd.notna(value) and str(value).strip():
+            return value
+        return getattr(watch, watch_field, None)
+
     return CompanyProfile(
         id=watch.id
         if watch is not None
@@ -260,9 +266,9 @@ def company_profile(row: pd.Series, watch: Any | None = None) -> CompanyProfile:
         aliases=list(watch.aliases) if watch is not None else [],
         domain=watch.domain if watch is not None else None,
         okved_class=_okved_class(row.get("MAINOKVED_CODE")) if hasattr(row, "get") else None,
-        okved_name=row.get("MAINOKVED_NAME") if hasattr(row, "get") else None,
+        okved_name=row_or_watch("MAINOKVED_NAME", "industry"),
         okved_sector=row.get("okved_sector") if hasattr(row, "get") else None,
-        region=row.get("REGION") if hasattr(row, "get") else None,
+        region=row_or_watch("REGION", "geography"),
         city=row.get("CITY") if hasattr(row, "get") else None,
         worker_ord=int(row["worker_ord"])
         if hasattr(row, "get") and pd.notna(row.get("worker_ord"))

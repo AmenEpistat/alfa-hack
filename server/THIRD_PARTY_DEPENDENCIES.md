@@ -22,6 +22,8 @@
 - sentence-transformers - создание текстовых embeddings.
 - FAISS - поиск ближайших векторов.
 - Tesseract OCR - распознавание текста на отсканированных PDF.
+- pdfplumber / pdfminer.six — извлечение текста, координат и таблиц PDF (MIT).
+- pypdfium2 / PDFium — рендеринг страниц перед OCR (Apache-2.0 / BSD-3-Clause; PDFium — BSD-style).
 - Tesseract language data `rus` и `eng` - языковые модели OCR.
 
 ## Python dependencies
@@ -41,7 +43,8 @@ dependencies = [
     "sqlalchemy==2.1.16",
     "pydantic==2.14.1",
     "pydantic-settings>=2,<3",
-    "pymupdf>=1.26,<2",
+    "pdfplumber>=0.11.4,<0.12",
+    "pypdfium2>=4.30,<6",
     "trafilatura>=2,<3",
     "feedparser>=6,<7",
     "httpx>=0.28,<1",
@@ -84,6 +87,30 @@ faiss
 | `sentence-transformers` | Генерация embeddings |
 | `faiss` | Индексация и поиск по embeddings |
 | `tesseract` | OCR для PDF без текстового слоя |
+| `pdfplumber` / `pdfminer.six` | Текст PDF, координаты и таблицы |
+| `pypdfium2` / PDFium | Рендеринг страниц для OCR |
+
+## Лицензии PDF-компонентов и закрытая поставка
+
+- `pdfplumber` и `pdfminer.six` — MIT. При распространении сохраняются copyright и текст лицензии.
+- `pypdfium2` — Apache-2.0 / BSD-3-Clause; сам PDFium — BSD-style. Вместе с бинарниками нужно передавать лицензии PDFium и включённых в конкретную сборку компонентов (`pypdfium2/BUILD_LICENSES` и лицензии из установленного wheel).
+- Tesseract и официальные модели `tessdata` — Apache-2.0. Сохраняются лицензия и применимые уведомления.
+- Pillow, используемый для изображений, — MIT-CMU. Сохраняются соответствующие уведомления.
+
+Перечисленные разрешительные лицензии позволяют использовать эти компоненты
+в закрытом приложении без требования публиковать собственный код приложения.
+Этот раздел касается PDF-стека, а не аудита всех зависимостей платформы.
+При формировании дистрибутива сохраняйте LICENSE/NOTICE и metadata пакетов;
+не копируйте только `.py`/DLL, исключая сопутствующие лицензии.
+
+Официальные сведения:
+
+- https://github.com/jsvine/pdfplumber/blob/stable/LICENSE.txt
+- https://github.com/pdfminer/pdfminer.six/blob/master/LICENSE
+- https://github.com/pypdfium2-team/pypdfium2#licensing
+- https://pdfium.googlesource.com/pdfium/+/refs/heads/main/LICENSE
+- https://github.com/tesseract-ocr/tesseract/blob/main/LICENSE
+- https://github.com/python-pillow/Pillow/blob/main/LICENSE
 
 
 ## Использование NixOS

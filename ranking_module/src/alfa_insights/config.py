@@ -197,6 +197,7 @@ class IOConfig(BaseModel):
     strict_validation: bool = True
     drop_competitors_duplicates: bool = True
     result_schema_version: str = "1.0"
+    persist_artifacts: bool = True
 
 
 class FeaturesConfig(BaseModel):
