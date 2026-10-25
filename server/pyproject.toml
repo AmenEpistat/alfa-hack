@@ -1,3 +1,29 @@
-[tool.ruff.lint.flake8-bugbear]
-extend-immutable-calls = ["fastapi.Depends", "fastapi.params.Depends"]
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
 
+[project]
+name = "alfa-hack-server"
+version = "0.1.0"
+description = "FastAPI backend for Alfa Hack"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.162.0",
+    "uvicorn[standard]==0.54.0",
+    "sqlalchemy==2.1.16",
+    "pydantic==2.14.1",
+    "pydantic-settings>=2,<3",
+    "pymupdf>=1.26,<2",
+    "trafilatura>=2,<3",
+    "feedparser>=6,<7",
+    "httpx>=0.28,<1",
+]
+
+[tool.setuptools]
+packages = ["app"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.params.Depends",
+]

@@ -1,0 +1,586 @@
+{
+  "$defs": {
+    "CompetitorMatch": {
+      "additionalProperties": false,
+      "properties": {
+        "watch_id": {
+          "title": "Watch Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "domain": {
+          "title": "Domain",
+          "type": "string"
+        },
+        "match_type": {
+          "enum": [
+            "official_domain_and_name",
+            "name_mention",
+            "official_domain"
+          ],
+          "title": "Match Type",
+          "type": "string"
+        },
+        "relationship": {
+          "default": "competitor",
+          "enum": [
+            "competitor",
+            "industry_peer"
+          ],
+          "title": "Relationship",
+          "type": "string"
+        },
+        "origin": {
+          "default": "manual",
+          "enum": [
+            "manual",
+            "industry_agent"
+          ],
+          "title": "Origin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "watch_id",
+        "name",
+        "domain",
+        "match_type"
+      ],
+      "title": "CompetitorMatch",
+      "type": "object"
+    },
+    "RankingItem": {
+      "additionalProperties": false,
+      "properties": {
+        "item_id": {
+          "title": "Item Id",
+          "type": "string"
+        },
+        "topic": {
+          "enum": [
+            "news",
+            "pdf",
+            "competitors"
+          ],
+          "title": "Topic",
+          "type": "string"
+        },
+        "document_id": {
+          "title": "Document Id",
+          "type": "string"
+        },
+        "version_id": {
+          "title": "Version Id",
+          "type": "string"
+        },
+        "chunk_id": {
+          "title": "Chunk Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "source_type": {
+          "enum": [
+            "alpha_pdf",
+            "external"
+          ],
+          "title": "Source Type",
+          "type": "string"
+        },
+        "source_name": {
+          "title": "Source Name",
+          "type": "string"
+        },
+        "original_filename": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Original Filename"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "published_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published At"
+        },
+        "publication_date_evidence": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Publication Date Evidence"
+        },
+        "fetched_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fetched At"
+        },
+        "page_start": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Start"
+        },
+        "page_end": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page End"
+        },
+        "char_start": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Char Start"
+        },
+        "char_end": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Char End"
+        },
+        "section_title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Section Title"
+        },
+        "table_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Table Ids",
+          "type": "array"
+        },
+        "quality": {
+          "enum": [
+            "extracted",
+            "requires_review"
+          ],
+          "title": "Quality",
+          "type": "string"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "date_in_range": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date In Range"
+        },
+        "duplicate_group": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duplicate Group"
+        },
+        "entity_matches": {
+          "items": {
+            "$ref": "#/$defs/CompetitorMatch"
+          },
+          "title": "Entity Matches",
+          "type": "array"
+        }
+      },
+      "required": [
+        "item_id",
+        "topic",
+        "document_id",
+        "version_id",
+        "chunk_id",
+        "title",
+        "text",
+        "source_type",
+        "source_name",
+        "quality"
+      ],
+      "title": "RankingItem",
+      "type": "object"
+    },
+    "RankingTopics": {
+      "additionalProperties": false,
+      "properties": {
+        "news": {
+          "items": {
+            "$ref": "#/$defs/RankingItem"
+          },
+          "title": "News",
+          "type": "array"
+        },
+        "pdf": {
+          "items": {
+            "$ref": "#/$defs/RankingItem"
+          },
+          "title": "Pdf",
+          "type": "array"
+        },
+        "competitors": {
+          "items": {
+            "$ref": "#/$defs/RankingItem"
+          },
+          "title": "Competitors",
+          "type": "array"
+        }
+      },
+      "title": "RankingTopics",
+      "type": "object"
+    },
+    "SourceCoverage": {
+      "additionalProperties": false,
+      "properties": {
+        "min_sources_per_topic": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Min Sources Per Topic",
+          "type": "integer"
+        },
+        "topic_minimums_met": {
+          "default": false,
+          "title": "Topic Minimums Met",
+          "type": "boolean"
+        },
+        "topic_shortfalls": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Topic Shortfalls",
+          "type": "object"
+        },
+        "min_sources": {
+          "default": 10,
+          "maximum": 100,
+          "minimum": 10,
+          "title": "Min Sources",
+          "type": "integer"
+        },
+        "total_sources": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Total Sources",
+          "type": "integer"
+        },
+        "by_topic": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "By Topic",
+          "type": "object"
+        },
+        "missing_topics": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Topics",
+          "type": "array"
+        },
+        "minimum_met": {
+          "default": false,
+          "title": "Minimum Met",
+          "type": "boolean"
+        },
+        "all_topics_present": {
+          "default": false,
+          "title": "All Topics Present",
+          "type": "boolean"
+        },
+        "requirements_met": {
+          "default": false,
+          "title": "Requirements Met",
+          "type": "boolean"
+        },
+        "counting_unit": {
+          "title": "Counting Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "counting_unit"
+      ],
+      "title": "SourceCoverage",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "status": {
+      "title": "Status",
+      "type": "string"
+    },
+    "request": {
+      "additionalProperties": true,
+      "title": "Request",
+      "type": "object"
+    },
+    "context": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Context"
+    },
+    "company_input": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Company Input"
+    },
+    "preprocessing_input": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Preprocessing Input"
+    },
+    "company_analysis_context": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Company Analysis Context"
+    },
+    "watchlist": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Watchlist",
+      "type": "array"
+    },
+    "topics": {
+      "$ref": "#/$defs/RankingTopics"
+    },
+    "competitor_events": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Competitor Events",
+      "type": "array"
+    },
+    "competitor_brief": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Competitor Brief"
+    },
+    "competitor_news_policy": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Competitor News Policy"
+    },
+    "competitor_diversity": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Competitor Diversity"
+    },
+    "coverage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SourceCoverage"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "search_window": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Search Window"
+    },
+    "topic_gaps": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Topic Gaps",
+      "type": "object"
+    },
+    "gaps": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Gaps",
+      "type": "array"
+    },
+    "errors": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Errors",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "status",
+    "request"
+  ],
+  "title": "RankingInput",
+  "type": "object"
+}

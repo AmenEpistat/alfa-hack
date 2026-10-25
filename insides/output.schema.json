@@ -1,0 +1,932 @@
+{
+  "$defs": {
+    "Action": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "analysis_question",
+            "scenario",
+            "action"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "action": {
+          "maxLength": 900,
+          "minLength": 8,
+          "title": "Action",
+          "type": "string"
+        },
+        "rationale": {
+          "$ref": "#/$defs/Claim"
+        },
+        "checks": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Checks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "action",
+        "rationale",
+        "checks"
+      ],
+      "title": "Action",
+      "type": "object"
+    },
+    "BankAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "documented_context",
+            "insufficient_evidence"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "bank_statements": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 3,
+          "title": "Bank Statements",
+          "type": "array"
+        },
+        "model_interpretation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Claim"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "bank_statements",
+        "model_interpretation",
+        "limitations"
+      ],
+      "title": "BankAssessment",
+      "type": "object"
+    },
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "maxLength": 1400,
+          "minLength": 8,
+          "title": "Text",
+          "type": "string"
+        },
+        "basis": {
+          "enum": [
+            "source_fact",
+            "bank_position",
+            "model_inference",
+            "assumption"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "company_fields": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 12,
+          "title": "Company Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text",
+        "basis",
+        "evidence"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "Consequence": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "risk",
+            "opportunity",
+            "uncertain"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "claim": {
+          "$ref": "#/$defs/Claim"
+        },
+        "conditions": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Conditions",
+          "type": "array"
+        },
+        "horizon": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Horizon"
+        }
+      },
+      "required": [
+        "kind",
+        "claim",
+        "conditions",
+        "horizon"
+      ],
+      "title": "Consequence",
+      "type": "object"
+    },
+    "Event": {
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "$ref": "#/$defs/Claim"
+        },
+        "key_facts": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Key Facts",
+          "type": "array"
+        },
+        "participants": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Participants",
+          "type": "array"
+        },
+        "timing": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Claim"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "causes": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 3,
+          "title": "Causes",
+          "type": "array"
+        },
+        "assumptions": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 3,
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "missing_information": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Missing Information",
+          "type": "array"
+        }
+      },
+      "required": [
+        "summary",
+        "key_facts",
+        "participants",
+        "timing",
+        "causes",
+        "assumptions",
+        "missing_information"
+      ],
+      "title": "Event",
+      "type": "object"
+    },
+    "EvidenceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "quote": {
+          "maxLength": 600,
+          "minLength": 8,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "quote"
+      ],
+      "title": "EvidenceRef",
+      "type": "object"
+    },
+    "Foundation": {
+      "additionalProperties": false,
+      "properties": {
+        "documents": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Documents",
+          "type": "array"
+        },
+        "company_features": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Company Features",
+          "type": "array"
+        },
+        "claim_links": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Claim Links",
+          "type": "array"
+        }
+      },
+      "required": [
+        "documents",
+        "company_features",
+        "claim_links"
+      ],
+      "title": "Foundation",
+      "type": "object"
+    },
+    "InsightCategory": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "title": "Id",
+          "type": "integer"
+        },
+        "slug": {
+          "title": "Slug",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "image_key": {
+          "title": "Image Key",
+          "type": "string"
+        },
+        "image_description": {
+          "title": "Image Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "slug",
+        "name",
+        "description",
+        "image_key",
+        "image_description"
+      ],
+      "title": "InsightCategory",
+      "type": "object"
+    },
+    "InsightResult": {
+      "additionalProperties": false,
+      "properties": {
+        "audience_type": {
+          "enum": [
+            "business_owner",
+            "ceo",
+            "cfo",
+            "chief_accountant",
+            "treasury_head",
+            "c_level",
+            "decision_maker"
+          ],
+          "title": "Audience Type",
+          "type": "string"
+        },
+        "audience_rationale": {
+          "maxLength": 600,
+          "minLength": 15,
+          "title": "Audience Rationale",
+          "type": "string"
+        },
+        "product_recommendations": {
+          "items": {
+            "$ref": "#/$defs/ProductRecommendation"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Product Recommendations",
+          "type": "array"
+        },
+        "category_id": {
+          "description": "Exactly one dominant business category, integer 1-10.",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "title": "Category Id",
+          "type": "integer"
+        },
+        "title": {
+          "maxLength": 240,
+          "minLength": 8,
+          "title": "Title",
+          "type": "string"
+        },
+        "lead": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Claim"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Brief insight takeaway in 1-2 grounded sentences."
+        },
+        "source_summaries": {
+          "description": "1-2 supported sentences about each used document.",
+          "items": {
+            "$ref": "#/$defs/SourceSummary"
+          },
+          "title": "Source Summaries",
+          "type": "array"
+        },
+        "primary_document_id": {
+          "title": "Primary Document Id",
+          "type": "string"
+        },
+        "what_happened": {
+          "$ref": "#/$defs/Event"
+        },
+        "why_important_for_company": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Why Important For Company",
+          "type": "array"
+        },
+        "possible_consequences": {
+          "items": {
+            "$ref": "#/$defs/Consequence"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Possible Consequences",
+          "type": "array"
+        },
+        "relevant_actions": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Relevant Actions",
+          "type": "array"
+        },
+        "bank_assessment": {
+          "$ref": "#/$defs/BankAssessment"
+        },
+        "category": {
+          "$ref": "#/$defs/InsightCategory"
+        },
+        "target_audience": {
+          "$ref": "#/$defs/TargetAudience"
+        },
+        "insight_id": {
+          "title": "Insight Id",
+          "type": "string"
+        },
+        "generation_order": {
+          "title": "Generation Order",
+          "type": "integer"
+        },
+        "primary_topic": {
+          "enum": [
+            "news",
+            "pdf",
+            "competitors"
+          ],
+          "title": "Primary Topic",
+          "type": "string"
+        },
+        "input_document_rank": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Input Document Rank"
+        },
+        "source_document_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Document Ids",
+          "type": "array"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "synthesis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Claim"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "synthesis_group_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Synthesis Group Id"
+        },
+        "topics": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Topics",
+          "type": "array"
+        },
+        "foundation": {
+          "$ref": "#/$defs/Foundation"
+        },
+        "evidence_status": {
+          "enum": [
+            "requires_review",
+            "traceable"
+          ],
+          "title": "Evidence Status",
+          "type": "string"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "validation": {
+          "additionalProperties": true,
+          "title": "Validation",
+          "type": "object"
+        },
+        "markdown": {
+          "default": "",
+          "description": "Standalone AI-labelled article with a brief lead and its own documentary sources.",
+          "title": "Markdown",
+          "type": "string"
+        },
+        "sources_markdown": {
+          "default": "",
+          "description": "Separate annotated list of the same sources with matching S labels.",
+          "title": "Sources Markdown",
+          "type": "string"
+        }
+      },
+      "required": [
+        "audience_type",
+        "audience_rationale",
+        "product_recommendations",
+        "category_id",
+        "title",
+        "primary_document_id",
+        "what_happened",
+        "why_important_for_company",
+        "possible_consequences",
+        "relevant_actions",
+        "bank_assessment",
+        "category",
+        "target_audience",
+        "insight_id",
+        "generation_order",
+        "primary_topic",
+        "input_document_rank",
+        "foundation",
+        "evidence_status",
+        "warnings",
+        "validation"
+      ],
+      "title": "InsightResult",
+      "type": "object"
+    },
+    "ProductDetails": {
+      "additionalProperties": false,
+      "properties": {
+        "product_id": {
+          "title": "Product Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "applicability": {
+          "title": "Applicability",
+          "type": "string"
+        }
+      },
+      "required": [
+        "product_id",
+        "name",
+        "url",
+        "description",
+        "applicability"
+      ],
+      "title": "ProductDetails",
+      "type": "object"
+    },
+    "ProductRecommendation": {
+      "additionalProperties": false,
+      "properties": {
+        "product_id": {
+          "minLength": 1,
+          "title": "Product Id",
+          "type": "string"
+        },
+        "problem": {
+          "$ref": "#/$defs/Claim"
+        },
+        "capability_quote": {
+          "maxLength": 600,
+          "minLength": 8,
+          "title": "Capability Quote",
+          "type": "string"
+        },
+        "mechanism": {
+          "maxLength": 700,
+          "minLength": 15,
+          "title": "Mechanism",
+          "type": "string"
+        },
+        "application": {
+          "maxLength": 500,
+          "minLength": 15,
+          "title": "Application",
+          "type": "string"
+        },
+        "conditions": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Conditions",
+          "type": "array"
+        },
+        "product": {
+          "$ref": "#/$defs/ProductDetails"
+        }
+      },
+      "required": [
+        "product_id",
+        "problem",
+        "capability_quote",
+        "mechanism",
+        "application",
+        "conditions",
+        "product"
+      ],
+      "title": "ProductRecommendation",
+      "type": "object"
+    },
+    "SourceSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "document_id": {
+          "minLength": 1,
+          "title": "Document Id",
+          "type": "string"
+        },
+        "summary": {
+          "$ref": "#/$defs/Claim"
+        }
+      },
+      "required": [
+        "document_id",
+        "summary"
+      ],
+      "title": "SourceSummary",
+      "type": "object"
+    },
+    "TargetAudience": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "business_owner",
+            "ceo",
+            "cfo",
+            "chief_accountant",
+            "treasury_head",
+            "c_level",
+            "decision_maker"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "priorities": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Priorities",
+          "type": "array"
+        },
+        "action_scope": {
+          "title": "Action Scope",
+          "type": "string"
+        },
+        "search_focus": {
+          "title": "Search Focus",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "priorities",
+        "action_scope",
+        "search_focus"
+      ],
+      "title": "TargetAudience",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "input_run_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Input Run Id"
+    },
+    "input_canonical_sha256": {
+      "title": "Input Canonical Sha256",
+      "type": "string"
+    },
+    "input_file_sha256": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Input File Sha256"
+    },
+    "generated_at": {
+      "title": "Generated At",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "running",
+        "completed",
+        "partial",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "company_input": {
+      "additionalProperties": true,
+      "title": "Company Input",
+      "type": "object"
+    },
+    "target_audience": {
+      "$ref": "#/$defs/TargetAudience"
+    },
+    "product_catalog": {
+      "additionalProperties": true,
+      "title": "Product Catalog",
+      "type": "object"
+    },
+    "self_check": {
+      "additionalProperties": true,
+      "title": "Self Check",
+      "type": "object"
+    },
+    "input_status": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Input Status"
+    },
+    "input_already_ranked": {
+      "const": true,
+      "title": "Input Already Ranked",
+      "type": "boolean"
+    },
+    "generation_policy": {
+      "additionalProperties": true,
+      "title": "Generation Policy",
+      "type": "object"
+    },
+    "insights": {
+      "items": {
+        "$ref": "#/$defs/InsightResult"
+      },
+      "title": "Insights",
+      "type": "array"
+    },
+    "errors": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Errors",
+      "type": "array"
+    },
+    "input_warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Input Warnings",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "usage": {
+      "additionalProperties": true,
+      "title": "Usage",
+      "type": "object"
+    },
+    "recovery": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Recovery"
+    },
+    "markdown": {
+      "default": "",
+      "description": "Reserved for loading previous outputs; use insights[i].markdown for articles.",
+      "title": "Markdown",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "input_run_id",
+    "input_canonical_sha256",
+    "generated_at",
+    "status",
+    "company_input",
+    "target_audience",
+    "product_catalog",
+    "input_status",
+    "input_already_ranked",
+    "generation_policy",
+    "insights",
+    "errors",
+    "input_warnings",
+    "limitations",
+    "usage"
+  ],
+  "title": "GenerationResult",
+  "type": "object"
+}

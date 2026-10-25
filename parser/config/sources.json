@@ -1,0 +1,7 @@
+{
+  "sources": [
+    {"id":"cbr_press", "name":"Банк России — пресс-релизы", "domain":"www.cbr.ru", "industries":["макроэкономика","финансы"], "kind":"rss", "url":"https://www.cbr.ru/rss/RssPress", "language":"ru", "enabled":true, "notes":"Официальный RSS; фактическую доступность проверять командой collect."},
+    {"id":"cbr_news", "name":"Банк России — новости", "domain":"www.cbr.ru", "industries":["макроэкономика","финансы"], "kind":"rss", "url":"https://www.cbr.ru/rss/eventrss", "language":"ru", "enabled":true},
+    {"id":"x5_press", "name":"X5 — пресс-центр", "domain":"www.x5.ru", "industries":["торговля"], "kind":"page", "url":"https://www.x5.ru/ru/", "language":"ru", "enabled":true, "link_xpath":"//a[contains(@href,'news/') and string-length(normalize-space(.))>35]", "notes":"Узкий адаптер ссылок; изменения HTML требуют проверки."}
+  ]
+}
