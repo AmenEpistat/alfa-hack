@@ -349,6 +349,8 @@ def generate_insights(
                 raise ValueError("Repeated synthesized insight: identical cross-event conclusion already emitted")
             insight = build_insight(draft, prepared, packet, index)
             insight["synthesis_group_id"] = group["group_id"]
+            if group.get("rank_set_ids"):
+                insight["rank_set_ids"] = copy.deepcopy(group["rank_set_ids"])
             insight["validation"]["repair_calls"] = (
                 previous.get("validation", {}).get("repair_calls", 0)
                 if previous is not None and group["group_id"] in (output.get("recovery") or {}).get("reused_group_ids", [])

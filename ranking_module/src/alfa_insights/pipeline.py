@@ -98,7 +98,7 @@ def run(
 
     result = PipelineResult(run_id=run_id, status=status, sets=sets, diagnostics=diagnostics)
 
-    if persist_artifacts:
+    if persist_artifacts and cfg.io.persist_artifacts:
         try:
             _persist_run(cfg.paths.runs_dir / run_id, payload, result)
             log.info("artifacts saved to %s", cfg.paths.runs_dir / run_id)

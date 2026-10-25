@@ -1,10 +1,14 @@
 """Deterministic PDF extraction. OCR is always unverified evidence."""
 import json
+from contextlib import ExitStack
+from io import BytesIO
 from pathlib import Path
-import pymupdf
+import pdfplumber
+from pdfplumber.utils import cluster_objects
 from .config import Settings
 from .schemas import Chunk, Document, utcnow
 from .storage import Store, digest
+from .pdf_ocr import ocr_page
 
 from .pdf_cache import (CACHE_SCHEMA, EXTRACTOR, cacheable_extraction,
                         extraction_from_document, pdf_cache_key, pdf_signature,
@@ -24,9 +28,19 @@ def pieces(text: str, size=1600):
 
 
 def read_blocks(page, warnings, page_number):
-    blocks = [b for b in page.get_text("blocks", sort=True) if b[6] == 0 and b[4].strip()]
+    blocks = []
+    for line in cluster_objects(page.extract_words(), "top", 3):
+        parts = [[]]
+        for word in sorted(line, key=lambda word: word["x0"]):
+            if parts[-1] and word["x0"] - parts[-1][-1]["x1"] > max(18, page.width * .035):
+                parts.append([])
+            parts[-1].append(word)
+        for words in parts:
+            blocks.append((min(w["x0"] for w in words), min(w["top"] for w in words),
+                           max(w["x1"] for w in words), max(w["bottom"] for w in words),
+                           " ".join(w["text"] for w in words)))
     # Detect a central gutter; don't interleave independent columns by y coordinate.
-    width = page.rect.width
+    width = page.width
     left = [b for b in blocks if b[2] < width * .57 and b[0] < width * .4]
     right = [b for b in blocks if b[0] > width * .43]
     if len(left) >= 3 and len(right) >= 3:
@@ -46,22 +60,21 @@ def _extract_pdf(content, sha, settings):
     warnings, chunks, pages, tables = [], [], [], []
     metadata = {}
     try:
-        with pymupdf.open(stream=content, filetype="pdf") as pdf:
-            if pdf.needs_pass:
-                raise ValueError("encrypted PDF; credentials not provided")
-            metadata = pdf.metadata or {}
-            for i, original_page in enumerate(pdf):
+        with ExitStack() as opened, pdfplumber.open(BytesIO(content)) as pdf:
+            metadata = {key.lower(): str(value) for key, value in (pdf.metadata or {}).items()
+                        if key in {"Title", "Author", "Subject", "Keywords", "Creator", "Producer", "CreationDate", "ModDate"}
+                        and value is not None}
+            for i, original_page in enumerate(pdf.pages):
                 number = i + 1
                 page = original_page
                 ocr_doc = None
                 used_ocr = False
-                if len(page.get_text().strip()) < 50:
+                if len((page.extract_text() or "").strip()) < 50:
                     if settings.ocr_enabled:
                         try:
-                            pix = page.get_pixmap(dpi=settings.ocr_dpi)
-                            ocr_data = pix.pdfocr_tobytes(language=settings.ocr_language, tessdata=str(settings.tessdata.resolve()))
-                            ocr_doc = pymupdf.open(stream=ocr_data, filetype="pdf")
-                            page = ocr_doc[0]
+                            ocr_data = ocr_page(content, i, settings)
+                            ocr_doc = opened.enter_context(pdfplumber.open(BytesIO(ocr_data)))
+                            page = ocr_doc.pages[0]
                             used_ocr = True
                             warnings.append(f"page {number}: OCR; numbers, charts and tables require visual verification")
                         except Exception as exc:
@@ -76,34 +89,39 @@ def _extract_pdf(content, sha, settings):
                     warnings.append(f"page {number}: broken character mapping")
                 page_tables = []
                 try:
-                    detected = page.find_tables(strategy="text" if used_ocr else "lines")
-                    for j, table in enumerate(detected.tables):
+                    strategy = "text" if used_ocr else "lines"
+                    detected = page.find_tables({"vertical_strategy": strategy, "horizontal_strategy": strategy})
+                    for j, table in enumerate(detected):
                         rows = table.extract()
-                        if table.col_count < 2 or table.row_count < 2:
+                        if len(rows) < 2 or max(map(len, rows), default=0) < 2:
                             continue
+                        headers = [cell or "" for cell in rows[0]]
                         id_ = f"{sha[:16]}-p{number}-t{j}"
                         # Surrounding text retains original units/labels without inventing them.
-                        header_context = page.get_textbox(pymupdf.Rect(0, max(0, table.bbox[1] - 70), page.rect.width, table.bbox[1]))
+                        top = max(page.bbox[1], table.bbox[1] - 70)
+                        header_context = (page.crop((page.bbox[0], top, page.bbox[2], table.bbox[1])).extract_text() or ""
+                                          if table.bbox[1] > top else "")
                         table_data = {"table_id": id_, "page": number, "bbox": list(table.bbox),
-                                      "headers": table.header.names, "rows": rows,
+                                      "headers": headers, "rows": rows,
                                       "units": None, "header_context": header_context,
                                       "quality": "requires_review" if used_ocr else "extracted",
                                       "warning": "OCR grid candidate, may include prose" if used_ocr else None}
                         tables.append(table_data)
                         page_tables.append(id_)
-                        table_text = json.dumps({"headers": table.header.names, "rows": rows, "context": header_context}, ensure_ascii=False)
+                        table_text = json.dumps({"headers": headers, "rows": rows, "context": header_context}, ensure_ascii=False)
                         chunks.append(Chunk(text=table_text, page_start=number, page_end=number,
                                             section_title="table candidate" if used_ocr else "table", table_ids=[id_]))
                 except Exception as exc:
                     warnings.append(f"page {number}: table extraction failed ({type(exc).__name__})")
                 pages.append({"page": number, "text": text, "ocr": used_ocr,
                               "blocks": [{"bbox": list(b[:4]), "text": b[4]} for b in blocks],
-                              "width": page.rect.width, "height": page.rect.height})
+                              "width": page.width, "height": page.height})
                 for _, _, part in pieces(text):
                     if part.strip():
                         chunks.append(Chunk(text=part, page_start=number, page_end=number, table_ids=page_tables))
                 if ocr_doc:
                     ocr_doc.close()
+                original_page.close()
     except Exception as exc:
         warnings.append(f"PDF extraction failed: {type(exc).__name__}: {str(exc)[:150]}")
     quality = "extracted" if not warnings else "requires_review"

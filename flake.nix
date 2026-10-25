@@ -45,7 +45,8 @@
             faiss
 
             # parser
-            pymupdf
+            pdfplumber
+            pypdfium2
             trafilatura
             feedparser
             httpx

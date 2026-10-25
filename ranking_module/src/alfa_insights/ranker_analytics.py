@@ -75,7 +75,7 @@ def rank_analytics(
             if ix < 0:
                 continue
             item_id = ids[int(ix)].get("item_id")
-            if item_id:
+            if item_id in analytics_by_id:
                 cands.append(AnalyticsCandidate(item_id=item_id, score_dense=float(sc)))
     if not cands:
         cands = [AnalyticsCandidate(item_id=iid) for iid in analytics_by_id]

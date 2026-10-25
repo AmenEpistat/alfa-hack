@@ -23,6 +23,8 @@ from alpha_parser.config import Settings
 from alpha_parser.module import ResearchModule
 from insides import generate_insights, load_product_catalog, save_articles
 from insides.client import JsonLLMClient
+from pipeline_adapter import ranked_for_insights
+from insides.audiences import get_audience
 
 
 router = APIRouter(
@@ -46,6 +48,9 @@ class InsightGenerationRequest(BaseModel):
 
     ranking_input: dict[str, Any] = Field(
         description="JSON ranking_input от parser или ranking_module.",
+    )
+    ranking_result: dict[str, Any] | None = Field(
+        default=None, description="Результат run_ranking с sets[]; исходный ranking_input нужен для цитат.",
     )
 
     audience_type: AudienceType = "decision_maker"
@@ -95,7 +100,7 @@ def _build_module(run_id: str, force_refresh: bool) -> ResearchModule:
         budget_scope="insights",
         tenant_scope="backend",
     )
-
+    module.store.refresh_cache = force_refresh
     return module
 
 
@@ -132,6 +137,15 @@ def generate(request: InsightGenerationRequest) -> dict[str, Any]:
 
     try:
         ranking_input = copy.deepcopy(request.ranking_input)
+        if request.ranking_result is not None:
+            ranking_input = ranked_for_insights(ranking_input, request.ranking_result)
+            if not ranking_input["ranking_sets"]:
+                raise ValueError("Ranker returned no supported sets")
+        audience = get_audience(request.audience_type)
+        if ranking_input.get("target_audience") and ranking_input["target_audience"].get("type") != request.audience_type:
+            raise ValueError("ranking_input targets another reader role")
+        ranking_input["target_audience"] = audience
+        _save_json(output_dir / "05_ranked.json", ranking_input)
 
         if not ranking_input.get("company_input"):
             raise HTTPException(
@@ -149,7 +163,6 @@ def generate(request: InsightGenerationRequest) -> dict[str, Any]:
         client = JsonLLMClient(
             settings=settings,
             store=module.store,
-            max_output_tokens=settings.llm_max_output_tokens,
         )
 
         def on_progress(progress: dict[str, Any]) -> None:

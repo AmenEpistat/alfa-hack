@@ -43,4 +43,6 @@ class Settings(BaseSettings):
     tessdata: Path = Path("data/tessdata")
     ocr_language: str = "rus+eng"
     ocr_dpi: int = Field(200, ge=100, le=300)
+    tesseract_cmd: str = "tesseract"
+    ocr_timeout: float = Field(60, gt=0, le=300)
 

@@ -148,6 +148,7 @@ def prepare_input(payload: dict) -> dict:
         "company": copy.deepcopy(company),
         "input_run_id": payload.get("run_id"),
         "company_analysis_context": copy.deepcopy(payload.get("company_analysis_context") or {}),
+        "ranking_sets": copy.deepcopy(payload.get("ranking_sets", [])),
         "evidence": evidence,
         "document_order": document_order,
         "warnings": warnings,

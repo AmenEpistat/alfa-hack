@@ -5,14 +5,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import pandas as pd
-from alfa_insights.api import (
-    health as ranking_health,
-)
-from alfa_insights.api import (
-    run_ranking,
-    validate_payload,
-)
 from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -24,6 +16,9 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
+RANKING_SRC = REPOSITORY_ROOT / "ranking_module" / "src"
+if str(RANKING_SRC) not in sys.path:
+    sys.path.insert(0, str(RANKING_SRC))
 
 router = APIRouter(
     prefix="/api/ranking",
@@ -41,7 +36,7 @@ def _ranking_overrides(
     result = dict(overrides or {})
 
     paths = dict(result.get("paths") or {})
-    paths.setdefault("root", str(REPOSITORY_ROOT))
+    paths.setdefault("root", str(REPOSITORY_ROOT / "ranking_module"))
     paths.setdefault(
         "companies",
         str(REPOSITORY_ROOT / "ranking_module" / "data" / "companies.csv"),
@@ -53,7 +48,8 @@ def _ranking_overrides(
 
 def _companies_dataframe(
     db: Session,
-) -> pd.DataFrame:
+):
+    import pandas as pd
     companies = db.scalars(select(Company).order_by(Company.name)).all()
 
     if not companies:
@@ -185,6 +181,7 @@ def health() -> dict[str, Any]:
     Проверка доступности ranking_module и его кешей.
     """
     try:
+        from alfa_insights.api import health as ranking_health
         return ranking_health(
             config=_ranking_config_path(),
         )
@@ -202,6 +199,7 @@ def validate(
     """
     Валидация тела для ранжирования без загрузки моделей.
     """
+    from alfa_insights.api import validate_payload
     warnings = validate_payload(payload)
 
     return {
@@ -254,6 +252,7 @@ def run(
         )
 
     try:
+        from alfa_insights.api import run_ranking
         result = run_ranking(
             payload=payload,
             companies=companies,

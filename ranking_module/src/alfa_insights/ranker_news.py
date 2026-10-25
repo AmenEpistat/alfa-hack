@@ -75,13 +75,15 @@ def cross_rerank(
     top_k: int | None = None,
 ) -> list[NewsCandidate]:
     pairs: list[tuple[str, str]] = []
+    valid: list[NewsCandidate] = []
     for c in candidates:
         item = news_by_id.get(c.item_id)
         if item is None:
             continue
         pairs.append((query_text, news_text(item, cfg.embeddings.text_templates)))
+        valid.append(c)
     scores = cross.score_pairs(pairs)
-    scored = sorted(zip(candidates, scores.tolist()), key=lambda x: -x[1])
+    scored = sorted(zip(valid, scores.tolist()), key=lambda x: -x[1])
     k = top_k or cfg.recall.top_k_cross
     out: list[NewsCandidate] = []
     for c, sc in scored[:k]:
@@ -228,7 +230,7 @@ def rank_news(
         return []
 
     dense = dense_recall(query_text, encoder, cfg)
-    cands = [NewsCandidate(item_id=iid, score_dense=sc) for iid, sc in dense]
+    cands = [NewsCandidate(item_id=iid, score_dense=sc) for iid, sc in dense if iid in news_by_id]
     # if dense returned nothing (e.g. empty index) fallback to cross over all pool
     if not cands:
         cands = [NewsCandidate(item_id=iid, score_dense=0.0) for iid in news_by_id]

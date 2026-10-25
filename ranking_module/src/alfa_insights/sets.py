@@ -107,7 +107,6 @@ def build_sets(
             # try name match in a "name" column if exists; else use default empty row
             row = pd.Series(dtype=object)
         profiles.append((company_profile(row, w), w, "primary"))
-        break  # for smoke with single watch item; extend as needed
 
     # also add top companies from df as competitor candidates (limited)
     competitor_budget = max(0, cfg.sets.max_sets - len(profiles))

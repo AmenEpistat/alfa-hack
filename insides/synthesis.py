@@ -78,7 +78,8 @@ def build_synthesis_catalog(prepared: dict, max_chars: int = 30000,
         "truncated_document_ids": truncated_docs,
         "documents_without_citable_passages": [doc for doc in doc_ids if doc not in eligible_docs],
     }
-    return {"packet": packet, "documents": documents, "choices": choices, "coverage": coverage}
+    return {"packet": packet, "documents": documents, "choices": choices, "coverage": coverage,
+            "ranking_sets": copy.deepcopy(prepared.get("ranking_sets", []))}
 
 
 def planning_messages(catalog: dict, company: dict, min_insights: int = 5, *, target_audience: dict, product_catalog: dict) -> list[dict]:
@@ -125,6 +126,15 @@ title 8–240 символов: цепляющий и конкретный, с �
         "catalog_coverage": copy.deepcopy(catalog["coverage"]),
         "required_min_insights": min_insights,
     }
+    if catalog.get("ranking_sets"):
+        payload["ranking_sets"] = copy.deepcopy(catalog["ranking_sets"])
+        system += (
+            "\nranking_sets — готовые наборы ранкера. События каждой группы бери только из одного набора; "
+            "используй в ней как минимум одну новость и один аналитический PDF из этого набора. "
+            "company в наборе — объект наблюдения, а получатель инсайда — исходный профиль company. "
+            "Не приписывай клиенту показатели или действия отслеживаемой компании. "
+            "Сохраняй порядок наборов и не смешивай источники разных наборов.\n"
+        )
     return [
         {"role": "system", "content": system},
         {"role": "user", "content": json.dumps(payload, ensure_ascii=False, separators=(",", ":"))},
@@ -192,6 +202,15 @@ def parse_synthesis_plan(raw: str, catalog: dict) -> dict:
             raise ValueError("Duplicate source combination and analytical angle")
         identities.add(identity)
         group = {"title": title, "angle": angle, "source_document_ids": documents, "events": events}
+        if catalog.get("ranking_sets"):
+            used = {ref["evidence_id"] for event in events for ref in event["evidence"]}
+            matching = [entry["set_id"] for entry in catalog["ranking_sets"]
+                        if used <= set(entry["evidence_ids"])
+                        and used & set(entry["news_evidence_ids"])
+                        and used & set(entry["analytics_evidence_ids"])]
+            if not matching:
+                raise ValueError("Planned group must use news and analytics from one ranking set")
+            group["rank_set_ids"] = matching
         canonical = json.dumps(group, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
         group["group_id"] = "syn_" + hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
         groups.append(group)
@@ -252,9 +271,14 @@ def build_group_packet(prepared: dict, group: dict, max_chars: int = 14000) -> d
             copied["char_end"] = original["char_start"] + end
         selected.append(copied)
         used += end - start
+    allowed_evidence = None
+    if group.get("rank_set_ids"):
+        selected_set = next(entry for entry in prepared["ranking_sets"] if entry["set_id"] == group["rank_set_ids"][0])
+        allowed_evidence = set(selected_set["evidence_ids"])
     extra = [
         record for doc_id in documents for record in records.values()
         if record["document_id"] == doc_id and record["evidence_id"] not in required
+        and (allowed_evidence is None or record["evidence_id"] in allowed_evidence)
     ]
     for position, record in enumerate(extra):
         remaining = max_chars - used
