@@ -19,6 +19,7 @@ from ..schemas import (
     AskResponse,
     CompanyImpact,
     InsightResponse,
+    InsightSection,
 )
 
 router = APIRouter(prefix="/api/insights", tags=["insights"])
@@ -41,6 +42,7 @@ def serialize_insight(
     insight: Insight,
     saved: bool = False,
 ) -> InsightResponse:
+    assert insight.cover in ("steel", "contracts", "budget")
     return InsightResponse(
         id=insight.id,
         topic=insight.topic,
@@ -49,10 +51,7 @@ def serialize_insight(
         minutes=insight.minutes,
         cover=insight.cover,
         sections=[
-            {
-                "title": section.title,
-                "text": section.text,
-            }
+            InsightSection(title=section.title, text=section.text)
             for section in insight.sections
         ],
         is_saved=saved,
