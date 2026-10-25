@@ -1,0 +1,16 @@
+services:
+  searxng:
+    image: ${SEARXNG_IMAGE:-docker.io/searxng/searxng:latest}
+    ports:
+      - "127.0.0.1:8888:8080"
+    environment:
+      SEARXNG_BASE_URL: http://127.0.0.1:8888/
+      SEARXNG_SECRET: ${SEARXNG_SECRET:?Set SEARXNG_SECRET in .env}
+    volumes:
+      - ./config/searxng:/etc/searxng:rw
+      - searxng-cache:/var/cache/searxng
+    mem_limit: 512m
+    cpus: 1.0
+    restart: unless-stopped
+volumes:
+  searxng-cache:

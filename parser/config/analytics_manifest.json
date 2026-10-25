@@ -1,0 +1,61 @@
+{
+  "source_type": "alpha_pdf",
+  "notes": "Explicit analytical corpus only. Titles initially from filenames; publication dates are unknown until source verification. Requirements and answers.md are excluded.",
+  "documents": [
+    {
+      "file": "ALFA-7M26.pdf",
+      "logical_id": "ALFA-7M26",
+      "title": "Макростатистика 7М26",
+      "published_at": "2026-09-07",
+      "metadata_evidence": "Title and date visually checked on page 1; OCR text is not a verified numeric dataset."
+    },
+    {
+      "file": "ALFA-consumption.pdf",
+      "logical_id": "ALFA-consumption",
+      "title": "ALFA-consumption",
+      "published_at": null
+    },
+    {
+      "file": "ALFA-Macro_Insights-Policy_Rate_11Sep.pdf",
+      "logical_id": "ALFA-Macro_Insights-Policy_Rate_11Sep",
+      "title": "ALFA-Macro_Insights-Policy_Rate_11Sep",
+      "published_at": null
+    },
+    {
+      "file": "ALFA-macro_stat1H26.pdf",
+      "logical_id": "ALFA-macro_stat1H26",
+      "title": "ALFA-macro_stat1H26",
+      "published_at": null
+    },
+    {
+      "file": "ALFA_Russian_Steels_1К21PreviewUpdate_15Apr2021.pdf",
+      "logical_id": "ALFA_Russian_Steels_1К21PreviewUpdate_15Apr2021",
+      "title": "ALFA_Russian_Steels_1К21PreviewUpdate_15Apr2021",
+      "published_at": null
+    },
+    {
+      "file": "bond_brief_14092026.pdf",
+      "logical_id": "bond_brief_14092026",
+      "title": "bond_brief_14092026",
+      "published_at": null
+    },
+    {
+      "file": "FI_Strategy_3Q26_22072026.pdf",
+      "logical_id": "FI_Strategy_3Q26_22072026",
+      "title": "FI_Strategy_3Q26_22072026",
+      "published_at": null
+    },
+    {
+      "file": "Gold_digest_August26.pdf",
+      "logical_id": "Gold_digest_August26",
+      "title": "Gold_digest_August26",
+      "published_at": null
+    },
+    {
+      "file": "Inflation_tracker_02.pdf",
+      "logical_id": "Inflation_tracker_02",
+      "title": "Inflation_tracker_02",
+      "published_at": null
+    }
+  ]
+}

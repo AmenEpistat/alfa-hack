@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Preprocessed company profiles",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dataset_type",
+    "generated_at",
+    "source",
+    "preprocessing",
+    "companies"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "dataset_type": {
+      "const": "company_profiles"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "name",
+        "sha256"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "preprocessing": {
+      "type": "object",
+      "required": [
+        "rows_read",
+        "rows_clean",
+        "rows_exported",
+        "aggregate_scope"
+      ]
+    },
+    "companies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "company_id",
+          "source_company_id",
+          "source_row",
+          "identity_ambiguous",
+          "industry",
+          "okved_code",
+          "region",
+          "city",
+          "group_id",
+          "client_type",
+          "attributes",
+          "features",
+          "group_context",
+          "warnings"
+        ],
+        "properties": {
+          "company_id": {
+            "type": "string",
+            "pattern": "^U_[0-9]+$"
+          },
+          "source_company_id": {
+            "type": "string"
+          },
+          "source_row": {
+            "type": "integer",
+            "minimum": 2
+          },
+          "identity_ambiguous": {
+            "type": "boolean"
+          },
+          "industry": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "okved_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "region": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "city": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "group_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "client_type": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "attributes": {
+            "type": "object"
+          },
+          "features": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "number",
+                "string",
+                "null"
+              ]
+            }
+          },
+          "group_context": {
+            "type": "object",
+            "properties": {
+              "industries": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "regions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
