@@ -1,0 +1,30 @@
+paths:
+  root: "."
+  data_dir: "data"
+  cache_dir: "cache"
+  runs_dir: "runs"
+  models_dir: "models"
+  companies: "data/companies.csv"
+  news_cache: "cache/news"
+  analytics_cache: "cache/analytics"
+
+hard_recall:
+  enabled: true
+  primary:
+    score_boost: 1.0
+    match_types: ["name_mention", "alias_mention", "domain_mention"]
+    use_watchlist: true          # watchlist берётся из payload.watchlist
+    filter_enabled: true         # учитывать только enabled=true
+    use_company_profile: true
+  fallback:
+    enabled: true
+    min_score: 0.35
+    weights:
+      okved_sector: 0.30
+      region: 0.20
+      city: 0.05
+      worker_ord: 0.10
+      binary_sum_products: 0.10
+      industry_freq: 0.10
+      revenue_rank_industry: 0.15
+    require_any_of: ["okved_sector", "region"]
