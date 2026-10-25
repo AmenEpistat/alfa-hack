@@ -16,7 +16,6 @@
 .currency-more { padding: 0 5px; border-radius: 9px; background: #ffffff12; color: #d6d5d9; font-size: 10px; }
 .balance-context { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: auto; padding: 34px 0 16px; color: #9d9da3; font-size: 10px; line-height: 17px; }
 .green-plus { display: grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; background: #04c35c; color: #082f16; }
-.balance-context small { border-radius: 7px; padding: 1px 5px; font-size: 7px; line-height: 11px; font-weight: 700; background: #02b954; color: #073414; }
 .balance-shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-top: 15px; border-top: 1px solid #ffffff14; }
 .balance-shortcuts button { display: flex; align-items: center; gap: 11px; text-align: left; padding: 0; border: 0; color: #e9e8eb; background: transparent; font-size: 12px; line-height: 18px; }
 .balance-shortcuts button > span:first-child { display: grid; place-items: center; width: 37px; height: 37px; border-radius: 11px; flex-shrink: 0; background: #ffffff09; }
@@ -42,7 +41,6 @@
 .bank-overview-footer { display: flex; align-items: center; gap: 26px; min-height: 42px; padding: 0 20px; }
 .bank-overview-footer button { border: 0; padding: 7px 0; background: transparent; color: #dedcdf; font-size: 11px; }
 .bank-overview-footer button:hover { color: #fff; }
-.bank-overview-footer > span { margin-left: auto; color: #8c7a7b; font-size: 9px; }
 .bank-overview :focus-visible { outline-color: #fff; }
 .summary-navigation { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin: 29px 0 23px; }
 .summary-navigation nav { display: flex; align-items: center; gap: 24px; min-width: 0; overflow: auto; scrollbar-width: thin; }
@@ -86,7 +84,6 @@
   .work-panel button { font-size: 10px; }
   .card-promo { display: none; }
   .bank-overview-footer { padding: 0 9px; min-height: 39px; gap: 20px; }
-  .bank-overview-footer > span { font-size: 7px; }
   .summary-navigation { margin: 23px 0; gap: 14px; }
   .summary-navigation nav { gap: 18px; }
   .summary-navigation nav button { font-size: 14px; }

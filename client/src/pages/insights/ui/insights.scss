@@ -22,8 +22,7 @@
 .journal-card h3 { margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(23px, 2vw, 29px); font-weight: 400; line-height: 1.18; letter-spacing: -.55px; }
 .journal-card-link:hover h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .journal-card-link > p { color: #757b80; font-size: 13px; line-height: 21px; margin: 13px 0 18px; }
-.journal-card-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 9px; }
-.journal-card-meta > span { font-size: 11px; color: #777d82; }
+.journal-card-meta { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-top: 9px; }
 .journal-card-meta > div { display: flex; gap: 5px; }
 .journal-card-meta .ant-btn { width: 30px; min-width: 30px; height: 30px; padding: 0; color: #535b60; }
 .journal-footer { padding: 27px 0 0; color: #969a9e; font-size: 11px; line-height: 19px; }

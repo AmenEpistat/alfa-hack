@@ -1,0 +1,7 @@
+.source-citation { display: inline-flex; align-items: center; vertical-align: baseline; gap: 4px; border: 0; border-radius: 20px; margin: 0 3px 0 5px; padding: 2px 7px; background: #e9ecee; color: #53616a; font-size: 10px; font-weight: 500; line-height: 17px; white-space: nowrap; cursor: pointer; }
+.source-citation:hover, .source-citation:focus-visible { background: #dce2e5; color: #263840; }
+.citation-preview { max-width: min(300px, calc(100vw - 60px)); padding: 4px; }
+.citation-preview > span { display: block; color: #8a9298; font-size: 10px; line-height: 17px; }
+.citation-preview > strong { display: block; margin-top: 7px; font-size: 13px; line-height: 20px; font-weight: 500; }
+.citation-preview > p { margin: 8px 0; color: #727d85; font-size: 12px; line-height: 20px; }
+.citation-preview .ant-btn { font-size: 11px; padding-inline: 0; }

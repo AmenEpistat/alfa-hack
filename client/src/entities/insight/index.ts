@@ -14,3 +14,6 @@ export type { InsightAnswer } from './model/answer';
 export { insightValidity, getInsightValidity } from './model/validity';
 export { InsightValidity } from './ui/InsightValidity';
 export { InsightCover } from './ui/InsightCover';
+export { insightSources } from './model/sources';
+export type { InsightSourceId, CitationAnchor } from './model/sources';
+export { SourceCitation, CitedText } from './ui/SourceCitation';

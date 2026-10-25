@@ -1,11 +1,12 @@
-@use '@/shared/styles/tokens';
-
-.important-section { margin-top: 35px; }
-.home-footnote { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 24px; color: #969ca3; }
-.home-footnote svg { flex-shrink: 0; }
-.home-footnote p { margin: 0; font-size: 11px; line-height: 18px; }
-@media (max-width: tokens.$mobile) {
-  .important-section { margin-top: 27px; }
-  .home-footnote { align-items: flex-start; }
+.home-insights { padding: 6px 0 12px; }
+.home-insights-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 20px; }
+.home-insights-heading h2 { margin: 0; font-size: 23px; font-weight: 500; letter-spacing: -.5px; }
+.home-insights-heading > .ant-btn { font-size: 12px; color: #5f676e; padding-inline: 8px; }
+.home-insights-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 700px) {
+  .home-insights { padding-top: 4px; }
+  .home-insights-heading { gap: 6px; margin-bottom: 0; }
+  .home-insights-heading h2 { font-size: 21px; }
+  .home-insights-heading > .ant-btn { font-size: 11px; }
+  .home-insights-grid { grid-template-columns: 1fr; gap: 0; }
 }
-.important-section { margin-top: 0; }

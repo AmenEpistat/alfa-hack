@@ -4,6 +4,45 @@ import { calculateImpact, defaultAnalysisView, formatMoney, getPurchasePlanCsv, 
 import { answerInsightQuestion } from '../src/entities/insight/model/answer';
 import { insightAnalysisStore } from '../src/entities/insight/model/analysis-store';
 import { getInsightValidity } from '../src/entities/insight/model/validity';
+import { insightCatalog } from '../src/entities/insight/model/catalog';
+import { insightSources } from '../src/entities/insight/model/sources';
+
+test('article citations point to existing text and known sources', () => {
+  for (const entry of insightCatalog) {
+    for (const section of entry.sections) {
+      for (const citation of section.citations ?? []) {
+        assert.ok(section.text.includes(citation.after), `${entry.id}: citation anchor must exist`);
+        assert.ok(citation.sourceId in insightSources);
+      }
+    }
+  }
+});
+
+test('citations match the supporting source instead of attaching market reports to calculations', () => {
+  const calculation = answerInsightQuestion('Что будет при росте цены на 15%?', defaultAnalysisView);
+  assert.deepEqual(calculation.citations, { 0: ['plan'], 1: ['plan'] });
+  assert.deepEqual(calculation.references, ['plan']);
+  const source = answerInsightQuestion('Откуда источник?', defaultAnalysisView);
+  assert.deepEqual(source.citations, { 0: ['market'], 1: ['market'], 2: ['plan'] });
+  const relevance = answerInsightQuestion('Почему это важно для нас?', defaultAnalysisView);
+  assert.deepEqual(relevance.references, ['profile']);
+  assert.deepEqual(answerInsightQuestion('Что делать?', defaultAnalysisView).citations, {});
+  for (const answer of [calculation, source, relevance]) {
+    for (const [paragraph, ids] of Object.entries(answer.citations)) {
+      assert.ok(Number(paragraph) < answer.paragraphs.length);
+      assert.ok(ids.every(id => id in insightSources));
+    }
+  }
+});
+
+test('plain-language questions about business relevance use profile context', () => {
+  for (const question of ['Почему это важно для нас?', 'Что это значит для моего бизнеса?']) {
+    const answer = answerInsightQuestion(question, defaultAnalysisView);
+    assert.equal(answer.kind, 'relevance');
+    assert.deepEqual(answer.references, ['profile']);
+    assert.equal(answer.suggestedView, undefined);
+  }
+});
 
 test('validity is independent from purchasing period and expires at the Moscow deadline', () => {
   assert.equal(getInsightValidity(new Date('2026-10-22T12:00:00+03:00')).reviewDate, '29 октября');
@@ -16,7 +55,7 @@ test('questions about expiry explain the review rule without switching purchasin
   const answer = answerInsightQuestion('До какой даты актуально решение?', defaultAnalysisView);
   assert.equal(answer.kind, 'validity');
   assert.match(answer.paragraphs.join(' '), /29 октября/);
-  assert.match(answer.paragraphs.join(' '), /демо/);
+  assert.match(answer.paragraphs.join(' '), /срок проверки вывода/);
   assert.equal(answer.suggestedView, undefined);
 });
 
@@ -61,10 +100,10 @@ test('monthly views reconcile to the complete quarter', () => {
   assert.equal(2_220_000 + november + december, 6_390_000);
 });
 
-test('CSV carries synthetic-data provenance and all source records', () => {
+test('CSV carries column headers and all source records', () => {
   const csv = getPurchasePlanCsv();
-  assert.ok(csv.startsWith('\uFEFFУЧЕБНЫЕ ДАННЫЕ;'));
-  assert.equal(csv.split('\r\n').length, 11);
+  assert.ok(csv.startsWith('\uFEFFКомпания;Месяц;'));
+  assert.equal(csv.split('\r\n').length, 10);
   assert.ok(csv.includes('Северстрой Подряд;2026-10;180;140;60000'));
 });
 
@@ -104,7 +143,7 @@ test('comparison ranks exposure and declares the scope when a single company is 
   assert.equal(answer.kind, 'comparison');
   assert.match(answer.paragraphs[0], /Девелопмент/);
   assert.ok(answer.paragraphs.join(' ').includes(formatMoney(1_080_000)));
-  assert.match(answer.paragraphs.at(-1)!, /три учебные компании/);
+  assert.match(answer.paragraphs.at(-1)!, /все три компании/);
   assert.equal(answer.suggestedView?.companyId, 'group');
 });
 

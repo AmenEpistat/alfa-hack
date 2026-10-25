@@ -26,14 +26,14 @@ export function HomeDashboard() {
       <Button type="default" className="more-actions" onClick={() => router.navigate(routes.section('Все сервисы и продукты'))}>Ещё</Button>
     </div>
     <ConfigProvider theme={{ token: { colorText: '#e9e8eb', colorBgTextHover: '#ffffff14', colorBgTextActive: '#ffffff1c' } }}>
-    <section className="bank-overview" aria-label="Демонстрационная сводка группы компаний">
+    <section className="bank-overview" aria-label="Сводка группы компаний">
       <div className="bank-overview-grid">
         <div className="balance-panel">
           <p className="balance-caption">В 3 компаниях</p>
           <strong className="balance-amount">{amount('18 450 000,00')} <span>RUB</span></strong>
           <p className="balance-hint">↳ {amount('20 450 000,00')} RUB с овердрафтом</p>
           <div className="currency-balances"><span>{amount('4 000,00')} CNY</span><span>{amount('40 000,00')} KZT</span><span className="currency-more">+2</span></div>
-          <div className="balance-context"><span className="green-plus"><Plus size={12} aria-hidden="true" /></span><span>Все счета группы в одном месте</span><small>ДЕМОДАННЫЕ</small></div>
+          <div className="balance-context"><span className="green-plus"><Plus size={12} aria-hidden="true" /></span><span>Все счета группы в одном месте</span></div>
           <div className="balance-shortcuts">
             <Button type="text" onClick={() => router.navigate(routes.section('Счета'))}><span><Wallet size={19} aria-hidden="true" /></span><span>Счета<small>2 в рублях, 2 в валюте</small></span></Button>
             <Button type="text" onClick={() => router.navigate(routes.section('Карты'))}><span><CreditCard size={19} aria-hidden="true" /></span><span>Бизнес-карты<small>Реквизиты и операции</small></span></Button>
@@ -49,7 +49,7 @@ export function HomeDashboard() {
           <span className="card-promo-caption">Посмотреть карты <ArrowRight size={13} aria-hidden="true" /></span>
         </button>
       </div>
-      <div className="bank-overview-footer"><Button type="text" onClick={() => router.navigate(routes.section('Реквизиты'))}>Реквизиты</Button><Button type="text" onClick={() => router.navigate(routes.section('Тариф'))}>Тариф</Button><span>Учебные счета и операции</span></div>
+      <div className="bank-overview-footer"><Button type="text" onClick={() => router.navigate(routes.section('Реквизиты'))}>Реквизиты</Button><Button type="text" onClick={() => router.navigate(routes.section('Тариф'))}>Тариф</Button></div>
     </section>
     </ConfigProvider>
     <div className="summary-navigation">

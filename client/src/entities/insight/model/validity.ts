@@ -3,7 +3,7 @@ export const insightValidity = {
   // Editorial review deadline for this demo, not an expiry date supplied by worldsteel.
   expiresAt: '2026-10-30T00:00:00+03:00',
   reviewTrigger: 'Пересмотреть раньше, если изменятся цены поставщика, договоры или план закупок.',
-  policy: 'Для демо выбран пересмотр через неделю после подготовки. Это срок проверки вывода, а не обещание неизменности цен.',
+  policy: 'Пересмотр — через неделю после подготовки. Это срок проверки вывода, а не обещание неизменности цен.',
 } as const;
 
 const dateFormatter = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', timeZone: 'Europe/Moscow' });

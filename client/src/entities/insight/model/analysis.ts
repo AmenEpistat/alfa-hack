@@ -93,7 +93,6 @@ export const marketSource = {
 
 export function getPurchasePlanCsv() {
   return '\uFEFF' + [
-    'УЧЕБНЫЕ ДАННЫЕ;Не являются данными клиента или банка',
     'Компания;Месяц;План закупок, т;Зафиксированная цена, т;Плановая цена, руб/т',
     ...purchasePlan.map(row => [getCompanyName(row.companyId), row.month, row.volume, row.fixedVolume, row.price].join(';')),
   ].join('\r\n');

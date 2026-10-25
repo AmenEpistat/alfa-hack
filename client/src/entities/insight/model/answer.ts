@@ -3,14 +3,27 @@ import {
   type AnalysisView, type CompanyId,
 } from './analysis';
 import { getInsightValidity, insightValidity } from './validity';
+import type { InsightSourceId } from './sources';
 
 export type InsightAnswer = {
   kind: 'calculation' | 'method' | 'comparison' | 'contracts' | 'source' | 'actions' | 'relevance' | 'validity' | 'unsupported';
   paragraphs: string[];
   context: string;
-  references: ('plan' | 'market')[];
+  references: InsightSourceId[];
+  citations: Record<number, InsightSourceId[]>;
   suggestedView?: AnalysisView;
 };
+
+function getAnswerCitations(kind: InsightAnswer['kind'], paragraphs: string[], references: InsightSourceId[]): InsightAnswer['citations'] {
+  switch (kind) {
+    case 'method': case 'contracts': case 'calculation': return { 0: ['plan'], 1: ['plan'] };
+    case 'source': return { 0: ['market'], 1: ['market'], 2: ['plan'] };
+    case 'relevance': return { 0: ['profile'] };
+    case 'comparison': return Object.fromEntries(paragraphs.slice(0, -1).map((_, index) => [index, ['plan']]));
+    case 'unsupported': return references.includes('market') ? { 0: ['market'] } : {};
+    default: return {};
+  }
+}
 
 function readRequestedView(question: string, current: AnalysisView): AnalysisView {
   let companyId: CompanyId = current.companyId;
@@ -30,15 +43,17 @@ function readRequestedView(question: string, current: AnalysisView): AnalysisVie
 export function answerInsightQuestion(rawQuestion: string, current: AnalysisView): InsightAnswer {
   const question = rawQuestion.trim().normalize('NFKC').toLocaleLowerCase('ru-RU').replaceAll('ё', 'е');
   const view = readRequestedView(question, current);
-  const reply = (kind: InsightAnswer['kind'], paragraphs: string[], references: InsightAnswer['references'] = ['plan']): InsightAnswer => ({
-    kind, paragraphs, references, context: describeView(view),
+  const reply = (kind: InsightAnswer['kind'], paragraphs: string[], references: InsightAnswer['references'] = ['plan']): InsightAnswer => {
+    const citations = getAnswerCitations(kind, paragraphs, references);
+    return { kind, paragraphs, citations, references: [...new Set(Object.values(citations).flat())], context: describeView(view),
     ...(kind !== 'unsupported' && (view.companyId !== current.companyId || view.period !== current.period || view.priceChangePct !== current.priceChangePct)
       ? { suggestedView: { ...view } } : {}),
-  });
+    };
+  };
 
   if (/срок.*(годност|актуал|действ)|до.*(когда|дат)|актуал|устаре|пересмотр|обновлять/.test(question)) {
     const validity = getInsightValidity();
-    return { kind: 'validity', context: 'Актуальность разбора', references: [], paragraphs: [
+    return { kind: 'validity', context: 'Актуальность разбора', references: [], citations: {}, paragraphs: [
       validity.expired ? `Срок актуальности истёк: пересмотр был назначен на ${validity.reviewDate}. Вывод нужно проверить заново.` : `Разбор актуален до ${validity.reviewDate}. После этой даты вывод нужно перепроверить.`,
       insightValidity.reviewTrigger,
       insightValidity.policy,
@@ -46,7 +61,7 @@ export function answerInsightQuestion(rawQuestion: string, current: AnalysisView
   }
 
   if (/курс|доллар|кредит|прибыл|марж|выручк|дивиденд|погод|биткоин|крипт/.test(question)) {
-    return reply('unsupported', ['Для этого вопроса в разборе недостаточно данных. Здесь есть только учебный план закупок стали и сценарий изменения цены; прибыль, выручка, курсы валют и кредитные условия не подключены.'], []);
+    return reply('unsupported', ['Для этого вопроса в разборе недостаточно данных. Здесь есть только план закупок стали и сценарий изменения цены; данных о прибыли, выручке, курсах валют и кредитных условиях нет.'], []);
   }
   if (/вероятност|гаранти|точно.*подорож|будет ли.*рост/.test(question)) {
     return reply('unsupported', ['Вероятность изменения цены по этим материалам определить нельзя. Процент в расчёте — сценарное допущение пользователя; обзор worldsteel описывает спрос и не является прогнозом ваших закупочных цен.'], ['market']);
@@ -75,20 +90,20 @@ export function answerInsightQuestion(rawQuestion: string, current: AnalysisView
     return reply('method', [
       `Считаем только объём без зафиксированной цены: ${formatNumber(total.volume)} − ${formatNumber(total.fixedVolume)} = ${formatNumber(total.openVolume)} т. Его плановая стоимость — ${formatMoney(total.exposedBudget)}.`,
       `Изменение бюджета = стоимость незакреплённых закупок × изменение цены: ${formatMoney(total.exposedBudget)} × ${formatRate(view.priceChangePct)} = ${formatMoney(total.delta)}.`,
-      'В этом учебном расчёте не меняются объём закупок, НДС, логистика и выручка. Поэтому это изменение закупочного бюджета, а не оценка прибыли или маржи.',
+      'В этом расчёте не меняются объём закупок, НДС, логистика и выручка. Поэтому это изменение закупочного бюджета, а не оценка прибыли или маржи.',
     ]);
   }
-  if (/почему.*(нам|мне|нас|наш|показан|касает)|зачем.*(разбор|инсайт)/.test(question)) {
+  if (/почему.*(нам|мне|нас|наш|показан|касает)|зачем.*(разбор|инсайт)|что.*значит.*(бизнес|компани|нас|меня|групп)/.test(question)) {
     return reply('relevance', [
-      'В демопрофиле группы указано строительство, поэтому разбор посвящён стоимости материалов. Отрасль сама по себе не доказывает влияние на расходы.',
-      'В расчёте используются вымышленные объёмы закупок. Чтобы подтвердить применимость к вашей компании, нужны её фактический план, условия фиксации цен и договоры на проекты.',
+      'В профиле группы указано строительство, поэтому разбор посвящён стоимости материалов. Отрасль сама по себе не доказывает влияние на расходы.',
+      'Чтобы оценить влияние на компанию, сверьте объёмы из плана с условиями фиксации цен и договорами на проекты.',
     ]);
   }
   if (aboutMarket || /откуда|доказ/.test(question)) {
     return reply('source', [
       `Рыночный контекст: ${marketSource.summary}`,
       marketSource.limitation,
-      'Суммы и объёмы рассчитаны по отдельному учебному плану закупок. План и формулу можно проверить в блоке «Источники и допущения».',
+      'Суммы и объёмы рассчитаны по плану закупок. Нажмите «План закупок» рядом с расчётом, чтобы проверить исходные записи.',
     ], ['market', 'plan']);
   }
   if (/что.*делать|следующ.*шаг|снизить.*риск|рекоменд|что.*провер/.test(question)) {
@@ -102,7 +117,7 @@ export function answerInsightQuestion(rawQuestion: string, current: AnalysisView
     return reply('contracts', [
       `В выбранном плане цена зафиксирована для ${formatNumber(total.fixedVolume)} из ${formatNumber(total.volume)} т. Эти закупки исключены из сценарного изменения бюджета.`,
       `Остаётся ${formatNumber(total.openVolume)} т без фиксации на ${formatMoney(total.exposedBudget)}. При цене ${formatRate(view.priceChangePct)} изменение составит ${formatMoney(total.delta)}.`,
-      'Фиксация в учебном плане означает неизменность цены на выбранном горизонте. Это не подтверждение условий реальных договоров.',
+      'Фиксация в плане означает неизменность цены на выбранном горизонте. Проверьте, что срок фиксации покрывает период поставки.',
     ]);
   }
   if (/кто|больше|по компани|сравн|разрез/.test(question) && !percentage) {
@@ -112,14 +127,14 @@ export function answerInsightQuestion(rawQuestion: string, current: AnalysisView
     return reply('comparison', [
       `По группе за выбранный период больше всего закупок без фиксации у «${leader.name}»: ${formatNumber(leader.openVolume)} т на ${formatMoney(leader.exposedBudget)}.`,
       ...comparison.map(row => `${row.name}: открытый объём ${formatNumber(row.openVolume)} т; изменение бюджета при ${formatRate(view.priceChangePct)} — ${formatMoney(row.delta)}.`),
-      'Сравнение включает три учебные компании за указанный период, даже если в таблице выбрана одна компания.',
+      'Сравнение включает все три компании за указанный период.',
     ]);
   }
   if (percentage || /влиян|бюджет|удорож|расход.*стал|эффект.*стал|покажи.*(групп|закуп|стал)|октябр|ноябр|декабр|квартал|инфраструкт|девелоп|подряд/.test(question)) {
     return reply('calculation', [
       `${getCompanyName(view.companyId)}: плановая стоимость закупок — ${formatMoney(total.budget)}, из неё ${formatMoney(total.exposedBudget)} приходится на объём без фиксации цены.`,
       `При изменении цены на ${formatRate(view.priceChangePct)} закупочный бюджет ${total.delta < 0 ? 'уменьшится' : total.delta > 0 ? 'увеличится' : 'не изменится'}${total.delta === 0 ? '.' : ` на ${formatMoney(Math.abs(total.delta))}.`}`,
-      'Это сценарий на учебных данных, а не прогноз стоимости стали. Долю этих затрат в общей себестоимости и влияние на прибыль по имеющимся данным определить нельзя.',
+      'Это сценарий изменения цены, а не прогноз стоимости стали. Долю этих затрат в общей себестоимости и влияние на прибыль по имеющимся данным определить нельзя.',
     ]);
   }
   return reply('unsupported', [

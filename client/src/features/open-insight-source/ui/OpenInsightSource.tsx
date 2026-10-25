@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Button, Modal, Table, Tag, type TableColumnsType } from 'antd';
-import { Download, ExternalLink, FileSpreadsheet } from 'lucide-react';
-import { formatMoney, formatNumber, getCompanyName, getPurchasePlanCsv, marketSource, purchasePlan } from '@/entities/insight';
+import { Button, Drawer, Modal, Table, type TableColumnsType } from 'antd';
+import { ArrowUpRight, BookOpen, Building2, Download, FileSpreadsheet, Globe2 } from 'lucide-react';
+import { companies, formatMoney, formatNumber, getCompanyName, getPurchasePlanCsv, insightSources, purchasePlan, type InsightSourceId } from '@/entities/insight';
 import './open-insight-source.scss';
 
 type PlanRow = typeof purchasePlan[number];
@@ -14,38 +14,32 @@ const columns: TableColumnsType<PlanRow> = [
   { title: 'Плановая цена, ₽/т', dataIndex: 'price', align: 'right', render: formatMoney },
 ];
 
-export function OpenInsightSource() {
-  const [planOpen, setPlanOpen] = useState(false);
-  return <section className="insight-sources" id="insight-sources" aria-labelledby="insight-sources-heading">
-    <h2 id="insight-sources-heading">Источники и допущения</h2>
-    <div className="insight-source">
-      <div className="insight-source-meta"><Tag color="blue">Рыночный контекст</Tag><span>{marketSource.publisher} · <time dateTime="2026-10-12">{marketSource.date}</time></span></div>
-      <h3>{marketSource.title}</h3>
-      <p>{marketSource.summary}</p>
-      <p className="insight-source-limitation">{marketSource.limitation}</p>
-      <Button href={marketSource.url} target="_blank" rel="noopener noreferrer" icon={<ExternalLink size={15} aria-hidden="true" />}>Открыть первоисточник</Button>
-      <small>worldsteel.org · оригинал на английском · откроется в новой вкладке</small>
-    </div>
-    <div className="insight-source">
-      <div className="insight-source-meta"><Tag color="orange">Учебные данные</Tag><span>План закупок · версия 22.10.2026</span></div>
-      <h3>Из чего получились суммы</h3>
-      <p>Девять записей: три вымышленные компании, октябрь — декабрь 2026. Для каждой записи указаны плановый объём, объём с фиксированной ценой и цена за тонну.</p>
-      <div className="insight-source-actions">
-        <Button onClick={() => setPlanOpen(true)} icon={<FileSpreadsheet size={15} aria-hidden="true" />}>Посмотреть исходные данные</Button>
-        <Button type="text" href={csvHref} download="uchebny-plan-zakupok.csv" icon={<Download size={15} aria-hidden="true" />}>Скачать CSV</Button>
-      </div>
-      <details className="source-assumptions"><summary>Допущения и ограничения расчёта</summary>
-        <ul><li>Меняется цена только закупок без фиксации. Зафиксированные цены считаются неизменными на выбранном горизонте.</li>
-          <li>Процент изменения задаёт пользователь; он не получен из обзора worldsteel.</li>
-          <li>Плановая цена — 60 000 ₽/т. НДС, логистика и объём закупок не пересчитываются.</li>
-          <li>Данных о выручке и полной себестоимости нет. Прибыль и маржу этот расчёт не определяет.</li></ul>
-      </details>
-    </div>
-    <Modal title="Учебный план закупок стали" open={planOpen} onCancel={() => setPlanOpen(false)} width={860} destroyOnHidden
-      footer={<Button onClick={() => setPlanOpen(false)}>Закрыть</Button>}>
-      <p>Это исходный набор для сценарного расчёта. Все компании и объёмы вымышлены. При фильтрации в разборе выбираются строки из этого набора.</p>
-      <Table<PlanRow> aria-label="Исходный план закупок" size="small" columns={columns} dataSource={[...purchasePlan]}
-        rowKey={row => `${row.companyId}:${row.month}`} pagination={false} scroll={{ x: 680 }} />
-    </Modal>
-  </section>;
+export function OpenInsightSource({ activeSource, sourceIds, onOpen, onClose }: {
+  activeSource: InsightSourceId | 'all' | null;
+  sourceIds: InsightSourceId[];
+  onOpen: (id: InsightSourceId | 'all') => void;
+  onClose: () => void;
+}) {
+  const [dataOpen, setDataOpen] = useState<'plan' | 'profile' | null>(null);
+  const orderedIds = activeSource && activeSource !== 'all' ? [activeSource, ...sourceIds.filter(id => id !== activeSource)] : sourceIds;
+  return <>
+    <div className="source-list-entry"><Button type="text" icon={<BookOpen size={15} aria-hidden="true" />} onClick={() => onOpen('all')}>Источники <span className="source-count">{sourceIds.length}</span></Button></div>
+    <Drawer title="Источники" open={activeSource !== null} onClose={() => { setDataOpen(null); onClose(); }} size={440} classNames={{ body: 'sources-drawer-body' }}>
+      <div className="source-list">{orderedIds.map(id => {
+        const source = insightSources[id];
+        const Icon = id === 'market' ? Globe2 : id === 'plan' ? FileSpreadsheet : Building2;
+        return <article key={id} className={`source-document${activeSource === id ? ' is-selected' : ''}`} aria-label={source.title}>
+          <div className="source-document-meta"><span className="source-document-icon"><Icon size={16} aria-hidden="true" /></span><div><strong>{source.publisher}</strong>{source.date && <span>{source.date}</span>}</div></div>
+          <h3>{source.title}</h3><p>{source.description}</p><p className="source-document-scope">{source.scope}</p>
+          <div className="source-document-actions">
+            {source.url ? <Button type="link" href={source.url} target="_blank" rel="noopener noreferrer" icon={<ArrowUpRight size={14} aria-hidden="true" />} iconPlacement="end">Открыть публикацию</Button> : <Button type="link" onClick={() => setDataOpen(id === 'plan' ? 'plan' : 'profile')}>{id === 'plan' ? 'Посмотреть данные' : 'Посмотреть профиль'} <ArrowUpRight size={14} aria-hidden="true" /></Button>}
+            {id === 'plan' && <Button type="text" aria-label="Скачать план закупок в CSV" title="Скачать CSV" href={csvHref} download="plan-zakupok.csv" icon={<Download size={15} aria-hidden="true" />} />}
+          </div>
+        </article>;
+      })}</div>
+      <Modal title={dataOpen === 'plan' ? 'План закупок стали' : 'Профиль группы'} open={dataOpen !== null} onCancel={() => setDataOpen(null)} width={dataOpen === 'plan' ? 860 : 480} destroyOnHidden footer={<Button onClick={() => setDataOpen(null)}>Закрыть</Button>}>
+        {dataOpen === 'plan' ? <Table<PlanRow> aria-label="Исходный план закупок" size="small" columns={columns} dataSource={[...purchasePlan]} rowKey={row => `${row.companyId}:${row.month}`} pagination={false} scroll={{ x: 680 }} /> : <dl className="source-profile"><dt>Группа</dt><dd>ГК «Северстрой»</dd><dt>Отрасль</dt><dd>Строительство</dd><dt>Компании</dt><dd>{companies.map(company => <div key={company.id}>{company.name}</div>)}</dd></dl>}
+      </Modal>
+    </Drawer>
+  </>;
 }

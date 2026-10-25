@@ -16,7 +16,7 @@ export const InsightsPage = observer(function InsightsPage() {
   const savedCount = insightCatalog.filter(entry => preferences.isSaved(entry.id)).length;
   return <div className="insights-journal">
     <header className="journal-heading"><div><p className="journal-kicker">Для вашего бизнеса</p><h1>Бизнес-инсайты</h1><p className="journal-description">Что меняется. Как это касается вас. С чего начать.</p></div>
-      <span className="journal-edition">Демо-подборка · 22 октября</span>
+      <span className="journal-edition">22 октября</span>
     </header>
     <nav className="journal-navigation" aria-label="Темы инсайтов">
       <div className="journal-topics">{topics.map(label => <Button key={label} type="text" className={topic === label && !savedOnly ? 'is-active' : ''} aria-pressed={topic === label && !savedOnly} onClick={() => { setTopic(label); setSavedOnly(false); }}>{label}</Button>)}</div>
@@ -28,8 +28,8 @@ export const InsightsPage = observer(function InsightsPage() {
         <InsightCover variant={entry.cover} />
         <span className="journal-card-topic">{entry.topic}</span><h3>{entry.title}</h3><p>{entry.summary}</p>
       </a>
-      <div className="journal-card-meta"><span>{entry.minutes} мин чтения</span><div><Button type="text" aria-label={`Открыть: ${entry.title}`} icon={<ArrowUpRight size={18} aria-hidden="true" />} onClick={() => router.navigate(routes.insight(entry.id))} /><SaveInsight id={entry.id} iconOnly /></div></div>
+      <div className="journal-card-meta"><div><Button type="text" aria-label={`Открыть: ${entry.title}`} icon={<ArrowUpRight size={18} aria-hidden="true" />} onClick={() => router.navigate(routes.insight(entry.id))} /><SaveInsight id={entry.id} iconOnly /></div></div>
     </article>)}</div> : <Empty className="journal-empty" image={Empty.PRESENTED_IMAGE_SIMPLE} description="Сохраните интересный материал — он появится здесь." />}
-    <footer className="journal-footer">Подборка для строительной группы · На основе подготовленных материалов, без обновления в реальном времени</footer>
+    <footer className="journal-footer">Подборка для строительной группы</footer>
   </div>;
 });

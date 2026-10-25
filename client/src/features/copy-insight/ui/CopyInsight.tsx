@@ -13,7 +13,7 @@ export function CopyInsight({ entry }: { entry?: InsightEntry }) {
     const text = [entry?.title ?? title, entry?.summary ?? summary, ...(entry?.sections.map(section => `${section.title}\n${section.text}`) ?? []), getInsightValidity().label, insightValidity.reviewTrigger,
       'Следующий шаг: запросить у поставщика стоимость ближайших заказов и срок, на который он её подтверждает.',
       `Рыночный контекст: ${marketSource.url}`, marketSource.limitation,
-      'Компании и план закупок — учебные. Процент — допущение пользователя. Вероятность изменения и влияние на прибыль не рассчитаны.',
+      'Процент изменения цены — условие сценария. Вероятность изменения и влияние на прибыль не рассчитаны.',
     ].join('\n\n');
     try {
       await navigator.clipboard.writeText(text);
