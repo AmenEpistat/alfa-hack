@@ -1,0 +1,1482 @@
+{
+  "schema_version": "1.0",
+  "run_id": "synthetic-ranking-example-2026-10-23",
+  "status": "partial",
+  "request": {
+    "company_id": "example-company",
+    "topic": "Синтетические новости и аналитика по компаниям из файла",
+    "start": "2026-10-01",
+    "end": "2026-10-23"
+  },
+  "context": {
+    "company_industry": "Синтетический кросс-отраслевой датасет",
+    "company_region": "Россия"
+  },
+  "watchlist": [
+    {
+      "id": "watch-u67",
+      "name": "НовоСофт Трейд",
+      "aliases": [],
+      "domain": "u67-novosof.example",
+      "specialization": "U_67; ОКВЭД 46.51; оптовая торговля компьютерами и программным обеспечением",
+      "geography": "г. Новосибирск, Новосибирская область",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u67-novosof.example/about",
+          "quote": "U_67: оптовая торговля компьютерами, периферийными устройствами и программным обеспечением.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    },
+    {
+      "id": "watch-u80",
+      "name": "УралМеталлПокрытие",
+      "aliases": [],
+      "domain": "u80-uralmet.example",
+      "specialization": "U_80; ОКВЭД 25.61; обработка металлов и нанесение покрытий",
+      "geography": "г. Екатеринбург, Свердловская область",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u80-uralmet.example/about",
+          "quote": "U_80: обработка металлов и нанесение покрытий на металлы.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    },
+    {
+      "id": "watch-u92",
+      "name": "ЧелФармОпт",
+      "aliases": [],
+      "domain": "u92-chelfarm.example",
+      "specialization": "U_92; ОКВЭД 46.46; оптовая торговля фармацевтической продукцией",
+      "geography": "г. Челябинск, Челябинская область",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u92-chelfarm.example/about",
+          "quote": "U_92: оптовая торговля фармацевтической продукцией.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    },
+    {
+      "id": "watch-u103",
+      "name": "ЮжУралЛизинг",
+      "aliases": [],
+      "domain": "u103-yuzhuralleasing.example",
+      "specialization": "U_103; ОКВЭД 64.91.2; финансовая аренда и лизинг",
+      "geography": "г. Челябинск, Челябинская область",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u103-yuzhuralleasing.example/about",
+          "quote": "U_103: деятельность по финансовой аренде и сублизингу.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    },
+    {
+      "id": "watch-u111",
+      "name": "АлтайЭнергоСеть",
+      "aliases": [],
+      "domain": "u111-altaienergo.example",
+      "specialization": "U_111; ОКВЭД 35.12.1; передача электроэнергии",
+      "geography": "г. Барнаул, Алтайский край",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u111-altaienergo.example/about",
+          "quote": "U_111: передача электроэнергии.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    },
+    {
+      "id": "watch-u141",
+      "name": "БашЭлектроТрейд",
+      "aliases": [],
+      "domain": "u141-bashelectro.example",
+      "specialization": "U_141; ОКВЭД 46.43; оптовая торговля бытовыми электротоварами",
+      "geography": "г. Уфа, Башкортостан",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u141-bashelectro.example/about",
+          "quote": "U_141: оптовая торговля бытовыми электротоварами.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    },
+    {
+      "id": "watch-u158",
+      "name": "МосПромМаш",
+      "aliases": [],
+      "domain": "u158-mosprommash.example",
+      "specialization": "U_158; ОКВЭД 46.69.9; оптовая торговля машинами и оборудованием",
+      "geography": "г. Москва",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u158-mosprommash.example/about",
+          "quote": "U_158: оптовая торговля прочими машинами и оборудованием общепромышленного назначения.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    },
+    {
+      "id": "watch-u211",
+      "name": "МедЦентрСтолица",
+      "aliases": [],
+      "domain": "u211-medstolica.example",
+      "specialization": "U_211; ОКВЭД 86.21; общая врачебная практика",
+      "geography": "г. Москва",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u211-medstolica.example/about",
+          "quote": "U_211: общая врачебная практика.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    },
+    {
+      "id": "watch-u214",
+      "name": "ОнлайнМаркет РФ",
+      "aliases": [],
+      "domain": "u214-onlinemarket.example",
+      "specialization": "U_214; ОКВЭД 47.91; розничная торговля через интернет",
+      "geography": "г. Москва",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u214-onlinemarket.example/about",
+          "quote": "U_214: торговля розничная по почте или в информационно-коммуникационной сети Интернет.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    },
+    {
+      "id": "watch-u473",
+      "name": "СПбНИИТех",
+      "aliases": [],
+      "domain": "u473-spbnii.example",
+      "specialization": "U_473; ОКВЭД 72.19; научные исследования и разработки",
+      "geography": "г. Санкт-Петербург",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u473-spbnii.example/about",
+          "quote": "U_473: научные исследования и разработки в области естественных и технических наук.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    },
+    {
+      "id": "watch-u768",
+      "name": "ТрансЛогистикМ",
+      "aliases": [],
+      "domain": "u768-translog.example",
+      "specialization": "U_768; ОКВЭД 49.41.1; перевозка специализированным автотранспортом",
+      "geography": "г. Москва",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u768-translog.example/about",
+          "quote": "U_768: перевозка грузов специализированными автотранспортными средствами.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    },
+    {
+      "id": "watch-u766",
+      "name": "СтройПодготовка",
+      "aliases": [],
+      "domain": "u766-stroypodgot.example",
+      "specialization": "U_766; ОКВЭД 43.12; подготовка строительной площадки",
+      "geography": "г. Москва",
+      "enabled": true,
+      "confirmed": true,
+      "apply_to_group": false,
+      "origin": "industry_agent",
+      "relationship": "industry_peer",
+      "industry": "Синтетическая выборка по данным файла",
+      "discovery_evidence": [
+        {
+          "url": "https://u766-stroypodgot.example/about",
+          "quote": "U_766: подготовка строительной площадки.",
+          "industry_match_reason": "Компания включена в синтетический watchlist по данным файла."
+        }
+      ]
+    }
+  ],
+  "topics": {
+    "news": [
+      {
+        "item_id": "news-01",
+        "topic": "news",
+        "document_id": "doc-news-01",
+        "version_id": "ver-news-01",
+        "chunk_id": "chunk-news-01",
+        "title": "НовоСофт Трейд расширяет поставки ПО в Новосибирске",
+        "text": "Синтетическая новость. НовоСофт Трейд (U_67) сообщила о расширении поставок программного обеспечения для промышленных заказчиков в Новосибирской области. Компания из ОКВЭД 46.51 делает ставку на сервисные контракты.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-01",
+        "published_at": "2026-10-02",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u67",
+            "name": "НовоСофт Трейд",
+            "domain": "u67-novosof.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-02",
+        "topic": "news",
+        "document_id": "doc-news-02",
+        "version_id": "ver-news-02",
+        "chunk_id": "chunk-news-02",
+        "title": "УралМеталлПокрытие запускает новую линию обработки металлов",
+        "text": "Синтетическая новость. УралМеталлПокрытие (U_80) объявила о запуске линии нанесения покрытий на промышленные металлоконструкции в Екатеринбурге. Компания относит проект к программе повышения качества продукции.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-02",
+        "published_at": "2026-10-03",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u80",
+            "name": "УралМеталлПокрытие",
+            "domain": "u80-uralmet.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-03",
+        "topic": "news",
+        "document_id": "doc-news-03",
+        "version_id": "ver-news-03",
+        "chunk_id": "chunk-news-03",
+        "title": "ЧелФармОпт открыл складской комплекс в Челябинске",
+        "text": "Синтетическая новость. ЧелФармОпт (U_92) открыл складской комплекс для фармацевтической продукции. Компания из сегмента оптовой торговли лекарствами рассчитывает ускорить поставки в регионы.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-03",
+        "published_at": "2026-10-04",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u92",
+            "name": "ЧелФармОпт",
+            "domain": "u92-chelfarm.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-04",
+        "topic": "news",
+        "document_id": "doc-news-04",
+        "version_id": "ver-news-04",
+        "chunk_id": "chunk-news-04",
+        "title": "ЮжУралЛизинг развивает лизинг оборудования из Китая",
+        "text": "Синтетическая новость. ЮжУралЛизинг (U_103) сообщил о росте сделок по лизингу оборудования с участием китайских поставщиков. Компания работает из Челябинска и специализируется на финансовой аренде.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-04",
+        "published_at": "2026-10-05",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u103",
+            "name": "ЮжУралЛизинг",
+            "domain": "u103-yuzhuralleasing.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-05",
+        "topic": "news",
+        "document_id": "doc-news-05",
+        "version_id": "ver-news-05",
+        "chunk_id": "chunk-news-05",
+        "title": "АлтайЭнергоСеть модернизирует распределительные сети",
+        "text": "Синтетическая новость. АлтайЭнергоСеть (U_111) начала программу модернизации распределительных сетей в Алтайском крае. Компания занимается передачей электроэнергии и входит в число крупных работодателей региона.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-05",
+        "published_at": "2026-10-06",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u111",
+            "name": "АлтайЭнергоСеть",
+            "domain": "u111-altaienergo.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-06",
+        "topic": "news",
+        "document_id": "doc-news-06",
+        "version_id": "ver-news-06",
+        "chunk_id": "chunk-news-06",
+        "title": "БашЭлектроТрейд открывает шоурум бытовой электротехники",
+        "text": "Синтетическая новость. БашЭлектроТрейд (U_141) открывает шоурум бытовых электротоваров в Уфе. Компания отмечает рост интереса к комплексным поставкам для строительных и ремонтных подрядчиков.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-06",
+        "published_at": "2026-10-07",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u141",
+            "name": "БашЭлектроТрейд",
+            "domain": "u141-bashelectro.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-07",
+        "topic": "news",
+        "document_id": "doc-news-07",
+        "version_id": "ver-news-07",
+        "chunk_id": "chunk-news-07",
+        "title": "МосПромМаш расширяет сервисный хаб для промышленного оборудования",
+        "text": "Синтетическая новость. МосПромМаш (U_158) расширяет сервисный хаб в Москве для обслуживания промышленного оборудования. Компания указывает на поставки из Китая и Гонконга как одно из направлений закупок.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-07",
+        "published_at": "2026-10-08",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u158",
+            "name": "МосПромМаш",
+            "domain": "u158-mosprommash.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-08",
+        "topic": "news",
+        "document_id": "doc-news-08",
+        "version_id": "ver-news-08",
+        "chunk_id": "chunk-news-08",
+        "title": "МедЦентрСтолица запускает программу телемедицины",
+        "text": "Синтетическая новость. МедЦентрСтолица (U_211) запускает программу телемедицинских консультаций для корпоративных клиентов в Москве. Компания работает в сегменте общей врачебной практики.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-08",
+        "published_at": "2026-10-09",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u211",
+            "name": "МедЦентрСтолица",
+            "domain": "u211-medstolica.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-09",
+        "topic": "news",
+        "document_id": "doc-news-09",
+        "version_id": "ver-news-09",
+        "chunk_id": "chunk-news-09",
+        "title": "ОнлайнМаркет РФ открывает фулфилмент-центр",
+        "text": "Синтетическая новость. ОнлайнМаркет РФ (U_214) открывает фулфилмент-центр для обработки интернет-заказов. Компания развивает розничную торговлю через интернет и работает с международными поставщиками.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-09",
+        "published_at": "2026-10-10",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u214",
+            "name": "ОнлайнМаркет РФ",
+            "domain": "u214-onlinemarket.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-10",
+        "topic": "news",
+        "document_id": "doc-news-10",
+        "version_id": "ver-news-10",
+        "chunk_id": "chunk-news-10",
+        "title": "СПбНИИТех запускает лабораторию промышленной диагностики",
+        "text": "Синтетическая новость. СПбНИИТех (U_473) запускает лабораторию промышленной диагностики в Санкт-Петербурге. Организация выполняет научные исследования и разработки в технических науках.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-10",
+        "published_at": "2026-10-11",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u473",
+            "name": "СПбНИИТех",
+            "domain": "u473-spbnii.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-11",
+        "topic": "news",
+        "document_id": "doc-news-11",
+        "version_id": "ver-news-11",
+        "chunk_id": "chunk-news-11",
+        "title": "ТрансЛогистикМ обновляет парк специализированных грузовиков",
+        "text": "Синтетическая новость. ТрансЛогистикМ (U_768) обновляет парк специализированных грузовых автомобилей для междугородних перевозок. Компания относится к крупным перевозчикам в сегменте специализированного автотранспорта.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-11",
+        "published_at": "2026-10-12",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u768",
+            "name": "ТрансЛогистикМ",
+            "domain": "u768-translog.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-12",
+        "topic": "news",
+        "document_id": "doc-news-12",
+        "version_id": "ver-news-12",
+        "chunk_id": "chunk-news-12",
+        "title": "СтройПодготовка усиливает экологический контроль на площадках",
+        "text": "Синтетическая новость. СтройПодготовка (U_766) сообщила об усилении экологического контроля при подготовке строительных площадок в Москве. Компания выполняет работы по подготовке строительной площадки.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-12",
+        "published_at": "2026-10-13",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u766",
+            "name": "СтройПодготовка",
+            "domain": "u766-stroypodgot.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-13",
+        "topic": "news",
+        "document_id": "doc-news-13",
+        "version_id": "ver-news-13",
+        "chunk_id": "chunk-news-13",
+        "title": "НовоСофт Трейд открывает центр поддержки клиентов",
+        "text": "Синтетическая новость. НовоСофт Трейд (U_67) открывает центр поддержки клиентов по программным продуктам. Компания из Новосибирска планирует сократить время реакции на обращения промышленных заказчиков.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-13",
+        "published_at": "2026-10-14",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u67",
+            "name": "НовоСофт Трейд",
+            "domain": "u67-novosof.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-14",
+        "topic": "news",
+        "document_id": "doc-news-14",
+        "version_id": "ver-news-14",
+        "chunk_id": "chunk-news-14",
+        "title": "УралМеталлПокрытие поставит конструкции для промышленного объекта",
+        "text": "Синтетическая новость. УралМеталлПокрытие (U_80) заключила контракт на поставку металлических конструкций с покрытием для промышленного объекта. Сумма и заказчик в синтетическом примере не раскрываются.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-14",
+        "published_at": "2026-10-15",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u80",
+            "name": "УралМеталлПокрытие",
+            "domain": "u80-uralmet.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-15",
+        "topic": "news",
+        "document_id": "doc-news-15",
+        "version_id": "ver-news-15",
+        "chunk_id": "chunk-news-15",
+        "title": "ЧелФармОпт внедряет холодную цепочку для поставок",
+        "text": "Синтетическая новость. ЧелФармОпт (U_92) внедряет систему холодной цепочки на складе в Челябинске. Компания работает в оптовой торговле фармацевтической продукцией и развивает логистику.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-15",
+        "published_at": "2026-10-16",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u92",
+            "name": "ЧелФармОпт",
+            "domain": "u92-chelfarm.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-16",
+        "topic": "news",
+        "document_id": "doc-news-16",
+        "version_id": "ver-news-16",
+        "chunk_id": "chunk-news-16",
+        "title": "ЮжУралЛизинг запускает программу лизинга медоборудования",
+        "text": "Синтетическая новость. ЮжУралЛизинг (U_103) запускает программу финансовой аренды медицинского оборудования для клиник Урала. Компания расширяет продуктовую линейку в лизинговом сегменте.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-16",
+        "published_at": "2026-10-17",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u103",
+            "name": "ЮжУралЛизинг",
+            "domain": "u103-yuzhuralleasing.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-17",
+        "topic": "news",
+        "document_id": "doc-news-17",
+        "version_id": "ver-news-17",
+        "chunk_id": "chunk-news-17",
+        "title": "АлтайЭнергоСеть внедряет умный учет электроэнергии",
+        "text": "Синтетическая новость. АлтайЭнергоСеть (U_111) сообщила о внедрении умных приборов учета на распределительных сетях. Проект направлен на снижение потерь и повышение наблюдаемости сети.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-17",
+        "published_at": "2026-10-18",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u111",
+            "name": "АлтайЭнергоСеть",
+            "domain": "u111-altaienergo.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-18",
+        "topic": "news",
+        "document_id": "doc-news-18",
+        "version_id": "ver-news-18",
+        "chunk_id": "chunk-news-18",
+        "title": "БашЭлектроТрейд расширяет ассортимент кабельной продукции",
+        "text": "Синтетическая новость. БашЭлектроТрейд (U_141) расширяет ассортимент кабельной продукции и электроустановочных изделий. Компания ориентируется на поставки для строительных объектов в Башкортостане.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-18",
+        "published_at": "2026-10-19",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u141",
+            "name": "БашЭлектроТрейд",
+            "domain": "u141-bashelectro.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-19",
+        "topic": "news",
+        "document_id": "doc-news-19",
+        "version_id": "ver-news-19",
+        "chunk_id": "chunk-news-19",
+        "title": "МосПромМаш запускает склад запчастей для импортного оборудования",
+        "text": "Синтетическая новость. МосПромМаш (U_158) запускает склад запчастей для импортного промышленного оборудования. Компания указывает на необходимость ускоренного сервиса для оборудования из Азии.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-19",
+        "published_at": "2026-10-20",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u158",
+            "name": "МосПромМаш",
+            "domain": "u158-mosprommash.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-20",
+        "topic": "news",
+        "document_id": "doc-news-20",
+        "version_id": "ver-news-20",
+        "chunk_id": "chunk-news-20",
+        "title": "МедЦентрСтолица расширяет диагностическое направление",
+        "text": "Синтетическая новость. МедЦентрСтолица (U_211) расширяет диагностическое направление и закупает оборудование для профилактических осмотров. Компания работает в Москве в сегменте общей врачебной практики.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-20",
+        "published_at": "2026-10-21",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u211",
+            "name": "МедЦентрСтолица",
+            "domain": "u211-medstolica.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-21",
+        "topic": "news",
+        "document_id": "doc-news-21",
+        "version_id": "ver-news-21",
+        "chunk_id": "chunk-news-21",
+        "title": "ОнлайнМаркет РФ тестирует доставку на следующий день",
+        "text": "Синтетическая новость. ОнлайнМаркет РФ (U_214) тестирует доставку на следующий день для ряда товарных категорий. Компания развивает интернет-розницу и логистические сервисы для маркетплейс-продавцов.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-21",
+        "published_at": "2026-10-22",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u214",
+            "name": "ОнлайнМаркет РФ",
+            "domain": "u214-onlinemarket.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "news-22",
+        "topic": "news",
+        "document_id": "doc-news-22",
+        "version_id": "ver-news-22",
+        "chunk_id": "chunk-news-22",
+        "title": "СПбНИИТех и ТрансЛогистикМ обсуждают диагностику для транспорта",
+        "text": "Синтетическая новость. СПбНИИТех (U_473) и ТрансЛогистикМ (U_768) обсудили пилот по диагностике специализированного транспорта. Проект может объединить научные разработки и логистическую экспертизу.",
+        "source_type": "external",
+        "source_name": "Синтетический новостной поток",
+        "url": "https://news.example/news-22",
+        "published_at": "2026-10-23",
+        "fetched_at": null,
+        "page_start": null,
+        "page_end": null,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример, не использовать как фактическое доказательство"
+        ],
+        "date_in_range": true,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u473",
+            "name": "СПбНИИТех",
+            "domain": "u473-spbnii.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          },
+          {
+            "watch_id": "watch-u768",
+            "name": "ТрансЛогистикМ",
+            "domain": "u768-translog.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      }
+    ],
+    "pdf": [
+      {
+        "item_id": "pdf-01",
+        "topic": "pdf",
+        "document_id": "doc-pdf-01",
+        "version_id": "ver-pdf-01",
+        "chunk_id": "chunk-pdf-01",
+        "title": "Аналитика: рынок обработки металлов и УралМеталлПокрытие",
+        "text": "Синтетический аналитический фрагмент. Рассматривается сегмент обработки металлов и нанесения покрытий. УралМеталлПокрытие (U_80) из Екатеринбурга указана как пример компании с ОКВЭД 25.61 и выручкой более 1 млрд руб.",
+        "source_type": "alpha_pdf",
+        "source_name": "Синтетический аналитический корпус",
+        "url": null,
+        "published_at": null,
+        "fetched_at": null,
+        "page_start": 3,
+        "page_end": 3,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример"
+        ],
+        "date_in_range": null,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u80",
+            "name": "УралМеталлПокрытие",
+            "domain": "u80-uralmet.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "pdf-02",
+        "topic": "pdf",
+        "document_id": "doc-pdf-02",
+        "version_id": "ver-pdf-02",
+        "chunk_id": "chunk-pdf-02",
+        "title": "Аналитика: фармацевтический опт и ЧелФармОпт",
+        "text": "Синтетический аналитический фрагмент. Описывается оптовая торговля фармацевтической продукцией. ЧелФармОпт (U_92) из Челябинска имеет ОКВЭД 46.46 и высокую выручку в синтетической выборке.",
+        "source_type": "alpha_pdf",
+        "source_name": "Синтетический аналитический корпус",
+        "url": null,
+        "published_at": null,
+        "fetched_at": null,
+        "page_start": 4,
+        "page_end": 4,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример"
+        ],
+        "date_in_range": null,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u92",
+            "name": "ЧелФармОпт",
+            "domain": "u92-chelfarm.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "pdf-03",
+        "topic": "pdf",
+        "document_id": "doc-pdf-03",
+        "version_id": "ver-pdf-03",
+        "chunk_id": "chunk-pdf-03",
+        "title": "Аналитика: лизинг оборудования и ЮжУралЛизинг",
+        "text": "Синтетический аналитический фрагмент. Рассматривается финансовая аренда и лизинг. ЮжУралЛизинг (U_103) из Челябинска имеет ОКВЭД 64.91.2 и признаки внешнеторговых связей с Китаем.",
+        "source_type": "alpha_pdf",
+        "source_name": "Синтетический аналитический корпус",
+        "url": null,
+        "published_at": null,
+        "fetched_at": null,
+        "page_start": 5,
+        "page_end": 5,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример"
+        ],
+        "date_in_range": null,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u103",
+            "name": "ЮжУралЛизинг",
+            "domain": "u103-yuzhuralleasing.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "pdf-04",
+        "topic": "pdf",
+        "document_id": "doc-pdf-04",
+        "version_id": "ver-pdf-04",
+        "chunk_id": "chunk-pdf-04",
+        "title": "Аналитика: передача электроэнергии и АлтайЭнергоСеть",
+        "text": "Синтетический аналитический фрагмент. Описывается сегмент передачи электроэнергии. АлтайЭнергоСеть (U_111) из Барнаула имеет ОКВЭД 35.12.1 и относится к крупным работодателям синтетической выборки.",
+        "source_type": "alpha_pdf",
+        "source_name": "Синтетический аналитический корпус",
+        "url": null,
+        "published_at": null,
+        "fetched_at": null,
+        "page_start": 6,
+        "page_end": 6,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример"
+        ],
+        "date_in_range": null,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u111",
+            "name": "АлтайЭнергоСеть",
+            "domain": "u111-altaienergo.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "pdf-05",
+        "topic": "pdf",
+        "document_id": "doc-pdf-05",
+        "version_id": "ver-pdf-05",
+        "chunk_id": "chunk-pdf-05",
+        "title": "Аналитика: бытовые электротовары и БашЭлектроТрейд",
+        "text": "Синтетический аналитический фрагмент. Рассматривается оптовая торговля бытовыми электротоварами. БашЭлектроТрейд (U_141) из Уфы имеет ОКВЭД 46.43 и несколько продуктовых маркеров в синтетических данных.",
+        "source_type": "alpha_pdf",
+        "source_name": "Синтетический аналитический корпус",
+        "url": null,
+        "published_at": null,
+        "fetched_at": null,
+        "page_start": 7,
+        "page_end": 7,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример"
+        ],
+        "date_in_range": null,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u141",
+            "name": "БашЭлектроТрейд",
+            "domain": "u141-bashelectro.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "pdf-06",
+        "topic": "pdf",
+        "document_id": "doc-pdf-06",
+        "version_id": "ver-pdf-06",
+        "chunk_id": "chunk-pdf-06",
+        "title": "Аналитика: промышленное оборудование и МосПромМаш",
+        "text": "Синтетический аналитический фрагмент. Описывается оптовая торговля машинами и оборудованием. МосПромМаш (U_158) из Москвы имеет ОКВЭД 46.69.9 и признаки поставок из Китая и Гонконга.",
+        "source_type": "alpha_pdf",
+        "source_name": "Синтетический аналитический корпус",
+        "url": null,
+        "published_at": null,
+        "fetched_at": null,
+        "page_start": 8,
+        "page_end": 8,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример"
+        ],
+        "date_in_range": null,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u158",
+            "name": "МосПромМаш",
+            "domain": "u158-mosprommash.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "pdf-07",
+        "topic": "pdf",
+        "document_id": "doc-pdf-07",
+        "version_id": "ver-pdf-07",
+        "chunk_id": "chunk-pdf-07",
+        "title": "Аналитика: частная медицина и МедЦентрСтолица",
+        "text": "Синтетический аналитический фрагмент. Рассматривается общая врачебная практика. МедЦентрСтолица (U_211) из Москвы имеет ОКВЭД 86.21 и очень высокую выручку в синтетической выборке.",
+        "source_type": "alpha_pdf",
+        "source_name": "Синтетический аналитический корпус",
+        "url": null,
+        "published_at": null,
+        "fetched_at": null,
+        "page_start": 9,
+        "page_end": 9,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример"
+        ],
+        "date_in_range": null,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u211",
+            "name": "МедЦентрСтолица",
+            "domain": "u211-medstolica.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "pdf-08",
+        "topic": "pdf",
+        "document_id": "doc-pdf-08",
+        "version_id": "ver-pdf-08",
+        "chunk_id": "chunk-pdf-08",
+        "title": "Аналитика: интернет-торговля и ОнлайнМаркет РФ",
+        "text": "Синтетический аналитический фрагмент. Описывается розничная торговля через интернет. ОнлайнМаркет РФ (U_214) из Москвы имеет ОКВЭД 47.91 и международные маркеры поставок.",
+        "source_type": "alpha_pdf",
+        "source_name": "Синтетический аналитический корпус",
+        "url": null,
+        "published_at": null,
+        "fetched_at": null,
+        "page_start": 10,
+        "page_end": 10,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример"
+        ],
+        "date_in_range": null,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u214",
+            "name": "ОнлайнМаркет РФ",
+            "domain": "u214-onlinemarket.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "pdf-09",
+        "topic": "pdf",
+        "document_id": "doc-pdf-09",
+        "version_id": "ver-pdf-09",
+        "chunk_id": "chunk-pdf-09",
+        "title": "Аналитика: НИОКР и СПбНИИТех",
+        "text": "Синтетический аналитический фрагмент. Рассматриваются научные исследования и разработки в технических науках. СПбНИИТех (U_473) из Санкт-Петербурга имеет ОКВЭД 72.19 и внешнеторговые маркеры.",
+        "source_type": "alpha_pdf",
+        "source_name": "Синтетический аналитический корпус",
+        "url": null,
+        "published_at": null,
+        "fetched_at": null,
+        "page_start": 11,
+        "page_end": 11,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример"
+        ],
+        "date_in_range": null,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u473",
+            "name": "СПбНИИТех",
+            "domain": "u473-spbnii.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "pdf-10",
+        "topic": "pdf",
+        "document_id": "doc-pdf-10",
+        "version_id": "ver-pdf-10",
+        "chunk_id": "chunk-pdf-10",
+        "title": "Аналитика: специализированные перевозки и ТрансЛогистикМ",
+        "text": "Синтетический аналитический фрагмент. Описывается перевозка грузов специализированными автотранспортными средствами. ТрансЛогистикМ (U_768) из Москвы имеет ОКВЭД 49.41.1 и крупную выручку.",
+        "source_type": "alpha_pdf",
+        "source_name": "Синтетический аналитический корпус",
+        "url": null,
+        "published_at": null,
+        "fetched_at": null,
+        "page_start": 12,
+        "page_end": 12,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример"
+        ],
+        "date_in_range": null,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u768",
+            "name": "ТрансЛогистикМ",
+            "domain": "u768-translog.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      },
+      {
+        "item_id": "pdf-11",
+        "topic": "pdf",
+        "document_id": "doc-pdf-11",
+        "version_id": "ver-pdf-11",
+        "chunk_id": "chunk-pdf-11",
+        "title": "Аналитика: подготовка строительных площадок и СтройПодготовка",
+        "text": "Синтетический аналитический фрагмент. Рассматривается подготовка строительной площадки. СтройПодготовка (U_766) из Москвы имеет ОКВЭД 43.12 и отрицательный маркер в синтетических данных, требующий проверки.",
+        "source_type": "alpha_pdf",
+        "source_name": "Синтетический аналитический корпус",
+        "url": null,
+        "published_at": null,
+        "fetched_at": null,
+        "page_start": 13,
+        "page_end": 13,
+        "char_start": null,
+        "char_end": null,
+        "section_title": null,
+        "table_ids": [],
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический пример"
+        ],
+        "date_in_range": null,
+        "duplicate_group": null,
+        "entity_matches": [
+          {
+            "watch_id": "watch-u766",
+            "name": "СтройПодготовка",
+            "domain": "u766-stroypodgot.example",
+            "match_type": "name_mention",
+            "relationship": "industry_peer",
+            "origin": "industry_agent"
+          }
+        ]
+      }
+    ],
+    "competitors": []
+  },
+  "topic_gaps": {
+    "news": [],
+    "pdf": [],
+    "competitors": []
+  },
+  "gaps": [
+    "Пример содержит только синтетические данные для проверки контракта ранжирования",
+    "Названия компаний и новости придуманы на основе идентификаторов и отраслевых полей из файла"
+  ],
+  "errors": []
+}

@@ -23,11 +23,21 @@
 
         python = pythonPkg.withPackages (
           ps: with ps; [
+            # Backend
             fastapi
             pydantic
             sqlalchemy
             uvicorn
-            pip
+
+            # ranking_module
+            pandas
+            numpy
+            pyyaml
+            jsonschema
+            orjson
+            scikit-learn
+            sentence-transformers
+            faiss
           ]
         );
 
@@ -35,13 +45,22 @@
           name = "alfa-hack-backend";
 
           runtimeInputs = [
+            pkgs.git
             python
           ];
 
           text = ''
+            set -e
+
             cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
-            export PYTHONPATH="$PWD/server''${PYTHONPATH:+:$PYTHONPATH}"
+            export PYTHONPATH="${python}/${python.sitePackages}:$PWD/server:$PWD/ranking_module/src''${PYTHONPATH:+:$PYTHONPATH}"
+
+            export HF_HOME="''${HF_HOME:-$PWD/.cache/huggingface}"
+            export HF_HUB_CACHE="''${HF_HUB_CACHE:-$HF_HOME/hub}"
+            export TRANSFORMERS_CACHE="''${TRANSFORMERS_CACHE:-$HF_HOME/transformers}"
+
+            mkdir -p "$HF_HOME"
 
             exec uvicorn app.main:app \
               --app-dir server \
@@ -56,9 +75,12 @@
 
           runtimeInputs = [
             pkgs.nodejs
+            pkgs.git
           ];
 
           text = ''
+            set -e
+
             cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)/client"
 
             if [ ! -d node_modules ]; then
@@ -105,9 +127,15 @@
           ];
 
           shellHook = ''
-            export PYTHONPATH="${python}/${python.sitePackages}"
-            export PYTHONPATH="$PWD/backend''${PYTHONPATH:+:$PYTHONPATH}"
+            export PYTHONPATH="${python}/${python.sitePackages}:$PWD/server:$PWD/ranking_module/src''${PYTHONPATH:+:$PYTHONPATH}"
+
+            export HF_HOME="''${HF_HOME:-$PWD/.cache/huggingface}"
+            export HF_HUB_CACHE="''${HF_HUB_CACHE:-$HF_HOME/hub}"
+            export TRANSFORMERS_CACHE="''${TRANSFORMERS_CACHE:-$HF_HOME/transformers}"
+
             export VITE_API_URL="''${VITE_API_URL:-http://localhost:8000}"
+
+            mkdir -p "$HF_HOME"
 
             echo "Alfa Hack development shell"
             echo ""

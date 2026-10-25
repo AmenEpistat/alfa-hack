@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import (
+    JSON,
     Boolean,
     DateTime,
     Float,
@@ -48,6 +49,38 @@ class User(Base):
     )
 
 
+class Company(Base):
+    __tablename__ = "companies"
+
+    id: Mapped[str] = mapped_column(String(150), primary_key=True)
+    name: Mapped[str] = mapped_column(String(500), nullable=False)
+
+    data: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow,
+        nullable=False,
+    )
+
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
+        nullable=False,
+    )
+
+    ranking_items: Mapped[list["RankingItem"]] = relationship(
+        back_populates="company",
+        cascade="all, delete-orphan",
+    )
+
+    purchase_plan: Mapped[list["PurchasePlan"]] = relationship(
+        back_populates="company",
+        cascade="all, delete-orphan",
+    )
+
+
 class Insight(Base):
     __tablename__ = "insights"
 
@@ -90,18 +123,6 @@ class InsightSection(Base):
 
     insight: Mapped["Insight"] = relationship(
         back_populates="sections",
-    )
-
-
-class Company(Base):
-    __tablename__ = "companies"
-
-    id: Mapped[str] = mapped_column(String(100), primary_key=True)
-    name: Mapped[str] = mapped_column(String(255), nullable=False)
-
-    purchase_plan: Mapped[list["PurchasePlan"]] = relationship(
-        back_populates="company",
-        cascade="all, delete-orphan",
     )
 
 
@@ -199,4 +220,162 @@ class QuestionHistory(Base):
 
     user: Mapped["User"] = relationship(
         back_populates="questions",
+    )
+
+
+class RankingRun(Base):
+    __tablename__ = "ranking_runs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    run_id: Mapped[str] = mapped_column(
+        String(150),
+        unique=True,
+        nullable=False,
+        index=True,
+    )
+
+    company_id: Mapped[str | None] = mapped_column(
+        String(150),
+        nullable=True,
+        index=True,
+    )
+
+    topic: Mapped[str | None] = mapped_column(
+        String(500),
+        nullable=True,
+    )
+
+    status: Mapped[str] = mapped_column(
+        String(30),
+        nullable=False,
+    )
+
+    schema_version: Mapped[str | None] = mapped_column(
+        String(30),
+        nullable=True,
+    )
+
+    request_payload: Mapped[dict] = mapped_column(
+        JSON,
+        default=dict,
+        nullable=False,
+    )
+
+    result_payload: Mapped[dict] = mapped_column(
+        JSON,
+        default=dict,
+        nullable=False,
+    )
+
+    diagnostics: Mapped[dict] = mapped_column(
+        JSON,
+        default=dict,
+        nullable=False,
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow,
+        nullable=False,
+    )
+
+    items: Mapped[list["RankingItem"]] = relationship(
+        back_populates="run",
+        cascade="all, delete-orphan",
+    )
+
+    sets: Mapped[list["RankingSetRecord"]] = relationship(
+        back_populates="run",
+        cascade="all, delete-orphan",
+    )
+
+
+class RankingItem(Base):
+    __tablename__ = "ranking_items"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
+    run_id: Mapped[int] = mapped_column(
+        ForeignKey("ranking_runs.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+
+    company_id: Mapped[str | None] = mapped_column(
+        ForeignKey("companies.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+
+    item_id: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
+        index=True,
+    )
+
+    document_id: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+    )
+
+    kind: Mapped[str] = mapped_column(
+        String(30),
+        nullable=False,
+    )
+
+    title: Mapped[str | None] = mapped_column(
+        String(1000),
+        nullable=True,
+    )
+
+    payload: Mapped[dict] = mapped_column(
+        JSON,
+        default=dict,
+        nullable=False,
+    )
+
+    run: Mapped["RankingRun"] = relationship(
+        back_populates="items",
+    )
+
+    company: Mapped["Company | None"] = relationship(
+        back_populates="ranking_items",
+    )
+
+
+class RankingSetRecord(Base):
+    __tablename__ = "ranking_sets"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
+    run_id: Mapped[int] = mapped_column(
+        ForeignKey("ranking_runs.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+
+    set_id: Mapped[str] = mapped_column(
+        String(150),
+        nullable=False,
+        index=True,
+    )
+
+    company_id: Mapped[str | None] = mapped_column(
+        String(150),
+        nullable=True,
+    )
+
+    set_score: Mapped[float] = mapped_column(
+        Float,
+        nullable=False,
+    )
+
+    payload: Mapped[dict] = mapped_column(
+        JSON,
+        default=dict,
+        nullable=False,
+    )
+
+    run: Mapped["RankingRun"] = relationship(
+        back_populates="sets",
     )
