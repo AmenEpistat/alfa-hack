@@ -82,9 +82,10 @@
             # LLM configuration.
             export ALPHA_LLM_BASE_URL="''${ALPHA_LLM_BASE_URL:-https://api.alfahack-gateway26.ru/v1}"
             export ALPHA_LLM_FALLBACK_BASE_URL="''${ALPHA_LLM_FALLBACK_BASE_URL:-}"
+
             # Вручную, пожалуйста
             export ALPHA_LLM_API_KEY="''${ALPHA_LLM_API_KEY:-}"
-            export ALPHA_LLM_MODEL="''${ALPHA_LLM_MODEL:z-ai/glm-5.3-flash}"
+            export ALPHA_LLM_MODEL="''${ALPHA_LLM_MODEL:-}"
 
             export ALPHA_LLM_FAMILY="''${ALPHA_LLM_FAMILY:-GLM-5.3-Flash}"
             export ALPHA_LLM_TIMEOUT="''${ALPHA_LLM_TIMEOUT:-45}"

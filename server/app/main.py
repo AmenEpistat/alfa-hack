@@ -24,7 +24,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Alfa Hack Backend",
-    description="Backend API для frontend-прототипа.",
+    description="Backend API",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -43,10 +43,10 @@ app.add_middleware(
 
 
 app.include_router(auth.router)
-app.include_router(insights.router)
-# app.include_router(ranking.router)
 app.include_router(preferences.router)
+app.include_router(insights.router)
 app.include_router(parser.router)
+app.include_router(ranking.router)
 app.include_router(agent.router)
 
 
