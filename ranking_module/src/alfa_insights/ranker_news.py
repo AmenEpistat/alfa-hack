@@ -1,4 +1,5 @@
 """News ranker: dense recall (FAISS) -> cross-encoder -> hard recall."""
+
 from __future__ import annotations
 
 import json
@@ -7,11 +8,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-import numpy as np
-
 from .config import AppConfig
-from .embeddings import BiEncoder, CrossEncoder, EmbeddingStore, company_text, news_text
-from .features import CompanyProfile, NewsSignals, news_signals
+from .embeddings import BiEncoder, CrossEncoder, company_text, news_text
+from .features import CompanyProfile, news_signals
 
 log = logging.getLogger(__name__)
 
@@ -28,6 +27,7 @@ class NewsCandidate:
 
 def _load_faiss(cache_dir: Path):
     import faiss
+
     path = cache_dir / "faiss.index"
     if not path.exists():
         return None
@@ -48,7 +48,7 @@ def dense_recall(
     top_k: int | None = None,
 ) -> list[tuple[str, float]]:
     """FAISS top-k over news index. Returns (item_id, score)."""
-    import faiss
+
     index = _load_faiss(cfg.paths.news_cache)
     ids = _load_ids(cfg.paths.news_cache)
     if index is None or not ids:
@@ -121,7 +121,9 @@ def hard_recall(
         if item is None:
             continue
         sig = news_signals(item)
-        text_lc = ((getattr(item, "title", "") or "") + " " + (getattr(item, "text", "") or "")).lower()
+        text_lc = (
+            (getattr(item, "title", "") or "") + " " + (getattr(item, "text", "") or "")
+        ).lower()
         hard = 0.0
         prov: list[str] = []
 
@@ -130,7 +132,9 @@ def hard_recall(
             em_names = {n.lower() for n in sig.entity_names}
             em_domains = {d.lower() for d in sig.entity_domains}
             name_hit = bool(em_names & watch_names) or any(n in text_lc for n in watch_names if n)
-            alias_hit = bool(em_names & watch_aliases) or any(a in text_lc for a in watch_aliases if a)
+            alias_hit = bool(em_names & watch_aliases) or any(
+                a in text_lc for a in watch_aliases if a
+            )
             domain_hit = bool(em_domains & watch_domains)
             if name_hit:
                 hard += primary_cfg.score_boost
@@ -174,7 +178,9 @@ def hard_recall(
                 contrib += w.get("revenue_rank_industry", 0.0) * profile.revenue_rank_industry
                 matched.append("revenue_rank_industry")
 
-            ok_any = any(m in matched for m in fb_cfg.require_any_of) if fb_cfg.require_any_of else True
+            ok_any = (
+                any(m in matched for m in fb_cfg.require_any_of) if fb_cfg.require_any_of else True
+            )
             if ok_any and contrib >= fb_cfg.min_score:
                 hard += contrib
                 prov.append("fallback")
@@ -189,7 +195,11 @@ def hard_recall(
 
     candidates.sort(key=lambda c: -c.score_total)
     if cfg.ranking.guarantee_hard_primary_in_top:
-        primary = [c for c in candidates if any(p in {"name_mention", "alias_mention", "domain_mention"} for p in c.provenance)]
+        primary = [
+            c
+            for c in candidates
+            if any(p in {"name_mention", "alias_mention", "domain_mention"} for p in c.provenance)
+        ]
         rest = [c for c in candidates if c not in primary]
         candidates = primary + rest
     return candidates
@@ -204,7 +214,9 @@ def rank_news(
     cross: CrossEncoder | None = None,
 ) -> list[NewsCandidate]:
     """Full news ranking pipeline for a single company profile."""
-    news_by_id = {getattr(it, "item_id", None): it for it in news_pool if getattr(it, "item_id", None)}
+    news_by_id = {
+        getattr(it, "item_id", None): it for it in news_pool if getattr(it, "item_id", None)
+    }
     if not news_by_id:
         return []
 

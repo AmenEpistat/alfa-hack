@@ -1,8 +1,8 @@
 """Feature engineering: compute missing columns + company/news profiles for hard recall."""
+
 from __future__ import annotations
 
 import logging
-import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -66,10 +66,26 @@ _PRODUCT_KEYWORDS = {
 }
 
 _REGION_KEYWORDS = [
-    "москва", "санкт-петербург", "новосибирск", "екатеринбург", "челябинск",
-    "курган", "барнаул", "нижний новгород", "тюмень", "ижевск", "мурманск", "уфа",
-    "алтайский край", "свердловская область", "челябинская область", "курганская область",
-    "тюменская область", "удмуртская республика", "мурманская область", "башкортостан",
+    "москва",
+    "санкт-петербург",
+    "новосибирск",
+    "екатеринбург",
+    "челябинск",
+    "курган",
+    "барнаул",
+    "нижний новгород",
+    "тюмень",
+    "ижевск",
+    "мурманск",
+    "уфа",
+    "алтайский край",
+    "свердловская область",
+    "челябинская область",
+    "курганская область",
+    "тюменская область",
+    "удмуртская республика",
+    "мурманская область",
+    "башкортостан",
     "нижегородская область",
 ]
 
@@ -124,10 +140,12 @@ def build_features(df: pd.DataFrame, cfg: FeaturesConfig, force: bool = False) -
 
     # deep_client: (LOA|LEA|DEP) & (RKO|ZPP|GAR)
     if force or "deep_client" not in out.columns:
+
         def _deep(row: pd.Series) -> int:
             fin = any(row.get(f"CL_PRODUCT_{p}_MARK", 0) == 1 for p in ("LOA", "LEA", "DEP"))
             trx = any(row.get(f"CL_PRODUCT_{p}_MARK", 0) == 1 for p in ("RKO", "ZPP", "GAR"))
             return int(fin and trx)
+
         out["deep_client"] = out.apply(_deep, axis=1)
 
     # small_with_many: worker_ord==1 & binary_sum_products>=3
@@ -141,7 +159,9 @@ def build_features(df: pd.DataFrame, cfg: FeaturesConfig, force: bool = False) -
         okved = out.get("okved_class")
         if okved is None and "MAINOKVED_CODE" in out.columns:
             okved = out["MAINOKVED_CODE"].apply(_okved_class)
-        out["okved_sector"] = okved.apply(lambda v: _okved_sector(v, cfg)) if okved is not None else None
+        out["okved_sector"] = (
+            okved.apply(lambda v: _okved_sector(v, cfg)) if okved is not None else None
+        )
 
     # industry_freq
     if force or "industry_freq" not in out.columns:
@@ -154,7 +174,9 @@ def build_features(df: pd.DataFrame, cfg: FeaturesConfig, force: bool = False) -
     # revenue_rank_industry
     if force or "revenue_rank_industry" not in out.columns:
         if "okved_class" in out.columns and "REVENUE_COMPANY" in out.columns:
-            out["revenue_rank_industry"] = out.groupby("okved_class")["REVENUE_COMPANY"].rank(pct=True)
+            out["revenue_rank_industry"] = out.groupby("okved_class")["REVENUE_COMPANY"].rank(
+                pct=True
+            )
         else:
             out["revenue_rank_industry"] = np.nan
 
@@ -200,7 +222,7 @@ def build_features(df: pd.DataFrame, cfg: FeaturesConfig, force: bool = False) -
     if force or "company_share_group_revenue" not in out.columns:
         if "GROUP_ID" in out.columns and "REVENUE_COMPANY" in out.columns:
             total = out.groupby("GROUP_ID")["REVENUE_COMPANY"].transform("sum")
-            out["company_share_group_revenue"] = (out["REVENUE_COMPANY"] / total.replace(0, np.nan))
+            out["company_share_group_revenue"] = out["REVENUE_COMPANY"] / total.replace(0, np.nan)
         else:
             out["company_share_group_revenue"] = np.nan
 
@@ -214,7 +236,7 @@ def build_features(df: pd.DataFrame, cfg: FeaturesConfig, force: bool = False) -
     if force or "region_revenue_share" not in out.columns:
         if "REGION" in out.columns and "REVENUE_COMPANY" in out.columns:
             total = out.groupby("REGION")["REVENUE_COMPANY"].transform("sum")
-            out["region_revenue_share"] = (out["REVENUE_COMPANY"] / total.replace(0, np.nan))
+            out["region_revenue_share"] = out["REVENUE_COMPANY"] / total.replace(0, np.nan)
         else:
             out["region_revenue_share"] = np.nan
 
@@ -231,7 +253,9 @@ def build_features(df: pd.DataFrame, cfg: FeaturesConfig, force: bool = False) -
 def company_profile(row: pd.Series, watch: Any | None = None) -> CompanyProfile:
     """Build CompanyProfile from a dataframe row and optional WatchItem."""
     return CompanyProfile(
-        id=watch.id if watch is not None else (row.get("SYNTHETIC_U") if hasattr(row, "get") else None),
+        id=watch.id
+        if watch is not None
+        else (row.get("SYNTHETIC_U") if hasattr(row, "get") else None),
         name=watch.name if watch is not None else None,
         aliases=list(watch.aliases) if watch is not None else [],
         domain=watch.domain if watch is not None else None,
@@ -240,19 +264,29 @@ def company_profile(row: pd.Series, watch: Any | None = None) -> CompanyProfile:
         okved_sector=row.get("okved_sector") if hasattr(row, "get") else None,
         region=row.get("REGION") if hasattr(row, "get") else None,
         city=row.get("CITY") if hasattr(row, "get") else None,
-        worker_ord=int(row["worker_ord"]) if hasattr(row, "get") and pd.notna(row.get("worker_ord")) else None,
-        binary_sum_products=int(row["binary_sum_products"]) if hasattr(row, "get") and pd.notna(row.get("binary_sum_products")) else None,
+        worker_ord=int(row["worker_ord"])
+        if hasattr(row, "get") and pd.notna(row.get("worker_ord"))
+        else None,
+        binary_sum_products=int(row["binary_sum_products"])
+        if hasattr(row, "get") and pd.notna(row.get("binary_sum_products"))
+        else None,
         cl_type=row.get("CL_TYPE") if hasattr(row, "get") else None,
         group_id=row.get("GROUP_ID") if hasattr(row, "get") else None,
-        industry_freq=float(row["industry_freq"]) if hasattr(row, "get") and pd.notna(row.get("industry_freq")) else None,
-        revenue_rank_industry=float(row["revenue_rank_industry"]) if hasattr(row, "get") and pd.notna(row.get("revenue_rank_industry")) else None,
+        industry_freq=float(row["industry_freq"])
+        if hasattr(row, "get") and pd.notna(row.get("industry_freq"))
+        else None,
+        revenue_rank_industry=float(row["revenue_rank_industry"])
+        if hasattr(row, "get") and pd.notna(row.get("revenue_rank_industry"))
+        else None,
         specialization=watch.specialization if watch is not None else None,
     )
 
 
 def news_signals(item: Any) -> NewsSignals:
     """Extract sector/region/product signals from a news/pdf item."""
-    text = " ".join(filter(None, [getattr(item, "title", "") or "", getattr(item, "text", "") or ""])).lower()
+    text = " ".join(
+        filter(None, [getattr(item, "title", "") or "", getattr(item, "text", "") or ""])
+    ).lower()
     sectors = {s for s, kws in _SECTOR_KEYWORDS.items() if any(k in text for k in kws)}
     regions = {r for r in _REGION_KEYWORDS if r in text}
     products = {p for p, kws in _PRODUCT_KEYWORDS.items() if any(k in text for k in kws)}

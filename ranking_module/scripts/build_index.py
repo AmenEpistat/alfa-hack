@@ -1,10 +1,10 @@
 """Build FAISS indexes from cached embeddings."""
+
 from __future__ import annotations
 
 import argparse
 import json
 import logging
-from pathlib import Path
 
 import numpy as np
 
@@ -16,6 +16,7 @@ log = logging.getLogger("build_index")
 
 def build_index(emb: np.ndarray, cfg: FaissConfig):
     import faiss
+
     dim = emb.shape[1]
     if cfg.index_type == "flat":
         index = faiss.IndexFlatIP(dim)
@@ -60,12 +61,19 @@ def main() -> None:
         emb = np.load(emb_path).astype(np.float32)
         index = build_index(emb, cfg.faiss)
         import faiss
+
         faiss.write_index(index, str(cache / "faiss.index"))
         meta = json.loads(ids_path.read_text(encoding="utf-8")) if ids_path.exists() else {}
         meta["dim"] = int(emb.shape[1])
         meta["size"] = int(emb.shape[0])
         ids_path.write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
-        log.info("index built: %s (%d vectors, dim=%d, type=%s)", cache, emb.shape[0], emb.shape[1], cfg.faiss.index_type)
+        log.info(
+            "index built: %s (%d vectors, dim=%d, type=%s)",
+            cache,
+            emb.shape[0],
+            emb.shape[1],
+            cfg.faiss.index_type,
+        )
 
 
 if __name__ == "__main__":

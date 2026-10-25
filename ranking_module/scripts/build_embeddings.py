@@ -1,9 +1,9 @@
 """Build embeddings for news and analytics (pdf) topics."""
+
 from __future__ import annotations
 
 import argparse
 import logging
-from pathlib import Path
 
 from alfa_insights.config import load_config
 from alfa_insights.data import load_ranking_input
@@ -30,13 +30,25 @@ def main() -> None:
     if "news" in topics:
         store = EmbeddingStore(cfg.paths.news_cache, cfg.embeddings.bi_encoder.model_name, "news")
         items = list(payload.topics.news) + list(payload.topics.competitors)
-        store.build_or_load(items, encoder, lambda it: news_text(it, cfg.embeddings.text_templates), force=args.force)
+        store.build_or_load(
+            items,
+            encoder,
+            lambda it: news_text(it, cfg.embeddings.text_templates),
+            force=args.force,
+        )
         log.info("news embeddings ready: %d", len(items))
 
     if "analytics" in topics:
-        store = EmbeddingStore(cfg.paths.analytics_cache, cfg.embeddings.bi_encoder.model_name, "analytics")
+        store = EmbeddingStore(
+            cfg.paths.analytics_cache, cfg.embeddings.bi_encoder.model_name, "analytics"
+        )
         items = list(payload.topics.pdf)
-        store.build_or_load(items, encoder, lambda it: analytics_text(it, cfg.embeddings.text_templates), force=args.force)
+        store.build_or_load(
+            items,
+            encoder,
+            lambda it: analytics_text(it, cfg.embeddings.text_templates),
+            force=args.force,
+        )
         log.info("analytics embeddings ready: %d", len(items))
 
 

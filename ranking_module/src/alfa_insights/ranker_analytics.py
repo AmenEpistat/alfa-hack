@@ -1,4 +1,5 @@
 """Analytics ranker: match 2-5 news set against analytics (pdf) pool."""
+
 from __future__ import annotations
 
 import logging
@@ -56,11 +57,13 @@ def rank_analytics(
     enc = encoder or BiEncoder(cfg.embeddings, device=cfg.runtime.device)
     crs = cross or CrossEncoder(cfg.embeddings, device=cfg.runtime.device)
 
-    analytics_by_id = {getattr(it, "item_id", None): it for it in analytics_pool if getattr(it, "item_id", None)}
+    analytics_by_id = {
+        getattr(it, "item_id", None): it for it in analytics_pool if getattr(it, "item_id", None)
+    }
     query_text, _ = _build_set_query(news_set, cfg)
 
     # dense
-    import faiss
+
     index = _load_faiss(cfg.paths.analytics_cache)
     ids = _load_ids(cfg.paths.analytics_cache)
     cands: list[AnalyticsCandidate] = []

@@ -1,4 +1,5 @@
 """Public API contract for backend integration."""
+
 from __future__ import annotations
 
 import json
@@ -33,6 +34,7 @@ def validate_payload(payload: dict[str, Any]) -> list[str]:
 
 def health(config: str | Path | AppConfig = "config.yaml") -> dict[str, Any]:
     from . import __version__
+
     cfg = config if isinstance(config, AppConfig) else load_config(config)
     return {
         "status": "ok",

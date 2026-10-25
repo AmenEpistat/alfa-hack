@@ -1,11 +1,13 @@
 """Bi-encoder, cross-encoder, embedding cache."""
+
 from __future__ import annotations
 
 import hashlib
 import json
 import logging
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 import numpy as np
 
@@ -27,11 +29,15 @@ def _item_key(item: Any) -> str:
 
 
 def news_text(item: Any, tpl: TextTemplatesConfig) -> str:
-    return tpl.news.format(title=(getattr(item, "title", "") or ""), text=(getattr(item, "text", "") or ""))
+    return tpl.news.format(
+        title=(getattr(item, "title", "") or ""), text=(getattr(item, "text", "") or "")
+    )
 
 
 def analytics_text(item: Any, tpl: TextTemplatesConfig) -> str:
-    return tpl.analytics.format(title=(getattr(item, "title", "") or ""), text=(getattr(item, "text", "") or ""))
+    return tpl.analytics.format(
+        title=(getattr(item, "title", "") or ""), text=(getattr(item, "text", "") or "")
+    )
 
 
 def company_text(profile: Any, tpl: TextTemplatesConfig) -> str:
@@ -47,6 +53,7 @@ def company_text(profile: Any, tpl: TextTemplatesConfig) -> str:
 class BiEncoder:
     def __init__(self, cfg: EmbeddingsConfig, device: str = "cpu") -> None:
         from sentence_transformers import SentenceTransformer  # lazy import
+
         self.cfg = cfg.bi_encoder
         self.model = SentenceTransformer(self.cfg.model_name, device=device)
 
@@ -55,8 +62,11 @@ class BiEncoder:
             return np.zeros((0, self.dim), dtype=np.float32)
         prefixed = [self.cfg.doc_prefix + t for t in texts]
         emb = self.model.encode(
-            prefixed, batch_size=self.cfg.batch_size, normalize_embeddings=self.cfg.normalize,
-            convert_to_numpy=True, show_progress_bar=False,
+            prefixed,
+            batch_size=self.cfg.batch_size,
+            normalize_embeddings=self.cfg.normalize,
+            convert_to_numpy=True,
+            show_progress_bar=False,
         )
         return emb.astype(np.float32)
 
@@ -65,8 +75,11 @@ class BiEncoder:
             return np.zeros((0, self.dim), dtype=np.float32)
         prefixed = [self.cfg.query_prefix + t for t in texts]
         emb = self.model.encode(
-            prefixed, batch_size=self.cfg.batch_size, normalize_embeddings=self.cfg.normalize,
-            convert_to_numpy=True, show_progress_bar=False,
+            prefixed,
+            batch_size=self.cfg.batch_size,
+            normalize_embeddings=self.cfg.normalize,
+            convert_to_numpy=True,
+            show_progress_bar=False,
         )
         return emb.astype(np.float32)
 
@@ -78,6 +91,7 @@ class BiEncoder:
 class CrossEncoder:
     def __init__(self, cfg: EmbeddingsConfig, device: str = "cpu") -> None:
         from sentence_transformers import CrossEncoder as _CE
+
         self.cfg = cfg.cross_encoder
         self.model = _CE(self.cfg.model_name, device=device)
 
@@ -108,7 +122,11 @@ class EmbeddingStore:
         with self.ids_path.open("r", encoding="utf-8") as f:
             meta = json.load(f)
         if meta.get("model") != self.model_name:
-            log.warning("Embedding cache model mismatch (%s != %s). Rebuild required.", meta.get("model"), self.model_name)
+            log.warning(
+                "Embedding cache model mismatch (%s != %s). Rebuild required.",
+                meta.get("model"),
+                self.model_name,
+            )
             return None
         self._emb = np.load(self.emb_path).astype(np.float32)
         self._ids = meta.get("ids", [])
@@ -117,7 +135,11 @@ class EmbeddingStore:
     def save(self, emb: np.ndarray, ids: list[dict[str, Any]], text_hash: str) -> None:
         np.save(self.emb_path, emb.astype(np.float32))
         with self.ids_path.open("w", encoding="utf-8") as f:
-            json.dump({"model": self.model_name, "kind": self.kind, "text_hash": text_hash, "ids": ids}, f, ensure_ascii=False)
+            json.dump(
+                {"model": self.model_name, "kind": self.kind, "text_hash": text_hash, "ids": ids},
+                f,
+                ensure_ascii=False,
+            )
 
     def build_or_load(
         self,
@@ -139,13 +161,26 @@ class EmbeddingStore:
                     return self._emb, ids  # type: ignore[return-value]
         log.info("Building embeddings for %s (%d items)", self.kind, len(items))
         emb = encoder.encode_docs(texts)
-        ids = [_item_key(it) and {"key": _item_key(it), "item_id": getattr(it, "item_id", None),
-                                  "document_id": getattr(it, "document_id", None),
-                                  "chunk_id": getattr(it, "chunk_id", None)} for it in items]
-        # fix key (list comp guard)
-        ids = [{"key": _item_key(it), "item_id": getattr(it, "item_id", None),
+        ids = [
+            _item_key(it)
+            and {
+                "key": _item_key(it),
+                "item_id": getattr(it, "item_id", None),
                 "document_id": getattr(it, "document_id", None),
-                "chunk_id": getattr(it, "chunk_id", None)} for it in items]
+                "chunk_id": getattr(it, "chunk_id", None),
+            }
+            for it in items
+        ]
+        # fix key (list comp guard)
+        ids = [
+            {
+                "key": _item_key(it),
+                "item_id": getattr(it, "item_id", None),
+                "document_id": getattr(it, "document_id", None),
+                "chunk_id": getattr(it, "chunk_id", None),
+            }
+            for it in items
+        ]
         self.save(emb, ids, th)
         self._emb = emb
         self._ids = ids

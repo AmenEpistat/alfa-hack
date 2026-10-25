@@ -1,4 +1,5 @@
 """Configuration loading and validation."""
+
 from __future__ import annotations
 
 import os
@@ -19,10 +20,12 @@ class PathsConfig(BaseModel):
     news_cache: Path = Path("cache/news")
     analytics_cache: Path = Path("cache/analytics")
 
-    def resolve(self) -> "PathsConfig":
+    def resolve(self) -> PathsConfig:
         root = self.root.resolve()
+
         def _p(p: Path) -> Path:
             return p if p.is_absolute() else (root / p)
+
         return PathsConfig(
             root=root,
             data_dir=_p(self.data_dir),
@@ -104,7 +107,9 @@ class RecallConfig(BaseModel):
 
 class PrimaryHardRecallConfig(BaseModel):
     score_boost: float = 1.0
-    match_types: list[str] = Field(default_factory=lambda: ["name_mention", "alias_mention", "domain_mention"])
+    match_types: list[str] = Field(
+        default_factory=lambda: ["name_mention", "alias_mention", "domain_mention"]
+    )
     use_watchlist: bool = True
     filter_enabled: bool = True
     use_company_profile: bool = True
@@ -178,7 +183,7 @@ class SetsConfig(BaseModel):
     roles_allowed: list[str] = Field(default_factory=lambda: ["primary", "competitor"])
 
     @model_validator(mode="after")
-    def _check_ranges(self) -> "SetsConfig":
+    def _check_ranges(self) -> SetsConfig:
         if self.min_news > self.max_news:
             raise ValueError("sets.min_news > sets.max_news")
         if self.min_analytics > self.max_analytics:
@@ -222,7 +227,7 @@ class AppConfig(BaseModel):
     io: IOConfig = Field(default_factory=IOConfig)
     features: FeaturesConfig = Field(default_factory=FeaturesConfig)
 
-    def resolve_paths(self) -> "AppConfig":
+    def resolve_paths(self) -> AppConfig:
         return self.model_copy(update={"paths": self.paths.resolve()})
 
 
@@ -236,7 +241,9 @@ def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any
     return out
 
 
-def load_config(path: str | Path = "config.yaml", overrides: dict[str, Any] | None = None) -> AppConfig:
+def load_config(
+    path: str | Path = "config.yaml", overrides: dict[str, Any] | None = None
+) -> AppConfig:
     """Load config from YAML, apply overrides and environment variables."""
     cfg_path = Path(path)
     raw: dict[str, Any] = {}
@@ -255,6 +262,11 @@ def load_config(path: str | Path = "config.yaml", overrides: dict[str, Any] | No
         merged = _deep_merge(merged, overrides)
 
     cfg = AppConfig.model_validate(merged).resolve_paths()
-    for d in (cfg.paths.cache_dir, cfg.paths.runs_dir, cfg.paths.news_cache, cfg.paths.analytics_cache):
+    for d in (
+        cfg.paths.cache_dir,
+        cfg.paths.runs_dir,
+        cfg.paths.news_cache,
+        cfg.paths.analytics_cache,
+    ):
         d.mkdir(parents=True, exist_ok=True)
     return cfg

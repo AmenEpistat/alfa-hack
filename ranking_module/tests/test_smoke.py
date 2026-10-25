@@ -1,11 +1,11 @@
 """Smoke test: run pipeline on fixture and validate output contract."""
+
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
 import pandas as pd
-import pytest
 
 from alfa_insights.api import run_ranking, validate_payload
 from alfa_insights.config import load_config
@@ -35,15 +35,24 @@ def test_validate_payload() -> None:
 
 
 def test_smoke_run(tmp_path: Path) -> None:
-    cfg = load_config("config.yaml", overrides={
-        "paths": {"cache_dir": str(tmp_path / "cache"),
-                  "news_cache": str(tmp_path / "cache/news"),
-                  "analytics_cache": str(tmp_path / "cache/analytics"),
-                  "runs_dir": str(tmp_path / "runs")},
-        "recall": {"top_k_dense": 4, "top_k_cross": 4},
-        "sets": {"min_news": 1, "max_news": 3, "max_sets": 2},
-    })
-    df = pd.read_csv(COMPANIES, sep=",", on_bad_lines="skip") if COMPANIES.suffix == ".txt" else pd.read_csv(COMPANIES)
+    cfg = load_config(
+        "config.yaml",
+        overrides={
+            "paths": {
+                "cache_dir": str(tmp_path / "cache"),
+                "news_cache": str(tmp_path / "cache/news"),
+                "analytics_cache": str(tmp_path / "cache/analytics"),
+                "runs_dir": str(tmp_path / "runs"),
+            },
+            "recall": {"top_k_dense": 4, "top_k_cross": 4},
+            "sets": {"min_news": 1, "max_news": 3, "max_sets": 2},
+        },
+    )
+    df = (
+        pd.read_csv(COMPANIES, sep=",", on_bad_lines="skip")
+        if COMPANIES.suffix == ".txt"
+        else pd.read_csv(COMPANIES)
+    )
     result = run_ranking(INPUT, df, config=cfg)
     assert result["schema_version"] == "1.0"
     assert result["status"] in {"ok", "partial"}

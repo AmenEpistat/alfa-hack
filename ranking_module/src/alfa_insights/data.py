@@ -1,4 +1,5 @@
 """Input loading, validation, normalization, watchlist extraction."""
+
 from __future__ import annotations
 
 import json
@@ -143,7 +144,9 @@ def load_companies(path: str | Path | pd.DataFrame) -> pd.DataFrame:
     if "worker_ord" in df.columns:
         df["worker_ord"] = pd.to_numeric(df["worker_ord"], errors="coerce").astype("Int8")
     if "binary_sum_products" in df.columns:
-        df["binary_sum_products"] = pd.to_numeric(df["binary_sum_products"], errors="coerce").astype("Int8")
+        df["binary_sum_products"] = pd.to_numeric(
+            df["binary_sum_products"], errors="coerce"
+        ).astype("Int8")
     if "GROUP_ID" in df.columns:
         df["GROUP_ID"] = df["GROUP_ID"].where(df["GROUP_ID"].notna(), None)
     for c in ("REGION", "CITY", "okved_class"):
@@ -183,11 +186,15 @@ def extract_watchlist(payload: RankingInput, filter_enabled: bool = True) -> lis
 def dedup_competitors_vs_news(topics: Topics) -> Topics:
     """Remove competitors that duplicate news items by document/version/chunk."""
     news_keys = {(n.document_id, n.version_id, n.chunk_id) for n in topics.news}
-    deduped = [c for c in topics.competitors if (c.document_id, c.version_id, c.chunk_id) not in news_keys]
+    deduped = [
+        c for c in topics.competitors if (c.document_id, c.version_id, c.chunk_id) not in news_keys
+    ]
     return Topics(news=topics.news, pdf=topics.pdf, competitors=deduped)
 
 
-def normalize_ranking_input(payload: RankingInput, drop_competitors_duplicates: bool = True) -> RankingInput:
+def normalize_ranking_input(
+    payload: RankingInput, drop_competitors_duplicates: bool = True
+) -> RankingInput:
     """Apply normalization and optional dedup of competitors vs news."""
     topics = payload.topics
     if drop_competitors_duplicates:

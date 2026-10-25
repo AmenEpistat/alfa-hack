@@ -1,4 +1,5 @@
 """Orchestrator: payload -> features -> embeddings/rank -> sets."""
+
 from __future__ import annotations
 
 import logging
@@ -34,7 +35,9 @@ def run(
     timings: dict[str, float] = {}
 
     watchlist = extract_watchlist(payload, filter_enabled=cfg.hard_recall.primary.filter_enabled)
-    payload = normalize_ranking_input(payload, drop_competitors_duplicates=cfg.io.drop_competitors_duplicates)
+    payload = normalize_ranking_input(
+        payload, drop_competitors_duplicates=cfg.io.drop_competitors_duplicates
+    )
 
     t = time.time()
     sets = build_sets(payload, companies, watchlist, cfg)
@@ -55,5 +58,7 @@ def run(
         "total_seconds": time.time() - t0,
     }
     if not watchlist:
-        diagnostics.setdefault("warnings", []).append("watchlist is empty: hard recall primary disabled")
+        diagnostics.setdefault("warnings", []).append(
+            "watchlist is empty: hard recall primary disabled"
+        )
     return PipelineResult(run_id=run_id, status=status, sets=sets, diagnostics=diagnostics)
