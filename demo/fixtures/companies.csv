@@ -1,0 +1,4 @@
+AMOUNT_WORKERS_FNS_GRADATION,CITY,CL_PRODUCT_DEP_MARK,CL_PRODUCT_GAR_MARK,CL_PRODUCT_LEA_MARK,CL_PRODUCT_LOA_MARK,CL_PRODUCT_RKO_MARK,CL_PRODUCT_ZPP_MARK,CL_TYPE,COMPANY_AGE_YEARS_GRADATION,ECO_MARK_LABEL,FACTORING_MARK,FTS_COUNTRY_NAME,FTS_FLAG,GROUP_ID,MAINOKVED_CODE,MAINOKVED_NAME,NEGATIVEMARK,REGION,REVENUE_COMPANY,SYNTHETIC_U
+16-100,Москва,0,0,0,0,1,0,CLIENT,От 5 до 10 лет,Синтетические данные,0,,0,DEMO_GROUP,25.11,Синтетическое производство металлоконструкций,0,Учебный регион,12000000,U_900001
+16-100,Казань,0,0,0,0,1,0,CLIENT,От 5 до 10 лет,Синтетические данные,0,,0,DEMO_GROUP,25.11,Синтетическое производство металлоконструкций,0,Учебный регион,24000000,U_900002
+16-100,Тула,0,0,0,0,1,0,CLIENT,От 5 до 10 лет,Синтетические данные,0,,0,DEMO_GROUP,25.11,Синтетическое производство металлоконструкций,0,Учебный регион,36000000,U_900003

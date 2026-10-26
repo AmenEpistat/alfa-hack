@@ -1,0 +1,175 @@
+{
+  "schema_version": "1.0",
+  "run_id": "synthetic-fixture-v1",
+  "status": "completed",
+  "warnings": [
+    "Все данные вымышлены. Источники и результаты ранкера воспроизводятся из фикстур."
+  ],
+  "topics": {
+    "news": [
+      {
+        "item_id": "demo-news-1",
+        "document_id": "demo-news-1",
+        "version_id": "demo-news-1-v1",
+        "chunk_id": "demo-news-1-c1",
+        "title": "СИНТЕТИЧЕСКИЙ ИСТОЧНИК demo-news-1",
+        "text": "Учебный поставщик сократил отсрочку оплаты сырья до десяти дней.",
+        "source_type": "external",
+        "source_name": "Вымышленный учебный корпус",
+        "url": "https://synthetic.example/demo-news-1",
+        "published_at": "2026-10-26",
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический текст; PDF и публикации по URL не существуют."
+        ]
+      },
+      {
+        "item_id": "demo-news-2",
+        "document_id": "demo-news-2",
+        "version_id": "demo-news-2-v1",
+        "chunk_id": "demo-news-2-c1",
+        "title": "СИНТЕТИЧЕСКИЙ ИСТОЧНИК demo-news-2",
+        "text": "Учебный перевозчик повысил стоимость доставки на пять процентов.",
+        "source_type": "external",
+        "source_name": "Вымышленный учебный корпус",
+        "url": "https://synthetic.example/demo-news-2",
+        "published_at": "2026-10-26",
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический текст; PDF и публикации по URL не существуют."
+        ]
+      },
+      {
+        "item_id": "demo-news-3",
+        "document_id": "demo-news-3",
+        "version_id": "demo-news-3-v1",
+        "chunk_id": "demo-news-3-c1",
+        "title": "СИНТЕТИЧЕСКИЙ ИСТОЧНИК demo-news-3",
+        "text": "Учебный арендодатель изменил срок внесения авансового платежа.",
+        "source_type": "external",
+        "source_name": "Вымышленный учебный корпус",
+        "url": "https://synthetic.example/demo-news-3",
+        "published_at": "2026-10-26",
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический текст; PDF и публикации по URL не существуют."
+        ]
+      },
+      {
+        "item_id": "demo-news-4",
+        "document_id": "demo-news-4",
+        "version_id": "demo-news-4-v1",
+        "chunk_id": "demo-news-4-c1",
+        "title": "СИНТЕТИЧЕСКИЙ ИСТОЧНИК demo-news-4",
+        "text": "Учебный заказчик перенёс дату оплаты выполненного заказа.",
+        "source_type": "external",
+        "source_name": "Вымышленный учебный корпус",
+        "url": "https://synthetic.example/demo-news-4",
+        "published_at": "2026-10-26",
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический текст; PDF и публикации по URL не существуют."
+        ]
+      },
+      {
+        "item_id": "demo-news-5",
+        "document_id": "demo-news-5",
+        "version_id": "demo-news-5-v1",
+        "chunk_id": "demo-news-5-c1",
+        "title": "СИНТЕТИЧЕСКИЙ ИСТОЧНИК demo-news-5",
+        "text": "Учебный поставщик оборудования запросил частичную предоплату.",
+        "source_type": "external",
+        "source_name": "Вымышленный учебный корпус",
+        "url": "https://synthetic.example/demo-news-5",
+        "published_at": "2026-10-26",
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический текст; PDF и публикации по URL не существуют."
+        ]
+      }
+    ],
+    "pdf": [
+      {
+        "item_id": "demo-analysis-1",
+        "document_id": "demo-analysis-1",
+        "version_id": "demo-analysis-1-v1",
+        "chunk_id": "demo-analysis-1-c1",
+        "title": "СИНТЕТИЧЕСКИЙ ИСТОЧНИК demo-analysis-1",
+        "text": "Учебная компания запланировала закупку дополнительной партии сырья.",
+        "source_type": "external",
+        "source_name": "Вымышленный учебный корпус",
+        "url": "https://synthetic.example/demo-analysis-1",
+        "published_at": "2026-10-26",
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический текст; PDF и публикации по URL не существуют."
+        ]
+      },
+      {
+        "item_id": "demo-analysis-2",
+        "document_id": "demo-analysis-2",
+        "version_id": "demo-analysis-2-v1",
+        "chunk_id": "demo-analysis-2-c1",
+        "title": "СИНТЕТИЧЕСКИЙ ИСТОЧНИК demo-analysis-2",
+        "text": "Учебный производитель увеличил число плановых отгрузок в следующем месяце.",
+        "source_type": "external",
+        "source_name": "Вымышленный учебный корпус",
+        "url": "https://synthetic.example/demo-analysis-2",
+        "published_at": "2026-10-26",
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический текст; PDF и публикации по URL не существуют."
+        ]
+      },
+      {
+        "item_id": "demo-analysis-3",
+        "document_id": "demo-analysis-3",
+        "version_id": "demo-analysis-3-v1",
+        "chunk_id": "demo-analysis-3-c1",
+        "title": "СИНТЕТИЧЕСКИЙ ИСТОЧНИК demo-analysis-3",
+        "text": "Учебная компания согласовала переезд производственного склада.",
+        "source_type": "external",
+        "source_name": "Вымышленный учебный корпус",
+        "url": "https://synthetic.example/demo-analysis-3",
+        "published_at": "2026-10-26",
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический текст; PDF и публикации по URL не существуют."
+        ]
+      },
+      {
+        "item_id": "demo-analysis-4",
+        "document_id": "demo-analysis-4",
+        "version_id": "demo-analysis-4-v1",
+        "chunk_id": "demo-analysis-4-c1",
+        "title": "СИНТЕТИЧЕСКИЙ ИСТОЧНИК demo-analysis-4",
+        "text": "Учебное предприятие сохранило прежние сроки выплаты заработной платы.",
+        "source_type": "external",
+        "source_name": "Вымышленный учебный корпус",
+        "url": "https://synthetic.example/demo-analysis-4",
+        "published_at": "2026-10-26",
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический текст; PDF и публикации по URL не существуют."
+        ]
+      },
+      {
+        "item_id": "demo-analysis-5",
+        "document_id": "demo-analysis-5",
+        "version_id": "demo-analysis-5-v1",
+        "chunk_id": "demo-analysis-5-c1",
+        "title": "СИНТЕТИЧЕСКИЙ ИСТОЧНИК demo-analysis-5",
+        "text": "Учебная компания запланировала модернизацию производственной линии.",
+        "source_type": "external",
+        "source_name": "Вымышленный учебный корпус",
+        "url": "https://synthetic.example/demo-analysis-5",
+        "published_at": "2026-10-26",
+        "quality": "requires_review",
+        "warnings": [
+          "Синтетический текст; PDF и публикации по URL не существуют."
+        ]
+      }
+    ],
+    "competitors": []
+  }
+}

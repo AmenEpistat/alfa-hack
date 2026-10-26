@@ -14,5 +14,10 @@ export function App() {
       window.removeEventListener('popstate', router.syncFromLocation);
     };
   }, []);
-  return <UiProvider><AppRouter /></UiProvider>;
+  return <UiProvider>
+    {import.meta.env.VITE_SYNTHETIC_MODE === 'true' && <div role="status" style={{ padding: 12, background: '#fff2b3', color: '#352600', textAlign: 'center' }}>
+      Синтетический стенд: источники, ранкер и ответы модели смоделированы. Все данные вымышлены.
+    </div>}
+    <AppRouter />
+  </UiProvider>;
 }

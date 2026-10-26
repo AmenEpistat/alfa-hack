@@ -25,7 +25,7 @@ services:
       ALPHA_OUTPUT_RUB_PER_MILLION: ${ALPHA_OUTPUT_RUB_PER_MILLION:-}
       ALPHA_OCR_ENABLED: ${ALPHA_OCR_ENABLED:-true}
       ALPHA_OCR_LANGUAGE: ${ALPHA_OCR_LANGUAGE:-rus+eng}
-      ALPHA_SEARXNG_URL: ${ALPHA_SEARXNG_URL:-}
+      ALPHA_SEARXNG_URL: ${ALPHA_SEARXNG_URL:-http://searxng:8080}
     volumes:
       - backend-data:/app/state
       - pipeline-cache:/app/cache
@@ -37,6 +37,17 @@ services:
       - ranking-runs:/app/ranking_module/runs
       - ranking-models:/app/ranking_module/models
     restart: unless-stopped
+  searxng:
+    profiles: [search]
+    image: docker.io/searxng/searxng@sha256:23482d8ecf7ddf66029479468ea04c1bb11d2b65785a17a7e629e2ffd13296ca
+    environment:
+      SEARXNG_BASE_URL: http://searxng:8080/
+      SEARXNG_SECRET: ${SEARXNG_SECRET:-local-development-only-change-for-deployment}
+    volumes:
+      - ./parser/config/searxng/settings.yml:/etc/searxng/settings.yml:ro
+      - searxng-cache:/var/cache/searxng
+    restart: unless-stopped
+    mem_limit: 512m
   web:
     build:
       context: .
@@ -57,3 +68,4 @@ volumes:
   ranking-cache:
   ranking-runs:
   ranking-models:
+  searxng-cache:

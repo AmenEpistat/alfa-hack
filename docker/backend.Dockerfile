@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm
+FROM python:3.12-slim-bookworm@sha256:6a0e06f5ba0b373d051aabd3fffb9b873f27f9a2a3a14bcbe37dee6f0e3bbc70
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app/server:/app:/app/parser/src:/app/preprocessing:/app/ranking_module/src \
     DATABASE_URL=sqlite:////app/state/backend.db \
@@ -17,6 +17,7 @@ COPY parser /app/parser
 COPY ranking_module /app/ranking_module
 COPY preprocessing /app/preprocessing
 COPY insides /app/insides
+COPY demo /app/demo
 COPY backend.py pipeline_adapter.py /app/
 RUN useradd --uid 10001 --create-home app \
     && mkdir -p /app/state /app/cache /app/output /app/inputs /app/.cache/huggingface /app/ranking_module/cache /app/ranking_module/runs /app/ranking_module/models \

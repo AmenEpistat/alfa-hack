@@ -1,0 +1,31 @@
+name: alfa-synthetic
+services:
+  api:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    command: [python, -m, uvicorn, demo.app:app, --host, 0.0.0.0, --port, '8000']
+    environment:
+      DATABASE_URL: sqlite:////app/state/backend.db
+      ALPHA_SYNTHETIC_DEMO: '1'
+    volumes:
+      - synthetic-state:/app/state
+      - synthetic-cache:/app/cache
+      - synthetic-output:/app/output
+  web:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+      args:
+        VITE_API_URL: /api
+        VITE_SYNTHETIC_MODE: 'true'
+    ports:
+      - '127.0.0.1:${SYNTHETIC_PORT:-8081}:8080'
+    depends_on:
+      api:
+        condition: service_healthy
+volumes:
+  synthetic-state:
+  synthetic-cache:
+  synthetic-output:
