@@ -116,7 +116,7 @@ class ProductRecommendation(ProductRecommendationDraft):
 class InsightDraft(StrictModel):
     audience_type: AudienceType
     audience_rationale: str = Field(min_length=15, max_length=600)
-    product_recommendations: list[ProductRecommendationDraft] = Field(min_length=1, max_length=3)
+    product_recommendations: list[ProductRecommendationDraft] = Field(min_length=0, max_length=3)
 
     category_id: CategoryId = Field(description="Exactly one dominant business category, integer 1-10.")
 
@@ -152,7 +152,7 @@ class Foundation(StrictModel):
 class InsightResult(InsightDraft):
     category: InsightCategory
     target_audience: TargetAudience
-    product_recommendations: list[ProductRecommendation] = Field(min_length=1, max_length=3)
+    product_recommendations: list[ProductRecommendation] = Field(min_length=0, max_length=3)
     insight_id: str
     generation_order: int
     primary_topic: Literal["news", "pdf", "competitors"]

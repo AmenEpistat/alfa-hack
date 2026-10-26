@@ -2,11 +2,22 @@
 
 .route-loading {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 16px;
-  min-height: 60vh;
+  min-height: 100dvh;
   color: #747982;
+}
+
+.page-content:has(> .route-loading) {
+  display: flex;
+  padding-block: 0;
+}
+
+.page-content > .route-loading {
+  flex: 1;
+  min-height: 0;
 }
 
 .api-error-panel { display: grid; gap: 18px; padding: 30px 0; justify-items: start; }

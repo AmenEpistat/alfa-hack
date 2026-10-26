@@ -114,8 +114,9 @@ def _update_report(output, current, history, max_repairs):
         "completeness": {
             "required_insights": min_insights, "accepted_insights": len(output["insights"]),
             "minimum_met": len(output["insights"]) >= min_insights,
-            "required_products_per_insight": 1,
-            "all_accepted_have_products": bool(output["insights"]) and all(i["product_recommendations"] for i in output["insights"]),
+            "required_products_per_insight": 0,
+            "insights_with_products": sum(bool(i["product_recommendations"]) for i in output["insights"]),
+            "insights_without_products": sum(not i["product_recommendations"] for i in output["insights"]),
         },
         "grounding": {
             "exact_quotes_checked": True, "company_fields_checked": True,
@@ -165,7 +166,7 @@ def _new_result(prepared, payload, audience, product_catalog, document_ids, prev
         "generation_policy": {
             "count_mode": "model_event_synthesis",
             "audience_type": audience["type"],
-            "minimum_products_per_insight": 1,
+            "minimum_products_per_insight": 0,
             "product_catalog_sha256": product_catalog["content_sha256"],
             "available_unique_documents": len(document_ids),
             "source_documents_by_topic": {

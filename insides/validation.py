@@ -313,7 +313,7 @@ def build_insight(draft: SynthesisInsightDraft, prepared: dict, packet: dict, in
             "business_category_checked": True,
             "requested_audience_checked": True,
             "audience_semantic_alignment_automatically_verified": False,
-            "minimum_one_product_checked": True,
+            "product_recommendations_optional": True,
             "product_ids_and_capability_quotes_checked": True,
             "product_suitability_automatically_verified": False,
         },

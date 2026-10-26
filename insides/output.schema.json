@@ -385,7 +385,7 @@
             "$ref": "#/$defs/ProductRecommendation"
           },
           "maxItems": 3,
-          "minItems": 1,
+          "minItems": 0,
           "title": "Product Recommendations",
           "type": "array"
         },
