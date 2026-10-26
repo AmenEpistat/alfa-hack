@@ -3,6 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from ..database import get_db
+from ..dependencies import get_user_id
 from ..models import Insight, User, UserPreference
 from ..schemas import FeedbackRequest, PreferenceResponse
 
@@ -38,7 +39,7 @@ def get_or_create_preference(
 
 @router.get("", response_model=list[PreferenceResponse])
 def get_preferences(
-    user_id: str = Query(default="anna"),
+    user_id: str = Depends(get_user_id),
     db: Session = Depends(get_db),
 ) -> list[PreferenceResponse]:
     preferences = db.scalars(
@@ -62,7 +63,7 @@ def get_preferences(
 )
 def toggle_saved(
     insight_id: str,
-    user_id: str = Query(default="anna"),
+    user_id: str = Depends(get_user_id),
     db: Session = Depends(get_db),
 ) -> PreferenceResponse:
     user = db.scalar(select(User).where(User.id == user_id))
@@ -106,7 +107,7 @@ def toggle_saved(
 )
 def save_feedback(
     payload: FeedbackRequest,
-    user_id: str = Query(default="anna"),
+    user_id: str = Depends(get_user_id),
     db: Session = Depends(get_db),
 ) -> PreferenceResponse:
     user = db.scalar(select(User).where(User.id == user_id))

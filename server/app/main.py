@@ -2,14 +2,18 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from .categories import ASSETS_DIR
 
 from .database import Base, SessionLocal, engine
 from .routers import auth, insights, preferences, ranking, parser, agent, pipeline
 from .seed import seed_database
+from .migrations import ensure_legacy_company_columns
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    ensure_legacy_company_columns(engine)
     Base.metadata.create_all(bind=engine)
 
     db = SessionLocal()
@@ -49,6 +53,7 @@ app.include_router(parser.router)
 app.include_router(ranking.router)
 app.include_router(agent.router)
 app.include_router(pipeline.router)
+app.mount("/api/assets", StaticFiles(directory=ASSETS_DIR, html=True), name="assets")
 
 
 @app.get("/")

@@ -1,5 +1,6 @@
 import { insightId, insightSummary, insightTitle } from './insight';
-import type { CitationAnchor } from './sources';
+import type { CitationAnchor, InsightSourceId } from './sources';
+export type GenerationMethod = 'ai' | 'ai_assisted' | 'editorial' | 'rules';
 
 export type InsightEntry = {
   id: string;
@@ -7,7 +8,19 @@ export type InsightEntry = {
   title: string;
   summary: string;
   cover: 'steel' | 'contracts' | 'budget';
+  categoryId?: number | string;
+  categoryName?: string;
+  coverUrl?: string;
+  coverBackground?: string;
   sections: { title: string; text: string; citations?: CitationAnchor[] }[];
+  content?: string;
+  audienceType?: string;
+  productRecommendations?: Record<string, unknown>[];
+  sourceIds?: InsightSourceId[];
+  isSaved?: boolean;
+  preparedAt?: string;
+  expiresAt?: string;
+  generationMethod?: GenerationMethod;
 };
 
 // Three editorial angles on the same prepared demo materials, not a live news feed.

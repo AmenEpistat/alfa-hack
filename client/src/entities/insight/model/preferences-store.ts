@@ -1,84 +1,46 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { apiRequest } from '@/shared/api';
 import { insightId } from './insight';
 
 export type Feedback = 'useful' | 'not-useful' | null;
+export type Preference = { insight_id: string; is_saved: boolean; feedback: Feedback; reason: string | null };
+export type PreferencesRequest = <T>(path: string, options?: RequestInit) => Promise<T>;
 
-type Preferences = {
-  saved: boolean;
-  hidden: boolean;
-  feedback: Feedback;
-  reason: string;
-  taskCreated: boolean;
-  savedIds: string[];
-};
-
-const legacyStorageKey = 'alfa-hackathon:steel-insight:v1';
-const storageKey = (userId: string) => `alfa-hackathon:${userId}:steel-insight:v1`;
-
-function readPreferences(userId: string | null): Partial<Preferences> {
-  if (!userId) return {};
-  try {
-    const stored = localStorage.getItem(storageKey(userId));
-    const legacy = userId === 'anna' ? localStorage.getItem(legacyStorageKey) : null;
-    const value = JSON.parse(stored ?? legacy ?? '{}');
-    return value && typeof value === 'object' ? value : {};
-  } catch {
-    return {};
-  }
-}
-
-class InsightPreferencesStore {
+export class InsightPreferencesStore {
   private userId: string | null = null;
-  saved = false;
-  hidden = false;
-  feedback: Feedback = null;
-  reason = '';
-  taskCreated = false;
-  savedIds: string[] = [];
-
-  constructor() {
-    makeAutoObservable(this, {}, { autoBind: true });
-  }
-
-  setUser(userId: string | null) {
-    this.userId = userId;
-    const preferences = readPreferences(userId);
-    this.saved = preferences.saved === true;
-    this.hidden = preferences.hidden === true;
-    this.feedback = preferences.feedback === 'useful' || preferences.feedback === 'not-useful' ? preferences.feedback : null;
-    this.reason = typeof preferences.reason === 'string' ? preferences.reason : '';
-    this.taskCreated = preferences.taskCreated === true;
-    this.savedIds = Array.isArray(preferences.savedIds) ? preferences.savedIds.filter((id): id is string => typeof id === 'string' && id !== insightId) : [];
-  }
-
-  private persist() {
+  private version = 0;
+  items: Record<string, Preference> = {};
+  pending: Record<string, boolean> = {};
+  errors: Record<string, string> = {};
+  error = '';
+  constructor(private request: PreferencesRequest = apiRequest) { makeAutoObservable(this, {}, { autoBind: true }); }
+  get saved() { return this.isSaved(insightId); }
+  get savedIds() { return Object.values(this.items).filter(item => item.is_saved).map(item => item.insight_id); }
+  setUser(userId: string | null) { this.version++; this.userId = userId; this.items = {}; this.pending = {}; this.errors = {}; this.error = ''; }
+  isSaved(id: string) { return this.items[id]?.is_saved ?? false; }
+  feedbackFor(id: string) { return this.items[id]?.feedback ?? null; }
+  reasonFor(id: string) { return this.items[id]?.reason ?? ''; }
+  async load() {
+    const version = this.version;
     if (!this.userId) return;
+    this.error = '';
     try {
-      localStorage.setItem(storageKey(this.userId), JSON.stringify({
-        saved: this.saved, hidden: this.hidden, feedback: this.feedback,
-        reason: this.reason, taskCreated: this.taskCreated, savedIds: this.savedIds,
-      }));
-    } catch {
-      // The prototype remains usable when browser storage is unavailable.
-    }
+      const items = await this.request<Preference[]>('/preferences');
+      if (version === this.version) runInAction(() => { this.items = Object.fromEntries(items.map(item => [item.insight_id, item])); });
+    } catch (error) { if (version === this.version) runInAction(() => { this.error = error instanceof Error ? error.message : 'Не удалось загрузить сохранённое.'; }); }
   }
-
-  toggleSaved() { this.saved = !this.saved; this.persist(); }
-  isSaved(id: string) { return id === insightId ? this.saved : this.savedIds.includes(id); }
-  toggleSavedFor(id: string) {
-    if (id === insightId) { this.toggleSaved(); return; }
-    this.savedIds = this.savedIds.includes(id) ? this.savedIds.filter(value => value !== id) : [...this.savedIds, id];
-    this.persist();
+  private async mutate(id: string, path: string, body?: unknown) {
+    if (!this.userId || this.pending[id]) return;
+    const version = this.version;
+    this.pending[id] = true; this.errors[id] = '';
+    try {
+      const item = await this.request<Preference>(path, { method: 'POST', ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
+      if (version === this.version) runInAction(() => { this.items[id] = item; });
+    } catch (error) { if (version === this.version) runInAction(() => { this.errors[id] = error instanceof Error ? error.message : 'Не удалось сохранить изменение.'; }); }
+    finally { if (version === this.version) runInAction(() => { this.pending[id] = false; }); }
   }
-  setHidden(hidden: boolean) { this.hidden = hidden; this.persist(); }
-  setFeedback(feedback: Feedback) {
-    this.feedback = this.feedback === feedback ? null : feedback;
-    this.reason = '';
-    this.persist();
-  }
-  setReason(reason: string) { this.reason = reason; this.persist(); }
-  createTask() { this.taskCreated = true; this.persist(); }
-  removeTask() { this.taskCreated = false; this.persist(); }
+  toggleSavedFor(id: string) { return this.mutate(id, `/preferences/${encodeURIComponent(id)}/toggle`); }
+  setFeedback(id: string, feedback: Feedback) { return this.mutate(id, '/preferences/feedback', { insight_id: id, feedback: this.feedbackFor(id) === feedback ? null : feedback, reason: null }); }
+  setReason(id: string, reason: string) { return this.mutate(id, '/preferences/feedback', { insight_id: id, feedback: this.feedbackFor(id), reason }); }
 }
-
 export const insightPreferencesStore = new InsightPreferencesStore();

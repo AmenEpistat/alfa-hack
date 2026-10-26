@@ -13,7 +13,7 @@ from alfa_insights.data import extract_watchlist, load_ranking_input
 
 FIXTURES = Path(__file__).parent / "fixtures"
 INPUT = FIXTURES / "ranking_input_full_example.json"
-COMPANIES = FIXTURES / "companies.txt"
+COMPANIES = Path(__file__).resolve().parents[1] / "data" / "companies.csv"
 
 
 def test_extract_watchlist() -> None:
@@ -48,11 +48,7 @@ def test_smoke_run(tmp_path: Path) -> None:
             "sets": {"min_news": 1, "max_news": 3, "max_sets": 2},
         },
     )
-    df = (
-        pd.read_csv(COMPANIES, sep=",", on_bad_lines="skip")
-        if COMPANIES.suffix == ".txt"
-        else pd.read_csv(COMPANIES)
-    )
+    df = pd.read_csv(COMPANIES, sep=",", on_bad_lines="skip")
     result = run_ranking(INPUT, df, config=cfg)
     assert result["schema_version"] == "1.0"
     assert result["status"] in {"ok", "partial"}

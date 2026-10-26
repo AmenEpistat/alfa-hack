@@ -1,0 +1,59 @@
+name: alfa-insights
+services:
+  api:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    environment:
+      DATABASE_URL: sqlite:////app/state/backend.db
+      ALPHA_LLM_BASE_URL: ${ALPHA_LLM_BASE_URL:-https://api.alfahack-gateway26.ru/v1}
+      ALPHA_LLM_FALLBACK_BASE_URL: ${ALPHA_LLM_FALLBACK_BASE_URL:-}
+      ALPHA_LLM_API_KEY: ${ALPHA_LLM_API_KEY:-}
+      ALPHA_LLM_MODEL: ${ALPHA_LLM_MODEL:-}
+      ALPHA_LLM_FAMILY: ${ALPHA_LLM_FAMILY:-GLM-5.3-Flash}
+      ALPHA_LLM_TIMEOUT: ${ALPHA_LLM_TIMEOUT:-45}
+      ALPHA_LLM_CONNECT_TIMEOUT: ${ALPHA_LLM_CONNECT_TIMEOUT:-5}
+      ALPHA_LLM_MAX_OUTPUT_TOKENS: ${ALPHA_LLM_MAX_OUTPUT_TOKENS:-4096}
+      ALPHA_LLM_REASONING_EFFORT: ${ALPHA_LLM_REASONING_EFFORT:-low}
+      ALPHA_LLM_THINKING_PROTOCOL: ${ALPHA_LLM_THINKING_PROTOCOL:-legacy}
+      ALPHA_LLM_THINKING_MODE: ${ALPHA_LLM_THINKING_MODE:-default}
+      ALPHA_LLM_LENGTH_RETRIES: ${ALPHA_LLM_LENGTH_RETRIES:-1}
+      ALPHA_ALLOW_UNKNOWN_COST: ${ALPHA_ALLOW_UNKNOWN_COST:-true}
+      ALPHA_DAILY_BUDGET_RUB: ${ALPHA_DAILY_BUDGET_RUB:-500}
+      ALPHA_INPUT_RUB_PER_MILLION: ${ALPHA_INPUT_RUB_PER_MILLION:-}
+      ALPHA_OUTPUT_RUB_PER_MILLION: ${ALPHA_OUTPUT_RUB_PER_MILLION:-}
+      ALPHA_OCR_ENABLED: ${ALPHA_OCR_ENABLED:-true}
+      ALPHA_OCR_LANGUAGE: ${ALPHA_OCR_LANGUAGE:-rus+eng}
+      ALPHA_SEARXNG_URL: ${ALPHA_SEARXNG_URL:-}
+    volumes:
+      - backend-data:/app/state
+      - pipeline-cache:/app/cache
+      - pipeline-output:/app/output
+      - model-cache:/app/.cache/huggingface
+      - ./inputs:/app/inputs:ro
+      - ./parser/inputs:/app/parser/inputs:ro
+      - ranking-cache:/app/ranking_module/cache
+      - ranking-runs:/app/ranking_module/runs
+      - ranking-models:/app/ranking_module/models
+    restart: unless-stopped
+  web:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+      args:
+        VITE_API_URL: /api
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  backend-data:
+  pipeline-cache:
+  pipeline-output:
+  model-cache:
+  ranking-cache:
+  ranking-runs:
+  ranking-models:

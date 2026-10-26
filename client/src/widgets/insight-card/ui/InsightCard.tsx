@@ -11,7 +11,7 @@ export function InsightCard({ entry }: { entry: InsightEntry }) {
       event.preventDefault();
       router.navigate(routes.insight(entry.id));
     }}>
-      <InsightCover variant={entry.cover} />
+      <InsightCover variant={entry.cover} imageUrl={entry.coverUrl} background={entry.coverBackground} />
       <div className="home-insight-copy"><span className="home-insight-topic">{entry.topic}</span><h3>{entry.title}</h3></div>
       <span className="home-insight-read">Читать <ArrowUpRight size={15} aria-hidden="true" /></span>
     </a>

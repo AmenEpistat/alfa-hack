@@ -1,0 +1,72 @@
+[
+  {
+    "id": "finance-rates",
+    "name": "Финансы и ставки",
+    "description": "Ключевая ставка, кредиты, депозиты, облигации и стоимость финансирования.",
+    "cover_url": "/api/assets/insight-categories/finance-rates.svg",
+    "cover_background": "#d7e1cb"
+  },
+  {
+    "id": "currencies-payments",
+    "name": "Валюты и международные расчеты",
+    "description": "Валютные курсы, трансграничные платежи и условия международных расчетов.",
+    "cover_url": "/api/assets/insight-categories/currencies-payments.svg",
+    "cover_background": "#c5dbe3"
+  },
+  {
+    "id": "commodities-energy",
+    "name": "Сырье, энергия и издержки",
+    "description": "Нефть, газ, металлы, золото, электроэнергия и себестоимость.",
+    "cover_url": "/api/assets/insight-categories/commodities-energy.svg",
+    "cover_background": "#ed6b42"
+  },
+  {
+    "id": "demand-consumption",
+    "name": "Спрос и потребление",
+    "description": "Покупательская активность, продажи, экономический рост и охлаждение рынка.",
+    "cover_url": "/api/assets/insight-categories/demand-consumption.svg",
+    "cover_background": "#d7e1cb"
+  },
+  {
+    "id": "logistics-supplies",
+    "name": "Логистика и поставки",
+    "description": "Перевозки, склады, маршруты, сроки доставки и цепочки поставок.",
+    "cover_url": "/api/assets/insight-categories/logistics-supplies.svg",
+    "cover_background": "#c5dbe3"
+  },
+  {
+    "id": "competition-market",
+    "name": "Конкуренты и рынок",
+    "description": "Действия конкурентов, новые игроки, слияния и конкурентная ситуация.",
+    "cover_url": "/api/assets/insight-categories/competition-market.svg",
+    "cover_background": "#d7e1cb"
+  },
+  {
+    "id": "regulation-taxes",
+    "name": "Регулирование и налоги",
+    "description": "Законы, налоги, лицензии, государственные требования и ограничения.",
+    "cover_url": "/api/assets/insight-categories/regulation-taxes.svg",
+    "cover_background": "#c5dbe3"
+  },
+  {
+    "id": "team-labor",
+    "name": "Команда и рынок труда",
+    "description": "Зарплаты, нехватка кадров, найм, квалификация и производительность.",
+    "cover_url": "/api/assets/insight-categories/team-labor.svg",
+    "cover_background": "#ed6b42"
+  },
+  {
+    "id": "technology-risks",
+    "name": "Технологии и цифровые риски",
+    "description": "Автоматизация, ИИ, новые технологии, киберугрозы и цифровые сбои.",
+    "cover_url": "/api/assets/insight-categories/technology-risks.svg",
+    "cover_background": "#c5dbe3"
+  },
+  {
+    "id": "investment-development",
+    "name": "Инвестиции и развитие",
+    "description": "Капитальные вложения, новые производства, расширение бизнеса и выход в новые регионы.",
+    "cover_url": "/api/assets/insight-categories/investment-development.svg",
+    "cover_background": "#d7e1cb"
+  }
+]

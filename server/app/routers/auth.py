@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from ..accounts import ACCOUNT_AUDIENCES, audience_for_user
 from ..database import get_db
 from ..models import User
 from ..schemas import LoginRequest, LoginResponse, UserResponse
@@ -15,6 +16,7 @@ def serialize_user(user: User) -> UserResponse:
         name=user.name,
         initials=user.initials,
         role=user.role,
+        audience_type=audience_for_user(user.id),
     )
 
 
@@ -22,7 +24,7 @@ def serialize_user(user: User) -> UserResponse:
 def get_users(
     db: Session = Depends(get_db),
 ) -> list[UserResponse]:
-    users = db.scalars(select(User).order_by(User.name)).all()
+    users = db.scalars(select(User).where(User.id.in_(ACCOUNT_AUDIENCES)).order_by(User.name)).all()
 
     return [serialize_user(user) for user in users]
 
@@ -34,7 +36,7 @@ def login(
 ) -> LoginResponse:
     user = db.scalar(select(User).where(User.id == payload.user_id))
 
-    if user is None:
+    if user is None or user.id not in ACCOUNT_AUDIENCES:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Пользователь не найден.",
@@ -54,7 +56,7 @@ def get_current_user(
 ) -> UserResponse:
     user = db.scalar(select(User).where(User.id == token))
 
-    if user is None:
+    if user is None or user.id not in ACCOUNT_AUDIENCES:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Недействительный токен.",

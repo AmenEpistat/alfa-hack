@@ -1,7 +1,10 @@
 import type { InsightEntry } from '../model/catalog';
+import { useState } from 'react';
 import './insight-cover.scss';
 
-export function InsightCover({ variant }: { variant: InsightEntry['cover'] }) {
+export function InsightCover({ variant, imageUrl, background }: { variant: InsightEntry['cover']; imageUrl?: string; background?: string }) {
+  const [failedUrl, setFailedUrl] = useState('');
+  if (imageUrl && imageUrl !== failedUrl) return <div className="insight-cover insight-cover--image" style={{ backgroundColor: background }} aria-hidden="true"><img src={imageUrl} alt="" decoding="async" onError={() => setFailedUrl(imageUrl)} /></div>;
   return <div className={`insight-cover insight-cover--${variant}`} aria-hidden="true">
     <svg viewBox="0 0 600 340" fill="none" xmlns="http://www.w3.org/2000/svg">
       {variant === 'steel' ? <>

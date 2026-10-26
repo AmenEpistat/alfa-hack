@@ -1,7 +1,7 @@
 import { Button, Menu, Tag, type MenuProps } from 'antd';
 import {
   ArrowRightLeft, BookOpen, Building2, CreditCard, FileInput, FileText,
-  FilePlus2, Inbox, LayoutGrid, Lightbulb, List, Plus, Settings2, Users,
+  FilePlus2, House, Inbox, LayoutGrid, Lightbulb, List, Plus, Settings2, Users,
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { router, routes } from '@/shared/routing';
@@ -9,6 +9,7 @@ import { Brand } from '@/shared/ui/brand';
 import { shellStore as store } from '../model/shell-store';
 
 const items: MenuProps['items'] = [
+  { key: routes.home, icon: <House size={17} aria-hidden="true" />, label: 'Главная' },
   { key: routes.section('Все сервисы и продукты'), icon: <LayoutGrid size={17} aria-hidden="true" />, label: 'Все сервисы' },
   { type: 'divider' },
   { key: routes.insights, icon: <Lightbulb size={17} aria-hidden="true" />, label: 'Бизнес-инсайты' },

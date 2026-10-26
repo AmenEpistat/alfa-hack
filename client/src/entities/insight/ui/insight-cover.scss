@@ -1,5 +1,6 @@
 .insight-cover { width: 100%; aspect-ratio: 600 / 340; overflow: hidden; }
 .insight-cover svg { display: block; width: 100%; height: 100%; }
+.insight-cover img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .insight-cover--steel { background: #ed6b42; }
 .insight-cover--contracts { background: #c5dbe3; }
 .insight-cover--budget { background: #d7e1cb; }

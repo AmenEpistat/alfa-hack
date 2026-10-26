@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import html
+import hashlib
 import re
 from .categories import get_category
 from collections.abc import Mapping
@@ -117,6 +118,10 @@ def _source_title(document: Mapping[str, Any]) -> str:
     return _plain(document.get("title"))
 
 
+def source_document_id(document):
+    return 'doc-' + hashlib.sha256(repr(_source_key(document)).encode()).hexdigest()[:20]
+
+
 class _Sources:
     def __init__(self):
         self.documents: list[Mapping[str, Any]] = []
@@ -132,7 +137,7 @@ class _Sources:
             label = self.labels[key]
             if label not in labels:
                 labels.append(label)
-        return " ".join(f"[{label}]" for label in labels)
+        return " ".join(f"[{label}](source:{source_document_id(next(doc for doc in self.documents if self.labels[_source_key(doc)] == label))})" for label in labels)
 
     def markdown(self, level: int = 2) -> str:
         if not self.documents:

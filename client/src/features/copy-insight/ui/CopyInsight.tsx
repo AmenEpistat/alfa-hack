@@ -2,18 +2,23 @@ import { useState } from 'react';
 import { Copy } from 'lucide-react';
 import { Button } from 'antd';
 import {
-  insightTitle as title, insightSummary as summary, marketSource,
-  getInsightValidity, insightValidity, type InsightEntry,
+  insightsStore,
+  getInsightValidity, type InsightEntry,
 } from '@/entities/insight';
 import './copy-insight.scss';
 
-export function CopyInsight({ entry }: { entry?: InsightEntry }) {
+export function CopyInsight({ entry }: { entry: InsightEntry }) {
   const [copyStatus, setCopyStatus] = useState('');
   const copyText = async () => {
-    const text = [entry?.title ?? title, entry?.summary ?? summary, ...(entry?.sections.map(section => `${section.title}\n${section.text}`) ?? []), getInsightValidity().label, insightValidity.reviewTrigger,
-      'Следующий шаг: запросить у поставщика стоимость ближайших заказов и срок, на который он её подтверждает.',
-      `Рыночный контекст: ${marketSource.url}`, marketSource.limitation,
-      'Процент изменения цены — условие сценария. Вероятность изменения и влияние на прибыль не рассчитаны.',
+    const sources = (entry.sourceIds ?? []).flatMap(id => {
+      const source = insightsStore.sources[id];
+      return source ? [`${source.publisher}: ${source.title}${source.url ? ` — ${source.url}` : ''}`] : [];
+    });
+    const content = (entry.content ?? '').replace(/\[([^\]]+)\]\(source:([a-z0-9_-]+)\)/gi, '[$1]');
+    const text = [entry.title, entry.summary, content,
+      ...(entry.generationMethod === 'ai' ? ['Создано AI'] : entry.generationMethod === 'ai_assisted' ? ['Подготовлено с AI'] : []),
+      ...(entry.preparedAt && entry.expiresAt ? [getInsightValidity(new Date(), { preparedAt: entry.preparedAt, expiresAt: entry.expiresAt }).label] : []),
+      ...sources,
     ].join('\n\n');
     try {
       await navigator.clipboard.writeText(text);

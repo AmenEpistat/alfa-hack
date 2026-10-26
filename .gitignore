@@ -6,11 +6,22 @@
 
 # Backend artifacts
 backend.db
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+
+# Local editor state and generated QA previews
+.idea/
+assets/qa/
+assets/insight-categories/preview.png
+assets/insight-categories/category-covers.zip
 
 # Node artifacts
 build/
 prebuilds/
 node_modules/
+.netlify/
 
 # Python artifacts
 .venv/

@@ -1,6 +1,7 @@
 .insight-reader { padding-bottom: 20px; }
 .reader-back.ant-btn { margin: -7px 0 25px -12px; color: #7d8389; font-size: 12px; }
 .reader-layout { display: grid; grid-template-columns: minmax(0, 1fr) 370px; gap: 46px; align-items: start; }
+.reader-layout--article-only { grid-template-columns: minmax(0, 900px); }
 .reader-article { min-width: 0; }
 .reader-topic { color: #c74132; font-size: 12px; }
 .reader-heading h1 { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(30px, 3.1vw, 43px); line-height: 1.12; font-weight: 400; letter-spacing: -1px; margin: 14px 0 18px; }
@@ -22,7 +23,7 @@
 .reader-assistant { display: flex; flex-direction: column; position: sticky; top: 24px; border: 1px solid #dfe2e4; border-radius: 12px; background: #fff; height: min(650px, calc(100dvh - 50px)); min-height: 480px; overflow: hidden; }
 .reader-chat-heading { flex-shrink: 0; margin: 0; padding: 18px 23px; border-bottom: 1px solid #e7e9eb; font-size: 14px; line-height: 22px; font-weight: 500; }
 .reader-assistant > .ask-insight { flex: 1; height: auto; }
-@media (min-width: 1450px) { .reader-layout { gap: 65px; grid-template-columns: minmax(0, 1fr) 410px; } }
-@media (max-width: 1150px) { .reader-layout { gap: 28px; grid-template-columns: minmax(0, 1fr) 330px; } }
+@media (min-width: 1450px) { .reader-layout:not(.reader-layout--article-only) { gap: 65px; grid-template-columns: minmax(0, 1fr) 410px; } }
+@media (max-width: 1150px) { .reader-layout:not(.reader-layout--article-only) { gap: 28px; grid-template-columns: minmax(0, 1fr) 330px; } }
 @media (max-width: 960px) { .reader-layout { grid-template-columns: 1fr; gap: 35px; } .reader-assistant { position: static; height: 570px; min-height: 0; } .reader-heading h1 { font-size: 38px; } }
 @media (max-width: 600px) { .reader-heading h1 { font-size: 33px; } .reader-back.ant-btn { margin-bottom: 22px; } .reader-lead { font-size: 14px; line-height: 24px; } .reader-layout { gap: 30px; } .reader-article > .insight-cover { aspect-ratio: 2; } .reader-assistant { height: 530px; } }

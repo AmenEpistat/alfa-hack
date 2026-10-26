@@ -12,6 +12,8 @@ export type InsightAnswer = {
   references: InsightSourceId[];
   citations: Record<number, InsightSourceId[]>;
   suggestedView?: AnalysisView;
+  content?: string;
+  generationMethod?: 'ai' | 'ai_assisted' | 'editorial' | 'rules';
 };
 
 function getAnswerCitations(kind: InsightAnswer['kind'], paragraphs: string[], references: InsightSourceId[]): InsightAnswer['citations'] {

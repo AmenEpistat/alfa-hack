@@ -8,6 +8,7 @@ class UserResponse(BaseModel):
     name: str
     initials: str
     role: str
+    audience_type: str
 
 
 class LoginRequest(BaseModel):
@@ -30,9 +31,20 @@ class InsightResponse(BaseModel):
     topic: str
     title: str
     summary: str
-    minutes: int
-    cover: Literal["steel", "contracts", "budget"]
+    minutes: int | None = None
+    cover: str
+    category_id: int | str | None = None
+    category_name: str | None = None
+    cover_url: str | None = None
+    cover_background: str | None = None
     sections: list[InsightSection]
+    content: str
+    source_ids: list[str] = Field(default_factory=list)
+    prepared_at: str | None = None
+    expires_at: str | None = None
+    generation_method: Literal["ai", "ai_assisted", "editorial", "rules"] = "editorial"
+    audience_type: str | None = None
+    product_recommendations: list[dict] = Field(default_factory=list)
     is_saved: bool = False
 
 
@@ -42,7 +54,7 @@ class Company(BaseModel):
 
 
 class AnalysisView(BaseModel):
-    company_id: str = Field(default="group")
+    company_id: Literal["group", "development", "contracting", "infrastructure"] = "group"
     period: Literal["october", "november", "december", "quarter"] = "quarter"
     price_change_pct: float = Field(default=10)
 
@@ -83,22 +95,27 @@ class AnalysisResponse(BaseModel):
 
 class AskRequest(BaseModel):
     insight_id: str
-    question: str = Field(min_length=1, max_length=500)
-    view: AnalysisView = AnalysisView()
+    question: str = Field(min_length=1, max_length=500, pattern=r"\S")
+    view: AnalysisView = Field(default_factory=AnalysisView)
+    history: list[dict[str, str]] = Field(default_factory=list, max_length=20)
 
 
 class AskResponse(BaseModel):
+    kind: str = "unsupported"
     question: str
     paragraphs: list[str]
     context: str
     references: list[str]
     suggested_view: AnalysisView | None = None
+    content: str
+    citations: dict[int, list[str]] = Field(default_factory=dict)
+    generation_method: Literal["ai", "ai_assisted", "editorial", "rules"] = "rules"
 
 
 class FeedbackRequest(BaseModel):
     insight_id: str
-    feedback: Literal["useful", "not-useful"]
-    reason: str | None = None
+    feedback: Literal["useful", "not-useful"] | None
+    reason: str | None = Field(default=None, max_length=100)
 
 
 class PreferenceResponse(BaseModel):

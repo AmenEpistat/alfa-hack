@@ -379,3 +379,14 @@ class RankingSetRecord(Base):
     run: Mapped["RankingRun"] = relationship(
         back_populates="sets",
     )
+
+
+class GeneratedInsight(Base):
+    """Validated ML result attached to its display record, scoped by reader role."""
+    __tablename__ = 'generated_insights'
+    insight_id: Mapped[str] = mapped_column(ForeignKey('insights.id', ondelete='CASCADE'), primary_key=True)
+    audience_type: Mapped[str] = mapped_column(String(50), nullable=False, index=True)
+    company_id: Mapped[str | None] = mapped_column(String(150), nullable=True, index=True)
+    run_id: Mapped[str] = mapped_column(String(150), nullable=False, index=True)
+    prepared_at: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    payload: Mapped[dict] = mapped_column(JSON, nullable=False)

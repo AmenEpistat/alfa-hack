@@ -5,3 +5,7 @@
 .citation-preview > strong { display: block; margin-top: 7px; font-size: 13px; line-height: 20px; font-weight: 500; }
 .citation-preview > p { margin: 8px 0; color: #727d85; font-size: 12px; line-height: 20px; }
 .citation-preview .ant-btn { font-size: 11px; padding-inline: 0; }
+
+.citation-bank-mark { display: inline-grid; place-items: center; width: 12px; height: 13px; color: #d9493d; font-size: 10px; font-weight: 700; line-height: 12px; text-decoration: underline; text-underline-offset: 1px; }
+.generation-label { display: inline-flex; align-items: center; gap: 5px; color: #8b809b; font-size: 10px; line-height: 18px; }
+.citation-unavailable { color: #949ba1; font-size: 10px; }

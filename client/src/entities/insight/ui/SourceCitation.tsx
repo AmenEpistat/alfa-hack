@@ -1,25 +1,28 @@
 import { Fragment, useState } from 'react';
 import { Button, Popover } from 'antd';
 import { Building2, FileSpreadsheet, Globe2 } from 'lucide-react';
-import { insightSources, type CitationAnchor, type InsightSourceId } from '../model/sources';
+import { type CitationAnchor, type InsightSourceId } from '../model/sources';
+import { insightsStore } from '../model/insights-store';
+import { observer } from 'mobx-react-lite';
 import './source-citation.scss';
 
-export function SourceCitation({ sourceId, onOpen, previewDisabled = false }: { sourceId: InsightSourceId; onOpen: (id: InsightSourceId) => void; previewDisabled?: boolean }) {
+export const SourceCitation = observer(function SourceCitation({ sourceId, onOpen, previewDisabled = false }: { sourceId: InsightSourceId; onOpen: (id: InsightSourceId) => void; previewDisabled?: boolean }) {
   const [open, setOpen] = useState(false);
-  const source = insightSources[sourceId];
+  const source = insightsStore.sources[sourceId];
+  if (!source) return null;
   const Icon = sourceId === 'market' ? Globe2 : sourceId === 'plan' ? FileSpreadsheet : Building2;
   function showSource() { setOpen(false); onOpen(sourceId); }
   return <Popover open={open && !previewDisabled} onOpenChange={next => setOpen(next && !previewDisabled)} trigger={['hover', 'focus']} placement="top" content={
-    <div className="citation-preview"><span>{source.publisher}{source.date ? ` · ${source.date}` : ''}</span>
+    <div className="citation-preview"><span>{source.publisher}{source.origin === 'client' ? ' · данные клиента' : ''}{source.date ? ` · ${source.date}` : ''}</span>
       <strong>{source.title}</strong><p>{source.description}</p>
       <Button type="link" size="small" onMouseDown={event => event.preventDefault()} onClick={showSource}>Подробнее об источнике</Button>
     </div>
   }>
     <button type="button" className="source-citation" aria-label={`Источник: ${source.label}`} onClick={showSource}>
-      <Icon size={11} aria-hidden="true" /><span>{source.label}</span>
+      {source.origin === 'external' ? <Icon size={11} aria-hidden="true" /> : <span className="citation-bank-mark" aria-hidden="true">А</span>}<span>{source.label}</span>
     </button>
   </Popover>;
-}
+});
 
 export function CitedText({ text, citations = [], onOpenSource, previewDisabled = false }: {
   text: string; citations?: CitationAnchor[]; onOpenSource: (id: InsightSourceId) => void; previewDisabled?: boolean;

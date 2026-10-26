@@ -253,6 +253,19 @@ def seed_companies(db: Session) -> None:
     if not COMPANIES_PATH.exists():
         return
 
+    # Bulk upserts preserve existing company IDs and avoid one SELECT per CSV row.
+    batch = []
+    def save_batch(values):
+        if db.bind.dialect.name == 'sqlite':
+            from sqlalchemy.dialects.sqlite import insert
+            statement = insert(Company).values(values)
+            db.execute(statement.on_conflict_do_update(index_elements=['id'], set_={
+                'name': statement.excluded.name, 'data': statement.excluded.data,
+            }))
+        else:
+            for value in values:
+                db.merge(Company(**value))
+
     with COMPANIES_PATH.open(
         "r",
         encoding="utf-8-sig",
@@ -275,22 +288,10 @@ def seed_companies(db: Session) -> None:
             data.setdefault("SYNTHETIC_U", company_id)
             data.setdefault("name", company_name)
 
-            company = db.scalar(
-                select(Company).where(
-                    Company.id == company_id,
-                )
-            )
-
-            if company is None:
-                db.add(
-                    Company(
-                        id=company_id,
-                        name=company_name,
-                        data=data,
-                    )
-                )
-            else:
-                company.name = company_name
-                company.data = data
-
+            batch.append({"id": company_id, "name": company_name, "data": data})
+            if len(batch) >= 500:
+                save_batch(batch)
+                batch.clear()
+        if batch:
+            save_batch(batch)
     db.flush()

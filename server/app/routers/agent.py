@@ -6,7 +6,12 @@ import uuid
 from pathlib import Path
 from typing import Any, Literal
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.orm import Session
+from ..database import get_db
+from ..dependencies import get_user_id
+from ..accounts import require_audience
+from ..publication import store_generated_insights
 from pydantic import BaseModel, ConfigDict, Field
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
@@ -223,11 +228,12 @@ def _build_chat_messages(
 
 
 @router.post("/generate")
-def generate(request: InsightGenerationRequest) -> dict[str, Any]:
+def generate(request: InsightGenerationRequest, user_id: str = Depends(get_user_id), db: Session = Depends(get_db)) -> dict[str, Any]:
     """
     Генерирует инсайты по уже отранжированным материалам.
     """
 
+    require_audience(user_id, request.audience_type)
     run_id = str(uuid.uuid4())
     module = _build_module(
         run_id=run_id,
@@ -263,6 +269,8 @@ def generate(request: InsightGenerationRequest) -> dict[str, Any]:
             )
 
         settings = _settings()
+        if not (settings.llm_base_url and settings.llm_api_key and settings.llm_model):
+            raise HTTPException(503, "Подключение к модели не настроено.")
         client = JsonLLMClient(
             settings=settings,
             store=module.store,
@@ -296,6 +304,7 @@ def generate(request: InsightGenerationRequest) -> dict[str, Any]:
             "run_id": result.get("run_id", run_id),
             "input_run_id": result.get("input_run_id"),
             "insights_count": len(result.get("insights", [])),
+            "published_insight_ids": store_generated_insights(db, result, user_id, run_id),
             "errors": result.get("errors", []),
             "usage": result.get("usage", {}),
             "artifacts": {
@@ -312,6 +321,8 @@ def generate(request: InsightGenerationRequest) -> dict[str, Any]:
             status_code=503,
             detail=f"Файл конфигурации или каталога не найден: {exc}",
         ) from exc
+    except HTTPException:
+        raise
     except ValueError as exc:
         raise HTTPException(
             status_code=422,
@@ -380,13 +391,16 @@ class InsightChatResponse(BaseModel):
     "/chat",
     response_model=InsightChatResponse,
 )
-def chat(request: InsightChatRequest) -> InsightChatResponse:
+def chat(request: InsightChatRequest, user_id: str = Depends(get_user_id)) -> InsightChatResponse:
+    require_audience(user_id, request.audience_type)
     run_id = str(uuid.uuid4())
     module = _build_module(run_id=run_id)
     context = _chat_context(request.insight)
 
     try:
         settings = _settings()
+        if not (settings.llm_base_url and settings.llm_api_key and settings.llm_model):
+            raise HTTPException(503, "Подключение к модели не настроено.")
 
         client = JsonLLMClient(
             settings=settings,
@@ -488,6 +502,8 @@ def chat(request: InsightChatRequest) -> InsightChatResponse:
             suggested_view=suggested_view,
         )
 
+    except HTTPException:
+        raise
     except ValueError as exc:
         raise HTTPException(
             status_code=422,

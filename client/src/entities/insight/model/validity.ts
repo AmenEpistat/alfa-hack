@@ -8,13 +8,13 @@ export const insightValidity = {
 
 const dateFormatter = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', timeZone: 'Europe/Moscow' });
 
-export function getInsightValidity(now: Date = new Date()) {
-  const expired = now.getTime() >= new Date(insightValidity.expiresAt).getTime();
-  const reviewDate = dateFormatter.format(new Date(new Date(insightValidity.expiresAt).getTime() - 1));
+export function getInsightValidity(now: Date = new Date(), metadata: { preparedAt: string; expiresAt: string } = insightValidity) {
+  const expired = now.getTime() >= new Date(metadata.expiresAt).getTime();
+  const reviewDate = dateFormatter.format(new Date(new Date(metadata.expiresAt).getTime() - 1));
   return {
     expired,
     reviewDate,
-    preparedDate: dateFormatter.format(new Date(insightValidity.preparedAt)),
+    preparedDate: dateFormatter.format(new Date(metadata.preparedAt)),
     label: expired ? 'Срок актуальности истёк' : `Актуально до ${reviewDate}`,
   };
 }

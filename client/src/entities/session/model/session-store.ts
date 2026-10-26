@@ -1,35 +1,53 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { apiRequest, ApiError, setAccessToken } from '@/shared/api';
 
-export const demoUsers = [
-  { id: 'anna', name: 'Анна Смирнова', initials: 'АС', role: 'Финансовый директор' },
-  { id: 'ilya', name: 'Илья Воронов', initials: 'ИВ', role: 'Казначей' },
-] as const;
-
-const sessionKey = 'alfa-hackathon:demo-session:v1';
-
-function readSession() {
-  try { return sessionStorage.getItem(sessionKey); } catch { return null; }
-}
+export type User = { id: string; name: string; initials: string; role: string; audience_type: string };
+const sessionKey = 'alfa-hackathon:api-session:v1';
+function readToken() { try { return sessionStorage.getItem(sessionKey); } catch { return null; } }
 
 class SessionStore {
-  userId: string | null = readSession();
-
-  constructor() {
-    makeAutoObservable(this, {}, { autoBind: true });
+  user: User | null = null;
+  users: User[] = [];
+  initialising = true;
+  pending = false;
+  error = '';
+  private token: string | null = readToken();
+  private started = false;
+  constructor() { makeAutoObservable(this, {}, { autoBind: true }); setAccessToken(this.token); }
+  get userId() { return this.user?.id ?? null; }
+  async bootstrap() {
+    if (this.started) return;
+    this.started = true; this.initialising = true; this.error = '';
+    try {
+      const users = await apiRequest<User[]>('/auth/users');
+      runInAction(() => { this.users = users; });
+      if (this.token) {
+        try {
+          const user = await apiRequest<User>(`/auth/me?token=${encodeURIComponent(this.token)}`);
+          runInAction(() => { this.user = user; });
+        } catch (error) {
+          if (error instanceof ApiError && error.status === 401) this.logout();
+          else throw error;
+        }
+      }
+    } catch (error) {
+      runInAction(() => { this.error = error instanceof Error ? error.message : 'Не удалось загрузить пользователей.'; this.started = false; });
+    } finally { runInAction(() => { this.initialising = false; }); }
   }
-
-  get user() { return demoUsers.find((user) => user.id === this.userId) ?? null; }
-
-  login(userId: string) {
-    if (!demoUsers.some((user) => user.id === userId)) return;
-    this.userId = userId;
-    try { sessionStorage.setItem(sessionKey, userId); } catch { /* Keep the in-memory demo session. */ }
+  async login(userId: string) {
+    if (this.pending) return;
+    this.pending = true; this.error = '';
+    try {
+      const result = await apiRequest<{ access_token: string; user: User }>('/auth/login', { method: 'POST', body: JSON.stringify({ user_id: userId }) });
+      setAccessToken(result.access_token);
+      runInAction(() => { this.token = result.access_token; this.user = result.user; });
+      try { sessionStorage.setItem(sessionKey, result.access_token); } catch { /* Session remains in memory. */ }
+    } catch (error) { runInAction(() => { this.error = error instanceof Error ? error.message : 'Не удалось войти.'; }); }
+    finally { runInAction(() => { this.pending = false; }); }
   }
-
   logout() {
-    this.userId = null;
-    try { sessionStorage.removeItem(sessionKey); } catch { /* The in-memory session is already cleared. */ }
+    this.user = null; this.token = null; setAccessToken(null);
+    try { sessionStorage.removeItem(sessionKey); } catch { /* Session already cleared in memory. */ }
   }
 }
-
 export const sessionStore = new SessionStore();
