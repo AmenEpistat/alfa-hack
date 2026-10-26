@@ -69,6 +69,7 @@ class WatchCompany(StrictModel):
 
 class ResearchInput(StrictModel):
     """Public request: the platform resolves the history window internally."""
+
     company_id: str
     group_id: str | None = None
     role: str | None = None
@@ -79,6 +80,7 @@ class ResearchInput(StrictModel):
 
 class ResearchRequest(ResearchInput):
     """Internal resolved request; also used to reproduce saved runs."""
+
     start: date
     end: date
 
@@ -91,6 +93,7 @@ class ResearchRequest(ResearchInput):
 
 def resolve_research_input(value):
     from .periods import history_window
+
     payload = value.model_dump(mode="json") if isinstance(value, BaseModel) else value
     spec = ResearchInput.model_validate(payload)
     window = history_window()
@@ -98,7 +101,19 @@ def resolve_research_input(value):
 
 
 class Action(StrictModel):
-    tool: Literal["get_context", "search_alpha", "search_local", "read_rss", "search_web", "fetch_article", "parse_pdf", "search_competitor_news", "record_peer", "record_peers", "finish"]
+    tool: Literal[
+        "get_context",
+        "search_alpha",
+        "search_local",
+        "read_rss",
+        "search_web",
+        "fetch_article",
+        "parse_pdf",
+        "search_competitor_news",
+        "record_peer",
+        "record_peers",
+        "finish",
+    ]
     arguments: dict = Field(default_factory=dict)
     reason: str = Field(min_length=1, max_length=1000)
 
@@ -213,14 +228,17 @@ class RankingInput(StrictModel):
 
 class CompanyInput(BaseModel):
     """Preprocessed company profile retained locally; only a whitelist is used for public search."""
-    model_config = ConfigDict(extra="allow", str_strip_whitespace=True, allow_inf_nan=False)
+
+    model_config = ConfigDict(
+        extra="allow", str_strip_whitespace=True, allow_inf_nan=False
+    )
     company_id: str = Field(min_length=1, max_length=100)
     industry: str = Field(min_length=2, max_length=500)
     okved_code: str | None = None
     region: str | None = Field(None, max_length=250)
     city: str | None = Field(None, max_length=250)
     group_id: str | None = Field(None, max_length=100)
-    client_type: Literal["CLIENT"]
+    client_type: Literal["CLIENT", "PROSPECT"]
     group_context: dict[str, list[str]] = Field(default_factory=dict)
     identity_ambiguous: bool = False
     source_company_id: str | None = None
@@ -231,9 +249,22 @@ class CompanyInput(BaseModel):
 
     def public_context(self):
         return {
-            "company_industry": self.industry, "company_region": self.region,
-            "company_city": self.city, "company_okved_code": self.okved_code,
-            "industries": list(dict.fromkeys([self.industry, *self.group_context.get("industries", [])]))[:12],
-            "regions": list(dict.fromkeys([r for r in [self.region, *self.group_context.get("regions", [])] if r]))[:12],
+            "company_industry": self.industry,
+            "company_region": self.region,
+            "company_city": self.city,
+            "company_okved_code": self.okved_code,
+            "industries": list(
+                dict.fromkeys(
+                    [self.industry, *self.group_context.get("industries", [])]
+                )
+            )[:12],
+            "regions": list(
+                dict.fromkeys(
+                    [
+                        r
+                        for r in [self.region, *self.group_context.get("regions", [])]
+                        if r
+                    ]
+                )
+            )[:12],
         }
-
