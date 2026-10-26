@@ -2,7 +2,7 @@ import { marketSource } from './analysis';
 
 export type InsightSourceId = string;
 export type CitationAnchor = { after: string; sourceId: InsightSourceId };
-export type InsightSource = { label: string; publisher: string; origin: 'external' | 'bank' | 'client'; excerpts?: string[]; date: string | null; title: string; description: string; scope: string; url: string | null };
+export type InsightSource = { label: string; publisher: string; origin: 'external' | 'bank' | 'client' | 'synthetic'; excerpts?: string[]; date: string | null; title: string; description: string; scope: string; url: string | null };
 
 export const insightSources = {
   market: {

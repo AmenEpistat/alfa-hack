@@ -16,7 +16,7 @@ export function InsightPage({ entry }: { entry: InsightEntry }) {
   const [activeSource, setActiveSource] = useState<InsightSourceId | 'all' | null>(null);
   const [chatSources, setChatSources] = useState<InsightSourceId[]>([]);
   const sourceIds = [...new Set([...(entry.sourceIds ?? []), ...chatSources])];
-  const hasChatContext = Boolean(entry.audienceType);
+  const hasChatContext = Boolean(entry.audienceType && entry.generationMethod === 'ai');
   return <div className="insight-reader">
     <Button type="text" className="reader-back" onClick={() => router.navigate(routes.insights)}><ArrowLeft size={15} aria-hidden="true" /> Все инсайты</Button>
     <div className={`reader-layout${hasChatContext ? '' : ' reader-layout--article-only'}`}>

@@ -37,6 +37,7 @@ test('API base and authenticated transport follow contract and report errors', a
 test('source provenance is separate from generation and unsafe source links are rejected', () => {
   const source = { id: 'plan', label: 'План', publisher: 'Альфа-Банк', origin: 'client', url: null } as const;
   assert.equal(parseSources([source as never])[0].origin, 'client');
+  assert.equal(parseSources([{ ...source, origin: 'synthetic', publisher: 'Синтетический план' } as never])[0].origin, 'synthetic');
   assert.throws(() => parseSources([{ ...source, url: 'javascript:alert(1)' } as never]));
 });
 

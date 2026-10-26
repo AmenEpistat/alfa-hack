@@ -42,7 +42,7 @@ export const OpenInsightSource = observer(function OpenInsightSource({ activeSou
         if (!source) return null;
         const Icon = id === 'market' ? Globe2 : id === 'plan' ? FileSpreadsheet : Building2;
         return <article key={id} className={`source-document${activeSource === id ? ' is-selected' : ''}`} aria-label={source.title}>
-          <div className="source-document-meta"><span className="source-document-icon">{source.origin === 'external' ? <Icon size={16} aria-hidden="true" /> : <span className="citation-bank-mark" aria-hidden="true">А</span>}</span><div><strong>{source.publisher}{source.origin === 'client' ? ' · данные клиента' : ''}</strong>{source.date && <span>{source.date}</span>}</div></div>
+          <div className="source-document-meta"><span className="source-document-icon">{source.origin === 'external' || source.origin === 'synthetic' ? <Icon size={16} aria-hidden="true" /> : <span className="citation-bank-mark" aria-hidden="true">А</span>}</span><div><strong>{source.publisher}{source.origin === 'client' ? ' · данные клиента' : ''}</strong>{source.date && <span>{source.date}</span>}</div></div>
           <h3>{source.title}</h3><p>{source.description}</p><p className="source-document-scope">{source.scope}</p>
           {source.excerpts?.map((quote, index) => <blockquote key={index}>{quote}</blockquote>)}
           <div className="source-document-actions">

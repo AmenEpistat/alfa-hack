@@ -47,7 +47,7 @@ export const fetchInsight = async (id: string) => parseInsight(await apiRequest<
 export function parseSources(sources: (InsightSource & { id: InsightSourceId })[]) {
   if (!Array.isArray(sources)) throw new Error('Сервер вернул некорректный список источников.');
   return sources.map(source => {
-    if ((typeof source.id !== 'string' || !source.id) || !['external', 'bank', 'client'].includes(source.origin) || typeof source.label !== 'string' || typeof source.publisher !== 'string') throw new Error('Сервер вернул некорректный источник.');
+    if ((typeof source.id !== 'string' || !source.id) || !['external', 'bank', 'client', 'synthetic'].includes(source.origin) || typeof source.label !== 'string' || typeof source.publisher !== 'string') throw new Error('Сервер вернул некорректный источник.');
     if (source.url) {
       const url = new URL(source.url);
       if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) throw new Error('Сервер вернул небезопасную ссылку источника.');

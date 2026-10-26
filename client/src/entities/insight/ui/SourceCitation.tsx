@@ -19,7 +19,7 @@ export const SourceCitation = observer(function SourceCitation({ sourceId, onOpe
     </div>
   }>
     <button type="button" className="source-citation" aria-label={`Источник: ${source.label}`} onClick={showSource}>
-      {source.origin === 'external' ? <Icon size={11} aria-hidden="true" /> : <span className="citation-bank-mark" aria-hidden="true">А</span>}<span>{source.label}</span>
+      {source.origin === 'external' || source.origin === 'synthetic' ? <Icon size={11} aria-hidden="true" /> : <span className="citation-bank-mark" aria-hidden="true">А</span>}<span>{source.label}</span>
     </button>
   </Popover>;
 });
